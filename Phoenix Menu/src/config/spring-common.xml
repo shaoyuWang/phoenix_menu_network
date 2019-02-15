@@ -64,7 +64,7 @@
 		<!-- 配置MyBatis的核心配置文件所在位置 -->
 		<property name="configLocation" value="classpath:config/mybatis-config.xml" />
 	</bean>
-	<!-- 接口开发,扫描 com.itheima.core.dao包 ，写在此包下的接口即可被扫描到 -->
+	<!-- 接口开发,扫描 cn.menu.phoenix.dao包 ，写在此包下的接口即可被扫描到 -->
 	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
 		<property name="basePackage" value="cn.menu.phoenix.dao" />
 	</bean>
