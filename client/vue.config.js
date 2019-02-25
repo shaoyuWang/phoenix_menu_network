@@ -3,11 +3,11 @@ module.exports = {
   productionSourceMap: false,
   devServer:{
     proxy:{
-      '/api/v1':{
+      '/admin':{
         target:'http://localhost:3000',
         changeOrigin:true,
       },
-      '/auth':{
+      '/request':{
         target:'http://localhost:3000',
         changeOrigin:true,
       },

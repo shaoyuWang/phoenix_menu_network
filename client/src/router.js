@@ -2,7 +2,7 @@ import Vue from 'vue';
 import Router from 'vue-router';
 import { NotFound, NotPermission, Login } from './views/common'
 import { Admin, User, Diary, Effect, Materail, Photo, Sort, Step, Taste, Technology, Recipe, Role, Kind } from './views/admin';
-import { Navbar, AllRecipe } from './views/main';
+import { Navbar, AllRecipe, Index } from './views/main';
 
 Vue.use(Router);
 
@@ -13,10 +13,10 @@ export default new Router({
       path: '*',
       component: NotFound,
     },
-    // {
-    //   path: '/',
-    //   redirect: '/login',
-    // },
+    {
+      path: '/',
+      redirect: 'request/index',
+    },
     {
       path: '/nopermisson',
       component: NotPermission,
@@ -26,13 +26,12 @@ export default new Router({
       component: Login,
     },
     {
-      path: '/',
+      path: '/request',
       component: Navbar,
-      redirect: '/index',
       children: [
         {
           path: 'index',
-          component: RequestList
+          component: Index
         },
         {
           path: 'allRecipe',

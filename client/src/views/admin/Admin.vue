@@ -15,10 +15,6 @@
           Project Performance Review
         </el-menu-item>
         <el-menu-item index="/admin/user">User</el-menu-item>
-        <el-menu-item index="/admin/role">Role</el-menu-item>
-        <el-menu-item index="/admin/page">page</el-menu-item>
-        <el-menu-item index="/admin/template">Template</el-menu-item>
-        <el-menu-item index="#" class="client" @click="Logout()"><img src="../../assets/client.jpg" class="client_img"></el-menu-item>
       </el-menu>
     </el-row>
     <router-view></router-view>
@@ -34,12 +30,13 @@ export default {
   },
   methods: {
     Logout() {
-      this.$axios({
-        url: '/auth/logout',
-        method: 'post',
-      }).then(res =>{
-        this.$router.push({ path: "/"});
-      })
+      this.$router.push({path: '/'});
+      // this.$axios({
+      //   url: '/auth/logout',
+      //   method: 'post',
+      // }).then(res =>{
+      //   this.$router.push({ path: "/"});
+      // })
     }
   }
 };
