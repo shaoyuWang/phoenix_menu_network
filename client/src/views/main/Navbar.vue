@@ -46,7 +46,6 @@ export default {
 
 <style lang="scss" scoped>
   @import "../../styles/style.scss";
-  @import "../../styles/variables.scss";
   .container-fluid{
     background-color: #C12D24;
     .row{
