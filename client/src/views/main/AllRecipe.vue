@@ -1,3 +1,3 @@
 <template>
-  <div>index</div>
+  <div>All Recipe</div>
 </template>

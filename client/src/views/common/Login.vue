@@ -48,18 +48,18 @@ export default {
 <style lang="scss" scoped>
   @import '../../styles/style.scss';
   .wrapper {
-    width: 400px;
+    width: $size400;
     border:1px solid $color_black;
     border-radius: $size10;
-    margin: 15% auto;
-    padding: 10px 20px 30px;
+    margin: $width15 auto;
+    padding: $size10 $size20 $size30;
     .title {
-      width: $width;
+      width: $width100;
       font-size: $size12;
       font-family: $size12;
       text-align: $position_center;
-      height: 80px;
-      line-height: 80px;
+      height: $size80;
+      line-height: $size80;
     }
     .main {
       /deep/ .username{
@@ -69,7 +69,7 @@ export default {
         padding: $size10 0px;
       }
       .login {
-      width: $width;
+      width: $width100;
       margin-top: $size10;
     }
     }
