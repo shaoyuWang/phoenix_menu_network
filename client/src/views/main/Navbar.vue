@@ -1,23 +1,37 @@
 <template>
   <div>
-    <div class="container-fluid">
+    <div class="container-fluid nav">
       <div class="row">
-        <div class="header">
-          <div class="header-logo">
-            <a href="/request/index" class="logo"><img src="../../assets/logo.png" alt=""></a>
-          </div>
-          <div class="header-login">
-            <a href="/login">登录</a>
+        <div class="col-lg-12 col-md-12 col-xs-12">
+          <div class="header">
+            <div class="header-logo">
+              <a href="/request/index" class="logo"><img src="../../assets/logo.png" alt=""></a>
+            </div>
+            <div class="header-login">
+              <a href="/login">登录</a>
+            </div>
           </div>
         </div>
-        <div class="col-md-12" style="background-color:#fff;">
+        <div class="col-lg-12 col-md-12 col-xs-12" style="background-color:#fff;">
           <el-menu :default-active="activeIndex" active-text-color='#409EFF' router class="el-menu-demo" mode="horizontal">
-            <el-menu-item index="/"><span class="nav-font">首页</span></el-menu-item>
-            <el-menu-item index="/request/hotRecommend"><span class="nav-font">热点推荐</span></el-menu-item>
-            <el-menu-item index="/request/allRecipe"><span class="nav-font">菜谱大全</span><span class="el-icon-arrow-down"></span></el-menu-item>
-            <el-menu-item index="/request/healthFood"><span class="nav-font">健康膳食</span><span class="el-icon-arrow-down"></span></el-menu-item>
-            <el-menu-item index="/request/foodMenu"><span class="nav-font">美食菜单</span></el-menu-item>
-            <el-menu-item index="/request/gourmetMaster"><span class="nav-font">美食达人</span></el-menu-item>
+            <el-menu-item index="/request/index" @click="currentPath()">
+              <span class="nav-font">首页</span>
+            </el-menu-item>
+            <el-menu-item index="/request/allRecipe" @click="currentPath()">
+              <span class="nav-font">菜谱大全</span><span class="el-icon-arrow-down"></span>
+            </el-menu-item>
+            <el-menu-item index="/request/healthFood" @click="currentPath()">
+              <span class="nav-font">健康膳食</span><span class="el-icon-arrow-down"></span>
+            </el-menu-item>
+            <el-menu-item index="/request/foodMenu" @click="currentPath()">
+              <span class="nav-font">美食菜单</span>
+            </el-menu-item>
+            <el-menu-item index="/request/gourmetMaster" @click="currentPath()">
+              <span class="nav-font">美食达人</span>
+            </el-menu-item>
+            <el-menu-item index="/request/videoMenu" @click="currentPath()">
+              <span class="nav-font">美食视频</span>
+            </el-menu-item>
           </el-menu>
         </div>
       </div>
@@ -30,15 +44,19 @@
 export default {
   data() {
     return {
-      activeIndex: '/',
+      activeIndex: '',
     };
   },
   mounted() {
-    // this.getUserAuthority();
+    this.currentPath();
+    
   },
   methods: {
     Logout() {
       this.$router.push({ path: "/"});
+    },
+    currentPath(){
+      this.activeIndex = this.$router.history.current.fullPath;
     }
   }
 }
@@ -46,38 +64,39 @@ export default {
 
 <style lang="scss" scoped>
   @import "../../styles/style.scss";
-  .container-fluid{
-    background-color: #C12D24;
+  .nav{
+    background-color: $color_navbar;
     .row{
-      margin: 0;
+      margin: $size0;
       .header{
-        width: 60%;
-        margin: 0 auto;
+        width: $width60;
+        margin: $size0 auto;
         // overflow:auto;
 
         .header-logo{
-          float: left;
+          float: $position_left;
 
           .logo{
             display: block;
-            text-align: center;
+            text-align: $position_center;
 
             img{
-              width: 50%;
+              width: $width50;
             }
           }
         }
 
         .header-login{
-          float: right;
-          padding: $size40 $size60 0;
+          float: $position_right;
+          padding: $size40 $size60 $size0;
           
           a{
-            color: #fff;
+            color: $color_white;
             padding: $size10;
             &:hover{
-              background-color: rgba($color: #000000, $alpha: 0.3);
+              background-color: $color_background_hover;
               border-radius: $width20;
+              text-decoration: none;
             }
           }
           &:after{
@@ -89,21 +108,21 @@ export default {
       }
 
       .el-menu-demo{
-        width: 60%;
-        margin: 0 auto;
-        border: 0;
+        width: $width60;
+        margin: $size0 auto;
+        border: $size0;
 
         .nav-font{
-          font-size: $size18;
+          font-size: $font_size1_8;
           font-family: $font_family;
-          font-weight: bold;
+          font-weight: $font_bold;
         }
 
         .el-menu-item{
-          padding: 0 $size40;
+          padding: $size0 $size40;
         }
         .el-menu-item:hover{
-          color: rgb(6, 136, 175);
+          color: #f40;
         }
       }
     }

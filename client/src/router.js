@@ -2,7 +2,7 @@ import Vue from 'vue';
 import Router from 'vue-router';
 import { NotFound, NotPermission, Login } from './views/common'
 import { Admin, User, Diary, Effect, Materail, Photo, Sort, Step, Taste, Technology, Recipe, Role, Kind } from './views/admin';
-import {Index, HotRecommend, AllRecipe, Navbar, HealthFood, FoodMenu, GourmetMaster} from './views/main';
+import {Index, VideoMenu, AllRecipe, Navbar, HealthFood, FoodMenu, GourmetMaster} from './views/main';
 
 
 Vue.use(Router);
@@ -47,13 +47,13 @@ export default new Router({
           component: Index,
           meta: {
             title: '首页'
-          }
+          },
         },
         {
-          path: 'hotRecommend',
-          component: HotRecommend,
+          path: 'videoMenu',
+          component: VideoMenu,
           meta: {
-            title: '热点推荐'
+            title: '美食视频'
           }
         },
         {

@@ -1,14 +1,31 @@
 @import "variables";
 
-a {
+a{
     color: $color_black;
-    text-decoration: none;
     list-style: none;
     display: block;
+    &:hover{text-decoration: none;}
 }
 
 body {
-    background-color: #F5E7C8 !important;
+    background-color: $color_background !important;
     font-family: $font_family !important;
     font-size: $size12;
+}
+
+.title-style{
+    display: block;
+    width: $width100;
+    text-align: $position_center;
+    padding: $size40 $size0;
+    color: $color_title;
+    font-size: $font_size3;
+    position: relative;
+    .many{
+      position: absolute;
+      right: $size0;
+      font-size: $font_size1;
+      padding-top: $size12;
+      a{ text-decoration: none; color: $color_title_many; &:hover{color: $color_title_hover;}}
+    }
 }

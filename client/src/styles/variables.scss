@@ -1,35 +1,62 @@
 
 // *********Basis*********
-$width10: 10% !default;
-$width15: 15% !default;
-$width20: 20% !default;
-$width100: 100% !default;
-$font_family: 'Helvetica' !default;
+$width10: 10%;
+$width15: 15%;
+$width20: 20%;
+$width30: 30%;
+$width50: 50%;
+$width60: 60%;
+$width100: 100%;
 
-$font_bold :bold !default;
+// *********Font*********
+$font_family: 'Helvetica' !default;
+$font_size1: 1rem;
+$font_size1_5: 1.5rem;
+$font_size1_8: 1.8rem;
+$font_size2: 2rem;
+$font_size2_5: 2.5rem;
+$font_size3: 3rem;
+$font_bold :bold;
+
 
 // *********Size*********
-$size5 : 5px  !default;
-$size10: 10px !default;
-$size12: 12px !default;
-$size16: 16px !default;
-$size18: 18px !default;
-$size20: 20px !default;
-$size30: 30px !default;
-$size40: 40px !default;
-$size50: 50px !default;
-$size60: 60px !default;
-$size80: 80px !default;
-$size400: 400px !default;
+$size0: 0;
+$size1: 1px;
+$size2: 2px;
+$size3: 3px;
+$size5 : 5px ;
+$size10: 10px;
+$size12: 12px;
+$size15: 15px;
+$size16: 16px;
+$size18: 18px;
+$size20: 20px;
+$size28: 28px;
+$size30: 30px;
+$size40: 40px;
+$size50: 50px;
+$size60: 60px;
+$size80: 80px;
+$size100: 100px;
+$size200: 200px;
+$size400: 400px;
 
 //*********Position*********
-$position_left: left !default;
-$position_right: right !default;
-$position_top: top !default;
-$position_bottom: bottom !default;
-$position_center: center !default;
+$position_left: left;
+$position_right: right;
+$position_top: top;
+$position_bottom: bottom;
+$position_center: center;
 
 //*********Color*********
-$bg-color: #F5F5F5 !default;
+$color_background: #F5E7C8 !default;
+$color_navbar: #C12D24 !default;
+$color_background_hover:rgba($color: #000, $alpha: 0.3) !default;
+$color_active: rgb(64, 158, 255) !default;
 $color_black: #000 !default;
 $color_white: #FFF !default;
+$color_title: #F56C6C !default;
+$color_user_title: #909399 !default;
+$color_title_many: rgba(151, 151, 151, 0.9) !default;
+$color_title_hover:rgba(204, 0, 255,0.8) !default;
+$color_menu_item_hover:rgba(6, 136, 175,0.6) !default;
