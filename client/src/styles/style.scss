@@ -29,3 +29,14 @@ body {
       a{ text-decoration: none; color: $color_title_many; &:hover{color: $color_title_hover;}}
     }
 }
+
+.el-table{
+    .el-table__body{
+        .el-table__expanded-cell{
+            padding: 0;
+            .el-table{
+                margin: 10px;
+            }
+        }
+    }
+}

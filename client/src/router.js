@@ -1,8 +1,8 @@
 import Vue from 'vue';
 import Router from 'vue-router';
 import { NotFound, NotPermission, Login } from './views/common'
-import { Admin, User, Diary, Effect, Materail, Photo, Sort, Step, Taste, Technology, Recipe, Role, Kind } from './views/admin';
-import {Index, VideoMenu, AllRecipe, Navbar, HealthFood, FoodMenu, GourmetMaster} from './views/main';
+import { Admin, User, Diary, Effect, MaterailMenu, UserMenuComment, SortKind, Step, Taste, Technology, Recipe, Role } from './views/admin';
+import {Index, VideoMenu, AllRecipe, Navbar, ThreeMeals, FoodMenu, GourmetMaster} from './views/main';
 
 
 Vue.use(Router);
@@ -64,10 +64,10 @@ export default new Router({
           }
         },
         {
-          path: 'healthFood',
-          component: HealthFood,
+          path: 'threeMeals',
+          component: ThreeMeals,
           meta: {
-            title: '健康饮食'
+            title: '一日三餐'
           }
         },
         {
@@ -106,13 +106,6 @@ export default new Router({
           }
         },
         {
-          path: 'kind',
-          component: Kind,
-          meta: {
-            title: '种类管理'
-          }
-        },
-        {
           path: 'diary',
           component: Diary,
           meta: {
@@ -120,24 +113,31 @@ export default new Router({
           }
         },
         {
+          path: 'sortKind',
+          component: SortKind,
+          meta: {
+            title: '菜谱种类管理'
+          }
+        },
+        {
           path: 'effect',
           component: Effect,
           meta: {
-            title: '效果管理'
+            title: '菜谱功效管理'
           }
         },
         {
-          path: 'materail',
-          component: Materail,
+          path: 'materailMenu',
+          component: MaterailMenu,
           meta: {
-            title: '材料管理'
+            title: '菜谱材料管理'
           }
         },
         {
-          path: 'photo',
-          component: Photo,
+          path: 'userMenuComment',
+          component: UserMenuComment,
           meta: {
-            title: '照片管理'
+            title: '菜单评论管理'
           }
         },
         {
@@ -145,13 +145,6 @@ export default new Router({
           component: Recipe,
           meta: {
             title: '菜谱管理'
-          }
-        },
-        {
-          path: 'sort',
-          component: Sort,
-          meta: {
-            title: '分类管理'
           }
         },
         {

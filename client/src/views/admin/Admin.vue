@@ -1,20 +1,43 @@
 <template>
-  <div>
-    <el-row class="container">
-      <el-menu
-        :default-active="activeIndex"
-        class="el-menu-demo"
-        mode="horizontal"
-        background-color="#545c64"
-        text-color="#fff"
-        active-text-color="#ffd04b"
-        router
-      >
-        <el-menu-item index="/admin" class="logo">
-          <img src="../../assets/logo.jpg" class="logo_img"/>
-          Project Performance Review
-        </el-menu-item>
-        <el-menu-item index="/admin/user">User</el-menu-item>
+  <div class="container">
+    <el-row class="nav">
+      <el-menu :default-active="activeIndex" router class="el-menu-vertical-demo">
+        <el-submenu index="1">
+          <template slot="title">
+            <i class="el-icon-location"></i>
+            <span>系统管理</span>
+          </template>
+          <el-menu-item-group>
+            <el-menu-item index="user" >用户管理<i class="el-icon-arrow-right"></i></el-menu-item>
+            <el-menu-item index="role" >角色管理<i class="el-icon-arrow-right"></i></el-menu-item>
+            <el-menu-item index="diary" >日记管理<i class="el-icon-arrow-right"></i></el-menu-item>
+            <el-menu-item index="userMenuComment" >菜单评论管理<i class="el-icon-arrow-right"></i></el-menu-item>
+          </el-menu-item-group>
+        </el-submenu>
+        <el-submenu index="2">
+          <template slot="title">
+            <i class="el-icon-location"></i>
+            <span>菜品管理</span>
+          </template>
+          <el-menu-item-group>
+            <el-menu-item index="recipe">菜谱管理<i class="el-icon-arrow-right"></i></el-menu-item>
+            <el-menu-item index="technology">菜谱工艺管理<i class="el-icon-arrow-right"></i></el-menu-item>
+            <el-menu-item index="effect">菜谱功效管理<i class="el-icon-arrow-right"></i></el-menu-item>
+            <el-menu-item index="taste">菜谱口味管理<i class="el-icon-arrow-right"></i></el-menu-item>
+            <el-menu-item index="sortKind">菜系种类管理<i class="el-icon-arrow-right"></i></el-menu-item>
+            <el-menu-item index="materailMenu">材料分类管理<i class="el-icon-arrow-right"></i></el-menu-item>
+          </el-menu-item-group>
+        </el-submenu>
+        <!-- <el-submenu index="3">
+          <template slot="title">
+            <i class="el-icon-location"></i>
+            <span>菜单管理</span>
+          </template>
+          <el-menu-item-group>
+            <el-menu-item index="recipe">菜单管理<i class="el-icon-arrow-right"></i></el-menu-item>
+            <el-menu-item index="menu">菜单评论管理<i class="el-icon-arrow-right"></i></el-menu-item>
+          </el-menu-item-group>
+        </el-submenu> -->
       </el-menu>
     </el-row>
     <router-view></router-view>
@@ -25,41 +48,39 @@
 export default {
   data(){
     return {
-      activeIndex: '1',
+      activeIndex: '',
+      collapse: false,
     }
+  },
+  mounted(){
+    this.currentPath();
+    $('.el-menu-item').on('click',this.currentPath());
   },
   methods: {
     Logout() {
-      this.$router.push({path: '/'});
-      // this.$axios({
-      //   url: '/auth/logout',
-      //   method: 'post',
-      // }).then(res =>{
-      //   this.$router.push({ path: "/"});
-      // })
-    }
+    this.$router.push({path: '/'});
+    },
+    // 获取当前页面路径
+    currentPath(){
+      this.activeIndex = this.$router.history.current.fullPath.substring(7);
+    },
   }
 };
 </script>
 
-style <style lang="scss" scoped>
+<style lang="scss" scoped>
   @import '../../styles/style.scss';
-  @import '../../styles/variables.scss';
-  .container{
-    .logo {
-      background-color: $color_white !important;
-      color: $color_black !important;
-      font-weight: bold;
-      .logo_img {
-        width: 16%;
-        padding-right: $size10;
-      }
-    }
-    .client {
-      float: right ;
-      text-align: center;
-      .client_img {
-        width: 80%;
+
+  .nav{
+    position: fixed;
+    left: 0;
+    display: block;
+    width: 20%;
+    .el-menu-item{
+      width: 100%;
+      .el-icon-arrow-right{
+        float: right;
+        line-height: 50px;
       }
     }
   }

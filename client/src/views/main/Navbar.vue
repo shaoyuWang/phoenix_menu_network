@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="container-fluid nav">
+    <div class="container nav">
       <div class="row">
         <div class="col-lg-12 col-md-12 col-xs-12">
           <div class="header">
@@ -18,10 +18,10 @@
               <span class="nav-font">首页</span>
             </el-menu-item>
             <el-menu-item index="/request/allRecipe" @click="currentPath()">
-              <span class="nav-font">菜谱大全</span><span class="el-icon-arrow-down"></span>
+              <span class="nav-font">菜谱大全<span class="el-icon-arrow-down"></span></span>
             </el-menu-item>
-            <el-menu-item index="/request/healthFood" @click="currentPath()">
-              <span class="nav-font">健康膳食</span><span class="el-icon-arrow-down"></span>
+            <el-menu-item index="/request/threeMeals" @click="currentPath()">
+              <span class="nav-font">一日三餐</span>
             </el-menu-item>
             <el-menu-item index="/request/foodMenu" @click="currentPath()">
               <span class="nav-font">美食菜单</span>
@@ -55,6 +55,7 @@ export default {
     Logout() {
       this.$router.push({ path: "/"});
     },
+    // 获取当前页面路径
     currentPath(){
       this.activeIndex = this.$router.history.current.fullPath;
     }
@@ -69,7 +70,7 @@ export default {
     .row{
       margin: $size0;
       .header{
-        width: $width60;
+        width: $width_screen;
         margin: $size0 auto;
         // overflow:auto;
 
@@ -108,9 +109,13 @@ export default {
       }
 
       .el-menu-demo{
-        width: $width60;
+        width: 997px;
         margin: $size0 auto;
         border: $size0;
+        
+        ul,li{
+          display: inline-block;
+        }
 
         .nav-font{
           font-size: $font_size1_8;

@@ -1,5 +1,5 @@
 <template>
-  <div class="container-fluid">
+  <div class="container">
     <div class="row">
       <div class="col-lg-12 col-md-12 col-xs-12">
         <div class="tabs">
@@ -7,9 +7,9 @@
             <el-tab-pane label="我的美食属性(禁用)" name="property" disabled></el-tab-pane>
             <el-tab-pane :label="item.name" :name="item.name" v-for="item in tabList" :key="item.id">
               <div class="sort">
-                <span class="sort-title">{{item.name}}</span>
-                <ul class="tab-item">
-                  <li v-for="tab in item.tabs" :key="tab.id"><a href="#">{{tab.name}}</a></li>
+                <ul class="tab-item" v-for="tab in item.tabs" :key="tab.id">
+                  <span class="sort-title">{{tab.name}}</span>
+                  <li v-for="tabItem in tab.tabItem" :key="tabItem.id"><a href="#">{{tabItem.name}}</a></li>
                 </ul>
               </div>
             </el-tab-pane>
@@ -49,10 +49,25 @@ export default {
           name: '家常菜谱',
           title: 'home',
           tabs: [
-            { id: '1', name: '家常菜'},
-            { id: '2', name: '私房菜'},
-            { id: '3', name: '海鲜菜'},
-            { id: '4', name: '凉拌菜'},
+            {
+              id: 1,
+              name: '家常菜谱',
+              tabItem:[
+                { id: '1', name: '家常菜'},
+                { id: '2', name: '私房菜'},
+                { id: '3', name: '海鲜菜'},
+                { id: '4', name: '凉拌菜'},
+              ]
+            },
+            {
+              id: 2,
+              name: '家常菜谱2',
+              tabItem:[
+                { id: '1', name: '家常菜'},
+                { id: '2', name: '私房菜'},
+                { id: '3', name: '海鲜菜'},
+                { id: '4', name: '凉拌菜'},]
+            }
           ]
         },
         {
@@ -60,10 +75,16 @@ export default {
           name: '中华菜系',
           title: 'kind',
           tabs: [
-            { id: '1', name: '东北菜'},
-            { id: '2', name: '西北菜'},
-            { id: '3', name: '南北菜'},
-            { id: '4', name: '北北菜'},
+            {
+              id: 1,
+              name: '中华菜系',
+              tabItem:[
+                { id: '1', name: '东北菜'},
+                { id: '2', name: '西北菜'},
+                { id: '3', name: '南北菜'},
+                { id: '4', name: '北北菜'},
+              ]
+            }
           ]
         },
       ],
@@ -125,10 +146,10 @@ export default {
 
 <style lang="scss" scoped>
   @import "../../styles/style.scss";
-  .container-fluid{
+  .container{
     .row{
       .tabs{
-        width: $width60;
+        width: $width_screen;
         margin: $size50 auto;
         margin-bottom: $size30;
         /deep/ .el-tabs__header{
@@ -151,17 +172,22 @@ export default {
         .sort{
           background-color: $color_white;
           width: $width100;
-          ul,li{list-style: none; margin: $size0; padding: $size0;}
-          span{display: block;}
-          .sort-title{
-            padding: $size20 $size0 $size10 $size20;
-            font-size: $font_size2_5;
+          ul,li{
+            list-style: none; 
+            margin: $size0; 
+            padding: $size0;
+            a{color: rgba(151, 151, 151, 0.9);}
           }
+          span{display: block;}
+          
           .tab-item{
-            padding: $size10;
-            padding-left: $size40;
+            padding: $size0 $size10 $size10 $size40;
             border-bottom: 1px solid rgba(153, 153, 153, 0.2);
             overflow: hidden;
+            .sort-title{
+              padding: $size10 $size0 $size10 $size20;
+              font-size: $font_size2_5;
+            }
             li{
               float: left;
               a{
@@ -174,7 +200,7 @@ export default {
         }
       }
       .main{
-          width: $width60;
+          width: $width_screen;
           margin: $size0 auto;
           overflow: hidden;
           .menu-item{

@@ -1,5 +1,5 @@
 <template>
-  <div class="container-fluid">
+  <div class="container">
     <div class="row">
       <div class="col-lg-12 col-md-12 col-xs-12">
         <el-carousel indicator-position="outside" :interval='5000'  arrow="always" trigger="click" height="450px">
@@ -225,7 +225,7 @@ export default {
 
 <style lang="scss" scoped>
   @import "../../styles/style.scss";
-  .container-fluid{
+  .container{
     .row{
       .col-md-12{
         .el-carousel__item{
@@ -271,7 +271,7 @@ export default {
           }
         }
         .main-food{
-          width:$width60;
+          width:$width_screen;
           margin: $size0 auto;
           .recommend-food{
             background-color: $color_background_hover;
@@ -320,7 +320,7 @@ export default {
           }
         }
         .main-recommend{
-          width: $width60;
+          width: $width_screen;
           margin: $size0 auto;
           overflow: hidden;
           .menu-item{
