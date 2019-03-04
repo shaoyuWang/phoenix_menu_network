@@ -63,9 +63,8 @@ export default {
           a{
             text-decoration: none;
             &:hover{
-              // transform: scale(1.05);
               transition-duration:0.5s;
-              box-shadow: 0px 0px 10px #999;
+              box-shadow: 0px 0px 20px #000;
             }
             .item-img{
               img{width: $width100; height: 200px;}

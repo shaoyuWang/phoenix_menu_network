@@ -17,7 +17,7 @@
             <el-menu-item index="/request/index" @click="currentPath()">
               <span class="nav-font">首页</span>
             </el-menu-item>
-            <el-menu-item index="/request/allRecipe" @click="currentPath()">
+            <el-menu-item index="/request/allRecipe" @click="currentPath()" ref="menu">
               <span class="nav-font">菜谱大全<span class="el-icon-arrow-down"></span></span>
             </el-menu-item>
             <el-menu-item index="/request/threeMeals" @click="currentPath()">
@@ -49,7 +49,8 @@ export default {
   },
   mounted() {
     this.currentPath();
-    
+    console.log(this.$refs.menu.$el);
+    this.$refs.menu.$el.style.padding = '0 20px 0 30px';
   },
   methods: {
     Logout() {
@@ -73,14 +74,11 @@ export default {
         width: $width_screen;
         margin: $size0 auto;
         // overflow:auto;
-
         .header-logo{
           float: $position_left;
-
           .logo{
             display: block;
             text-align: $position_center;
-
             img{
               width: $width50;
             }
@@ -90,7 +88,6 @@ export default {
         .header-login{
           float: $position_right;
           padding: $size40 $size60 $size0;
-          
           a{
             color: $color_white;
             padding: $size10;
@@ -100,11 +97,7 @@ export default {
               text-decoration: none;
             }
           }
-          &:after{
-            content: '';
-            display: block;
-            clear: both;
-          }
+          &::after{ content: ''; display: block; clear: both; }
         }
       }
 
@@ -112,22 +105,21 @@ export default {
         width: 997px;
         margin: $size0 auto;
         border: $size0;
-        
-        ul,li{
-          display: inline-block;
-        }
-
+        ul,li{ display: inline-block; }
         .nav-font{
           font-size: $font_size1_8;
           font-family: $font_family;
           font-weight: $font_bold;
+          letter-spacing: 2px;
+          span{
+            font-size: 2px;
+            margin-right: 0;
+            padding-left: 5px;
+          }
         }
-
         .el-menu-item{
-          padding: $size0 $size40;
-        }
-        .el-menu-item:hover{
-          color: #f40;
+          padding: $size0 $size30;
+          &:hover{ color: #f40;}
         }
       }
     }

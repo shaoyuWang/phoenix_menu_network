@@ -2,20 +2,18 @@
   <div class="container">
     <div class="row">
       <div class="col-lg-12 col-md-12 col-xs-12">
-        <el-carousel indicator-position="outside" :interval='5000'  arrow="always" trigger="click" height="450px">
+        <el-carousel indicator-position="outside" :interval='5000' :autoplay="autoplay" arrow="never" height="450px">
           <el-carousel-item v-for="item in bannerList" :key="item.id">
             <span class="title-style">{{item.title}}</span>
             <ul>
               <li v-for="food in item.items" :key="food.id">
-                <a href="healthFood" class="food">
-                  <img class="img-responsive" :src="food.img" alt="">
-                </a>
-                <div class="info">
-                  <a href="#">
+                <a href="#" class="food">
+                  <img class="img-responsive" :src="food.img" alt="" ref="img" @click="indent()">
+                  <div class="info">
                     <span class="info-title">{{food.title}}</span>
                     <span class="info-description">{{food.description}}</span>
-                  </a>
-                </div>
+                  </div>
+                </a>
               </li>
             </ul>
           </el-carousel-item>
@@ -70,10 +68,11 @@ export default {
   components: {Footer},
   mounted(){
     $('#fruit').addClass('active');
-    $('.el-menu-demo li:first').css('margin-left','20px')
+    $('.el-menu-demo li:first').css('margin-left','20px');
   },
   data(){
     return {
+      autoplay: false,
       bannerList: [
         { 
           id: 1, 
@@ -217,7 +216,10 @@ export default {
     }
   },
   methods:{
-    
+    indent(){
+      console.log('1');
+      console.log(this.$refs);
+    }
   }
 }
 </script>
@@ -227,46 +229,51 @@ export default {
   .container{
     .row{
       .col-md-12{
-        .el-carousel__item{
-          ul,li,img{
-            list-style: none;
-            display: block;
-            margin: $size0;
-            padding: $size0;
-          }
-          ul{
-            overflow: auto;
-            li{
-              float: $position_left;
-              width: $width20;
-              &:hover{transform: scale(1.05); transition-duration:0.5s;}
-              .food{
-                img{
-                  width: $width100;
-                }
-              }
-              .info{
-                height: $size100;
-                background-color: rgba(255, 255, 255, 0.6);
-                position: relative;
-                bottom: $size100;
-                span{
-                    display: block;
-                    padding: $size10 $size0 $size5 $size20;
+        .el-carousel{
+          .el-carousel__item{
+            ul,li,img{
+              list-style: none;
+              display: block;
+              margin: $size0;
+              padding: $size0;
+            }
+            ul{
+              &::after{content: ''; display: block; clear: both;}
+              li{
+                float: $position_left;
+                width: $width20;
+                .food{
+                  position: relative;
+                  &:hover{ color: $color_title; transform: scale(1.05); transition-duration:0.5s; z-index: 100;};
+                  img{
+                    width: $width100;
+                    height: 328px;
                   }
-                a{
-                  text-decoration: none;
-                  color: #000;
-                  .info-title{
-                    font-size: $font_size2;
-                  }
-                  .info-description{color: #909399;}
-                  &:hover{
-                    color: $color_title;
+                  .info{
+                    width: $width100;
+                    height: $size100;
+                    background-color: rgba(255, 255, 255, 0.6);
+                    position: absolute;
+                    bottom: $size0;
+                    span{
+                        display: block;
+                        padding-top: $size20;
+                        padding-left: $size20;
+                      }
+                    .info-title{
+                      font-size: $font_size2;
+                    }
+                    .info-description{
+                      color: #909399;
+                    }
                   }
                 }
               }
             }
+          }
+          /deep/ .el-carousel__button{
+            width: 50px;
+            background-color: #00CCFF;
           }
         }
         .main-food{
@@ -295,9 +302,18 @@ export default {
                 position: relative;
                 &:after{content: '';clear: both;}
                 &:hover{color: $color_title;}
-                img{ width: $width100; &:hover{transform: scale(1.05); transition-duration:0.5s;}}
+                img{ 
+                  width: $width100;
+                  position: relative;
+                  &:hover{
+                    transform: scale(1.15);
+                    transition-duration:0.5s;
+                    z-index: 100;
+                  }
+                }
                 .info{
                   position: absolute;
+                  z-index: 101;
                   bottom: $size0;
                   padding: $size3;
                   width: $width100;
@@ -328,7 +344,7 @@ export default {
             // &:after{content: ''; clear: both;}
             a{
               text-decoration: none;
-              &:hover{transform: scale(1.05); transition-duration:0.5s;}
+              &:hover{box-shadow: 0px 0px 20px #999; transition-duration:0.5s;}
               .item-img{
                 img{width: $width100;}
               }
