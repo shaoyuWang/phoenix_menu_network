@@ -45,8 +45,7 @@
           </div>
         </div>
         <div class="main-recommend">
-          <span class="title-style">
-            每日推荐菜谱
+          <span class="title-style">每日推荐菜谱
             <span class="many"><a href="">更多菜谱&nbsp;>></a></span>
           </span>
           <div class="col-lg-3 col-md-3 col-xs-3 menu-item" v-for="item in menuList" :key="item.id">

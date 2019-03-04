@@ -21,11 +21,13 @@ body {
     color: $color_title;
     font-size: $font_size3;
     position: relative;
+    letter-spacing: $size8;
     .many{
       position: absolute;
       right: $size0;
       font-size: $font_size1;
       padding-top: $size12;
+      letter-spacing: $size1;
       a{ text-decoration: none; color: $color_title_many; &:hover{color: $color_title_hover;}}
     }
 }
@@ -40,3 +42,7 @@ body {
         }
     }
 }
+ .active{
+    border-bottom: 2px solid transparent;
+    border-color: #ff7675;
+ }
