@@ -2,8 +2,30 @@ import { Module } from "@nestjs/common";
 import { TypeOrmModule } from "@nestjs/typeorm";
 import { AdminModule } from "./modules/admin";
 // import { DATABASE_CONFIG } from './framework/config';
-import { UserEntity, RoleEntity } from "./modules/admin/entities";
+import {
+  UserEntity,
+  RoleEntity,
+  UserMenuEntity,
+  UserMenuCommentEntity,
+  UserDiaryEntity,
+  UserDiaryCommentEntity,
+} from "./modules/admin/entities";
 import _ from "lodash";
+import { RepositoryModule } from "./framework/config";
+import {
+  RecipeEntity,
+  RecipeCommentEntity,
+  SortEntity,
+  SortKindEntity,
+  StepEntity,
+  TasteEntity,
+  TechnologyEntity,
+  MaterialEntity,
+  EffectEntity,
+  MajorRecipeMaterialMappingEntity,
+  AuxiliaryRecipeMaterialMappingEntity,
+  MaterialKindEntity,
+} from "./modules/main/entities";
 
 const {
   env: {
@@ -15,12 +37,37 @@ const {
   },
 } = process;
 
-const adminEntities = [UserEntity, RoleEntity];
+const adminEntities = [
+  UserEntity,
+  RoleEntity,
+  UserMenuEntity,
+  UserMenuCommentEntity,
+  UserDiaryEntity,
+  UserDiaryCommentEntity,
+];
+
+const mainEntities = [
+  RecipeEntity,
+  RecipeCommentEntity,
+  SortEntity,
+  SortKindEntity,
+  StepEntity,
+  TasteEntity,
+  TechnologyEntity,
+  EffectEntity,
+  MaterialEntity,
+  MaterialKindEntity,
+  MajorRecipeMaterialMappingEntity,
+  AuxiliaryRecipeMaterialMappingEntity,
+];
+
+const entities = [...adminEntities, ...mainEntities];
+
 const modules = [
   // TypeOrmModule.forRoot(DATABASE_CONFIG),
   TypeOrmModule.forRoot({
     database: DATABASE_NAME,
-    entities: [...adminEntities],
+    entities: entities,
     host: DATABASE_HOST,
     logging: true,
     password: DATABASE_PASSWORD,
@@ -29,6 +76,7 @@ const modules = [
     type: "mysql",
     username: DATABASE_USERNAME,
   }),
+  RepositoryModule.forFeature(entities),
   AdminModule,
 ];
 
