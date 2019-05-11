@@ -1,0 +1,45 @@
+{
+  "name": "sources",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node ./index.js",
+    "debug": "nodemon --inspect=9999 index.js",
+    "build": "tsc",
+    "lint": "tslint --project tsconfig.json --type-check --force"
+  },
+  "dependencies": {
+    "@nestjs/common": "^5.0.0",
+    "@nestjs/core": "^5.0.0",
+    "@nestjs/passport": "^5.0.0",
+    "@nestjs/typeorm": "^5.3.0",
+    "compression": "^1.7.2",
+    "cookie-parser": "^1.4.3",
+    "dotenv": "^6.2.0",
+    "express-session": "^1.15.6",
+    "helmet": "^3.12.1",
+    "lodash": "^4.17.10",
+    "mysql": "^2.17.1",
+    "passport": "^0.4.0",
+    "passport-local": "^1.0.0",
+    "reflect-metadata": "^0.1.12",
+    "rxjs": "^6.3.3",
+    "typeorm": "^0.2.17"
+  },
+  "devDependencies": {
+    "@types/compression": "0.0.36",
+    "@types/cookie-parser": "^1.4.1",
+    "@types/dotenv": "^4.0.3",
+    "@types/express-session": "^1.15.10",
+    "@types/helmet": "0.0.38",
+    "@types/lodash": "^4.14.109",
+    "@types/node": "^10.5.2",
+    "@types/passport-local": "^1.0.33",
+    "nodemon": "^1.18.9",
+    "ts-node": "^6.1.0",
+    "tslint": "^5.10.0",
+    "tslint-eslint-rules": "^5.3.1",
+    "typescript": "~3.1.6"
+  }
+}
