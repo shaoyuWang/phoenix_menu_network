@@ -34,7 +34,7 @@ export class UserEntity extends FrameworkEntity {
   @Column({ name: "menu_number" })
   public menuNumber: number;
 
-  @Column("varchar", { name: "photo", nullable: true, length: 11 })
+  @Column("varchar", { name: "photo", nullable: true, length: 100 })
   public photo: string | null;
 
   @ManyToMany(() => RoleEntity)

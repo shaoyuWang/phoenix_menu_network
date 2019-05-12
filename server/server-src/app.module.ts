@@ -1,6 +1,7 @@
 import { Module } from "@nestjs/common";
 import { TypeOrmModule } from "@nestjs/typeorm";
 import { AdminModule } from "./modules/admin";
+import { mainModule } from "./modules/main";
 // import { DATABASE_CONFIG } from './framework/config';
 import {
   UserEntity,
@@ -78,6 +79,7 @@ const modules = [
   }),
   RepositoryModule.forFeature(entities),
   AdminModule,
+  mainModule,
 ];
 
 @Module({

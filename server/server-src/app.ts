@@ -7,12 +7,16 @@ import session from "express-session";
 import passport = require("passport");
 import { AppModule } from "./app.module";
 
+const {
+  env: { PORT },
+} = process;
+
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   app.use(cookie("secret"));
   app.use(session({ secret: "secret" }));
   app.use(passport.initialize());
   app.use(passport.session());
-  await app.listen(3000);
+  await app.listen(Number(PORT));
 }
 bootstrap();
