@@ -3,10 +3,12 @@ import {
   Entity,
   PrimaryGeneratedColumn,
   JoinColumn,
-  ManyToOne,
+  OneToOne,
+  OneToMany,
 } from "typeorm";
 import { FrameworkEntity } from "../../../framework/entities/freamework.entities";
 import { UserEntity } from "./user.entities";
+import { UserDiaryCommentEntity } from "./user.diary.comment.entities";
 
 @Entity({ name: "s_user_diary" })
 export class UserDiaryEntity extends FrameworkEntity {
@@ -23,6 +25,6 @@ export class UserDiaryEntity extends FrameworkEntity {
   public commentNumber: number;
 
   @JoinColumn({ name: "user_id" })
-  @ManyToOne(() => UserEntity)
+  @OneToOne(() => UserEntity)
   public userId: UserEntity | null;
 }

@@ -4,9 +4,12 @@ import {
   PrimaryGeneratedColumn,
   JoinTable,
   ManyToMany,
+  OneToOne,
+  JoinColumn,
 } from "typeorm";
 import { FrameworkEntity } from "../../../framework/entities/freamework.entities";
 import { RecipeEntity } from "../../main/entities";
+import { UserEntity } from "./user.entities";
 
 @Entity({ name: "s_user_menu" })
 export class UserMenuEntity extends FrameworkEntity {
@@ -21,6 +24,10 @@ export class UserMenuEntity extends FrameworkEntity {
 
   @Column({ name: "vistor" })
   public vistor: number;
+
+  @JoinColumn({ name: "user_id" })
+  @OneToOne(() => UserEntity)
+  public userId: UserEntity | null;
 
   @ManyToMany(() => RecipeEntity)
   @JoinTable({

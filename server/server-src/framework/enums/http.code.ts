@@ -1,0 +1,5 @@
+export const RESPONSE_CODE = {
+  SUCCESS: 200,
+  NOTPARAMETER: 412,
+  NOTVALUE: 500,
+};

@@ -4,11 +4,41 @@ import {
   UserController,
   RoleController,
 } from "./controller";
-import { LocalStrategyService, SerializerService } from "./services";
+import {
+  LocalStrategyService,
+  SerializerService,
+  RoleService,
+  UserDiaryService,
+  UserMenuService,
+} from "./services";
+import { UserService } from "./services/user.service";
+import { UserDiaryController } from "./controller/user.diary.controller";
+import { UserDiaryCommentController } from "./controller/user.diary.comment.controller";
+import { UserMenuController } from "./controller/user.menu.controller";
+import { UserMenuCommentController } from "./controller/user.menu.comment.controller";
+import { UserDiaryCommentService } from "./services/user.diary.comment.service";
+import { UserMenuCommentService } from "./services/user.menu.comment.service";
 
-const controllers = [AuthorityController, UserController, RoleController];
+const controllers = [
+  AuthorityController,
+  UserController,
+  RoleController,
+  UserDiaryController,
+  UserDiaryCommentController,
+  UserMenuController,
+  UserMenuCommentController,
+];
 
-const services = [LocalStrategyService, SerializerService];
+const services = [
+  LocalStrategyService,
+  SerializerService,
+  UserService,
+  RoleService,
+  UserDiaryService,
+  UserDiaryCommentService,
+  UserMenuService,
+  UserMenuCommentService,
+];
 
 @Module({
   controllers: controllers,

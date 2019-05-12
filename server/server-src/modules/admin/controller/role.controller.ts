@@ -8,42 +8,49 @@ import {
   Put,
   UseGuards,
 } from "@nestjs/common";
-import { InjectRepository } from "@nestjs/typeorm";
-import { Repository } from "typeorm";
 import { Roles } from "../../../framework/decorators/role.decorator";
-import { RoleEntity } from "../entities";
 import { LoginGuard } from "../../../framework/guards";
-
-// import * as _ from "lodash";
+import { RoleService } from "../services";
+import { RESPONSE_CODE } from "../../../framework/enums";
+import _ from "lodash";
 @Controller("roles")
 @UseGuards(LoginGuard)
 export class RoleController {
-  constructor(
-    @InjectRepository(RoleEntity)
-    private readonly roleRepository: Repository<RoleEntity>,
-  ) {}
+  constructor(private readonly roleServices: RoleService) {}
 
-  @Get()
-  @Roles(1, 2)
+  @Get("/getAllRoles")
+  @Roles(1)
   public async getRoles() {
-    return await this.roleRepository.find();
+    return this.roleServices.getAllRoles();
   }
 
-  @Post()
+  @Post("/saveRole")
   @Roles(1)
-  public async createRole(@Body() info: any) {
-    return await this.roleRepository.save(info);
+  public async createRole(@Body() data: any) {
+    if (!_.isEmpty(data)) {
+      return this.roleServices.saveRole(data);
+    } else {
+      return { code: RESPONSE_CODE.NOTPARAMETER };
+    }
   }
 
-  @Put(":id")
+  @Put("/updateRole/:id")
   @Roles(1)
-  public async updateRole(@Param("id") paramId: any, @Body() info: any) {
-    return await this.roleRepository.update(paramId, info);
+  public async updateRole(@Param("id") roleId: any, @Body() data: any) {
+    if (!_.isEmpty(roleId) && !_.isEmpty(data)) {
+      return this.roleServices.updateRole(roleId, data);
+    } else {
+      return { code: RESPONSE_CODE.NOTPARAMETER };
+    }
   }
 
-  @Delete(":id")
+  @Delete("/deleteRole/:id")
   @Roles(1)
-  public async deleteRole(@Param("id") paramId: any) {
-    return await this.roleRepository.delete(paramId);
+  public async deleteRole(@Param("id") roleId: any) {
+    if (!_.isEmpty(roleId)) {
+      return this.roleServices.deleteRole(roleId);
+    } else {
+      return { code: RESPONSE_CODE.NOTPARAMETER };
+    }
   }
 }

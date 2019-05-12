@@ -8,49 +8,57 @@ import {
   Put,
   UseGuards,
 } from "@nestjs/common";
-import { InjectRepository } from "@nestjs/typeorm";
-import { Repository } from "typeorm";
 import { Roles } from "../../../framework/decorators/role.decorator";
-import { UserEntity } from "../entities";
 import { LoginGuard } from "../../../framework/guards";
+import { UserService } from "../services/user.service";
+import _ from "lodash";
+import { RESPONSE_CODE } from "../../../framework/enums";
 
-// import * as _ from "lodash";
 @Controller("users")
 @UseGuards(LoginGuard)
 export class UserController {
-  constructor(
-    @InjectRepository(UserEntity)
-    private readonly userRepository: Repository<UserEntity>,
-  ) {}
+  constructor(private readonly userServices: UserService) {}
 
-  @Get()
+  @Get("/getAllUsers")
   @Roles(1, 2)
   public async getUsers() {
-    const users = await this.userRepository.find({ relations: ["roles"] });
-    return { data: users };
+    return this.userServices.getAllUsers();
   }
 
-  @Post()
-  @Roles(1)
-  public async createUser(@Body() info: any) {
-    const user = await this.userRepository.save(info);
-    return { data: user };
+  @Get("/findUserById/:id")
+  @Roles(1, 2)
+  public async findUserById(@Param("id") userId: any) {
+    if (!_.isEmpty(userId)) {
+      return this.userServices.findUserById(userId);
+    } else {
+      return { code: RESPONSE_CODE.NOTPARAMETER };
+    }
   }
 
-  @Put(":id")
-  @Roles(1)
-  public async updateUser(@Param("id") paramId: any, @Body() info: any) {
-    let user = await this.userRepository.findOne(paramId);
-    user = await this.userRepository.save(
-      this.userRepository.merge(user!, info),
-    );
-    return { data: user };
+  @Post("/saveUser")
+  @Roles(1, 2)
+  public async saveUser(@Body() data: any) {
+    if (!_.isEmpty(data)) {
+      return this.userServices.saveUser(data);
+    } else {
+      return { code: RESPONSE_CODE.NOTPARAMETER };
+    }
   }
 
-  @Delete(":id")
+  @Put("/updateUser/:id")
   @Roles(1)
-  public async deleteUser(@Param("id") paramId: any) {
-    const user = await this.userRepository.delete(paramId);
-    return { data: user };
+  public async updateUser(@Param("id") userId: any, @Body() data: any) {
+    if (!_.isEmpty(userId) && !_.isEmpty(data)) {
+      return this.userServices.updateUser(userId, data);
+    } else {
+      return { code: RESPONSE_CODE.NOTPARAMETER };
+    }
   }
+
+  // @Delete(":id")
+  // @Roles(1)
+  // public async deleteUser(@Param("id") paramId: any) {
+  //   const user = await this.userRepository.delete(paramId);
+  //   return { data: user };
+  // }
 }
