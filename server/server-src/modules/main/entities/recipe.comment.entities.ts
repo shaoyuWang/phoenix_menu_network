@@ -3,7 +3,7 @@ import {
   Entity,
   PrimaryGeneratedColumn,
   JoinColumn,
-  OneToOne,
+  ManyToOne,
 } from "typeorm";
 import { FrameworkEntity } from "../../../framework/entities/freamework.entities";
 import { RecipeEntity } from "./recipe.entities";
@@ -21,10 +21,10 @@ export class RecipeCommentEntity extends FrameworkEntity {
   public praise: number;
 
   @JoinColumn({ name: "recipe_id" })
-  @OneToOne(() => RecipeEntity)
+  @ManyToOne(() => RecipeEntity)
   public recipeId: RecipeEntity | null;
 
   @JoinColumn({ name: "user_id" })
-  @OneToOne(() => UserEntity)
-  public userId: UserEntity | null;
+  @ManyToOne(() => UserEntity)
+  public user: UserEntity | null;
 }

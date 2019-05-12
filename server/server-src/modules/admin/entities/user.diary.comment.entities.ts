@@ -3,6 +3,7 @@ import {
   Entity,
   PrimaryGeneratedColumn,
   JoinColumn,
+  OneToOne,
   ManyToOne,
 } from "typeorm";
 import { FrameworkEntity } from "../../../framework/entities/freamework.entities";
@@ -22,9 +23,9 @@ export class UserDiaryCommentEntity extends FrameworkEntity {
 
   @JoinColumn({ name: "user_id" })
   @ManyToOne(() => UserEntity)
-  public userId: UserEntity | null;
+  public user: UserEntity | null;
 
   @JoinColumn({ name: "diary_id" })
   @ManyToOne(() => UserDiaryEntity)
-  public diaryId: UserDiaryEntity | null;
+  public diary: UserDiaryEntity | null;
 }

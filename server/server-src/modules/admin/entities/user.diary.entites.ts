@@ -5,6 +5,7 @@ import {
   JoinColumn,
   OneToOne,
   OneToMany,
+  ManyToOne,
 } from "typeorm";
 import { FrameworkEntity } from "../../../framework/entities/freamework.entities";
 import { UserEntity } from "./user.entities";
@@ -15,7 +16,7 @@ export class UserDiaryEntity extends FrameworkEntity {
   @PrimaryGeneratedColumn()
   public id: number;
 
-  @Column({ name: "title", length: 255 })
+  @Column({ name: "title", length: 150 })
   public title: string;
 
   @Column("text", { name: "info" })
@@ -25,6 +26,12 @@ export class UserDiaryEntity extends FrameworkEntity {
   public commentNumber: number;
 
   @JoinColumn({ name: "user_id" })
-  @OneToOne(() => UserEntity)
-  public userId: UserEntity | null;
+  @ManyToOne(() => UserEntity)
+  public user: UserEntity | null;
+
+  @OneToMany(
+    () => UserDiaryCommentEntity,
+    (UserDiaryCommentEntity) => UserDiaryCommentEntity.diary,
+  )
+  public comments: UserDiaryCommentEntity[] | null;
 }

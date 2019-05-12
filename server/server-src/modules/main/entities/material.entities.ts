@@ -4,6 +4,7 @@ import {
   PrimaryGeneratedColumn,
   JoinColumn,
   ManyToOne,
+  OneToMany,
 } from "typeorm";
 import { FrameworkEntity } from "../../../framework/entities/freamework.entities";
 import { MaterialKindEntity } from "./material.kind.entities";
@@ -24,5 +25,5 @@ export class MaterialEntity extends FrameworkEntity {
 
   @JoinColumn({ name: "kind_id" })
   @ManyToOne(() => MaterialKindEntity)
-  public kindId: MaterialKindEntity | null;
+  public kind: MaterialKindEntity | null;
 }

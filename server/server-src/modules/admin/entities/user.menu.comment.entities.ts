@@ -22,9 +22,9 @@ export class UserMenuCommentEntity extends FrameworkEntity {
 
   @JoinColumn({ name: "user_id" })
   @ManyToOne(() => UserEntity)
-  public userId: UserEntity | null;
+  public user: UserEntity | null;
 
   @JoinColumn({ name: "menu_id" })
   @ManyToOne(() => UserMenuEntity)
-  public menuId: UserMenuEntity | null;
+  public menu: UserMenuEntity | null;
 }

@@ -6,10 +6,13 @@ import {
   ManyToMany,
   OneToOne,
   JoinColumn,
+  OneToMany,
+  ManyToOne,
 } from "typeorm";
 import { FrameworkEntity } from "../../../framework/entities/freamework.entities";
 import { RecipeEntity } from "../../main/entities";
 import { UserEntity } from "./user.entities";
+import { UserMenuCommentEntity } from "./user.menu.comment.entities";
 
 @Entity({ name: "s_user_menu" })
 export class UserMenuEntity extends FrameworkEntity {
@@ -26,8 +29,14 @@ export class UserMenuEntity extends FrameworkEntity {
   public vistor: number;
 
   @JoinColumn({ name: "user_id" })
-  @OneToOne(() => UserEntity)
-  public userId: UserEntity | null;
+  @ManyToOne(() => UserEntity)
+  public user: UserEntity | null;
+
+  @OneToMany(
+    () => UserMenuCommentEntity,
+    (UserMenuCommentEntity) => UserMenuCommentEntity.menu,
+  )
+  public comments: UserMenuCommentEntity[] | null;
 
   @ManyToMany(() => RecipeEntity)
   @JoinTable({
@@ -35,5 +44,5 @@ export class UserMenuEntity extends FrameworkEntity {
     joinColumn: { name: "menu_id" },
     name: "s_menu_recipe_mapping",
   })
-  public roles: RecipeEntity[];
+  public recipes: RecipeEntity[] | null;
 }

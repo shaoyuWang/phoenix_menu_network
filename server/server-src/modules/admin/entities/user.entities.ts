@@ -43,5 +43,5 @@ export class UserEntity extends FrameworkEntity {
     joinColumn: { name: "user_id" },
     name: "s_user_role_mapping",
   })
-  public roles: RoleEntity[];
+  public roles: RoleEntity[] | null;
 }

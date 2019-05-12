@@ -40,31 +40,36 @@ export class RecipeEntity extends FrameworkEntity {
   public finishPhoto: string;
 
   @JoinColumn({ name: "user_id" })
-  @OneToOne(() => UserEntity)
-  public userId: UserEntity | null;
+  @ManyToOne(() => UserEntity)
+  public user: UserEntity | null;
 
   @JoinColumn({ name: "sort_id" })
-  @OneToOne(() => SortEntity)
-  public sortId: SortEntity | null;
+  @ManyToOne(() => SortEntity)
+  public sort: SortEntity | null;
 
   @JoinColumn({ name: "technology_id" })
-  @OneToOne(() => TechnologyEntity)
-  public technologyId: TechnologyEntity | null;
+  @ManyToOne(() => TechnologyEntity)
+  public technology: TechnologyEntity | null;
 
   @JoinColumn({ name: "taste_id" })
-  @OneToOne(() => TasteEntity)
-  public tasteId: TasteEntity | null;
+  @ManyToOne(() => TasteEntity)
+  public taste: TasteEntity | null;
 
-  @JoinColumn({ name: "step_id" })
-  @OneToMany(() => StepEntity, (StepEntity) => StepEntity.recipeId)
+  @OneToMany(() => StepEntity, (StepEntity) => StepEntity.id)
   public steps: StepEntity[] | null;
 
-  @JoinColumn({ name: "major_material_id" })
-  @ManyToOne(() => MajorRecipeMaterialMappingEntity)
+  @OneToMany(
+    () => MajorRecipeMaterialMappingEntity,
+    (MajorRecipeMaterialMappingEntity) =>
+      MajorRecipeMaterialMappingEntity.recipe,
+  )
   public majorMaterials: MajorRecipeMaterialMappingEntity | null;
 
-  @JoinColumn({ name: "auxiliary_material_id" })
-  @ManyToOne(() => AuxiliaryRecipeMaterialMappingEntity)
+  @OneToMany(
+    () => AuxiliaryRecipeMaterialMappingEntity,
+    (AuxiliaryRecipeMaterialMappingEntity) =>
+      AuxiliaryRecipeMaterialMappingEntity.recipe,
+  )
   public auxiliaryMaterials: AuxiliaryRecipeMaterialMappingEntity | null;
 
   @ManyToMany(() => EffectEntity)
@@ -73,5 +78,5 @@ export class RecipeEntity extends FrameworkEntity {
     joinColumn: { name: "recipe_id" },
     name: "m_recipe_effect_mapping",
   })
-  public roles: EffectEntity[];
+  public roles: EffectEntity[] | null;
 }

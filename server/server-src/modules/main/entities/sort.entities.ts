@@ -21,5 +21,5 @@ export class SortEntity extends FrameworkEntity {
 
   @JoinColumn({ name: "kind_id" })
   @ManyToOne(() => SortKindEntity)
-  public kindId: SortKindEntity | null;
+  public kind: SortKindEntity | null;
 }

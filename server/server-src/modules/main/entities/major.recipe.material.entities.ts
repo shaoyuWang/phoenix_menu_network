@@ -2,26 +2,27 @@ import {
   Column,
   Entity,
   JoinColumn,
-  OneToOne,
   PrimaryGeneratedColumn,
+  ManyToOne,
 } from "typeorm";
 import { FrameworkEntity } from "../../../framework/entities/freamework.entities";
 import { RecipeEntity } from "./recipe.entities";
-import { MaterialEntity } from "./material.entities";
 
 @Entity({ name: "m_major_recipe_material_mapping" })
 export class MajorRecipeMaterialMappingEntity extends FrameworkEntity {
   @PrimaryGeneratedColumn()
   public id: number;
 
-  @JoinColumn({ name: "recipe_id" })
-  @OneToOne(() => RecipeEntity)
-  public recipeId: number;
-
-  @JoinColumn({ name: "material_id" })
-  @OneToOne(() => MaterialEntity)
+  @Column({ name: "material_id" })
   public materialId: number;
+
+  @Column({ name: "name", length: 100 })
+  public name: string;
 
   @Column({ name: "quality", length: 100 })
   public quality: string;
+
+  @JoinColumn({ name: "recipe_id" })
+  @ManyToOne(() => RecipeEntity)
+  public recipe: number;
 }

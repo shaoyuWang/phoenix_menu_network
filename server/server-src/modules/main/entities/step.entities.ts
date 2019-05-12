@@ -17,5 +17,5 @@ export class StepEntity extends FrameworkEntity {
   public photo: string;
 
   @ManyToOne(() => RecipeEntity)
-  public recipeId: RecipeEntity | null;
+  public recipe: RecipeEntity | null;
 }
