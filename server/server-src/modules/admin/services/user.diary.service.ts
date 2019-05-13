@@ -26,9 +26,7 @@ export class UserDiaryService {
 
   //   根据ID查找日记
   public async findDiaryById(diaryId: any) {
-    const diary = await this.diaryRepository.findOne(diaryId, {
-      relations: ["user", "comments"],
-    });
+    const diary = await this.diaryRepository.findOne(diaryId);
     if (!_.isEmpty(diary)) {
       return { data: diary, code: RESPONSE_CODE.SUCCESS };
     } else {

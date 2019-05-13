@@ -14,7 +14,7 @@ import { UserDiaryService } from "../services/user.diary.service";
 import _ from "lodash";
 import { RESPONSE_CODE } from "../../../framework/enums";
 
-@Controller("diarys")
+@Controller("diary")
 @UseGuards(LoginGuard)
 export class UserDiaryController {
   constructor(private readonly diaryServices: UserDiaryService) {}

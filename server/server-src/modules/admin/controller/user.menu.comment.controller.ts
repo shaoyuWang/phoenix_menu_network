@@ -14,7 +14,7 @@ import _ from "lodash";
 import { RESPONSE_CODE } from "../../../framework/enums";
 import { UserMenuCommentService } from "../services/user.menu.comment.service";
 
-@Controller("menu")
+@Controller("menuComment")
 @UseGuards(LoginGuard)
 export class UserMenuCommentController {
   constructor(private readonly menuCommentServices: UserMenuCommentService) {}

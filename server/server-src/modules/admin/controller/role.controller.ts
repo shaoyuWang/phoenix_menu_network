@@ -13,7 +13,7 @@ import { LoginGuard } from "../../../framework/guards";
 import { RoleService } from "../services";
 import { RESPONSE_CODE } from "../../../framework/enums";
 import _ from "lodash";
-@Controller("roles")
+@Controller("role")
 @UseGuards(LoginGuard)
 export class RoleController {
   constructor(private readonly roleServices: RoleService) {}

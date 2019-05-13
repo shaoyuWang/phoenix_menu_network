@@ -12,24 +12,24 @@ import { Roles } from "../../../framework/decorators/role.decorator";
 import { LoginGuard } from "../../../framework/guards";
 import _ from "lodash";
 import { RESPONSE_CODE } from "../../../framework/enums";
-import { UserDiaryCommentService } from "../services/user.diary.comment.service";
+import { RecipeCommentService } from "../services/recipe.comment.service";
 
-@Controller("diaryComment")
+@Controller("recipeComment")
 @UseGuards(LoginGuard)
-export class UserDiaryCommentController {
-  constructor(private readonly diaryCommentServices: UserDiaryCommentService) {}
+export class RecipeCommentController {
+  constructor(private readonly recipeCommentServices: RecipeCommentService) {}
 
   @Get("/getAllComments")
   @Roles(1, 2)
   public async getComments() {
-    return this.diaryCommentServices.getAllComments();
+    return this.recipeCommentServices.getAllComments();
   }
 
   @Get("/findCommentById/:id")
   @Roles(1, 2)
   public async findCommentById(@Param("id") commentId: any) {
     if (!_.isEmpty(commentId)) {
-      return this.diaryCommentServices.findCommentById(commentId);
+      return this.recipeCommentServices.findCommentById(commentId);
     } else {
       return { code: RESPONSE_CODE.NOTPARAMETER };
     }
@@ -39,7 +39,7 @@ export class UserDiaryCommentController {
   @Roles(2)
   public async saveComment(@Body() data: any) {
     if (!_.isEmpty(data)) {
-      return this.diaryCommentServices.saveComment(data);
+      return this.recipeCommentServices.saveComment(data);
     } else {
       return { code: RESPONSE_CODE.NOTPARAMETER };
     }
@@ -49,7 +49,7 @@ export class UserDiaryCommentController {
   @Roles(2)
   public async praiseComment(@Param("id") commentId: any) {
     if (!_.isEmpty(commentId)) {
-      return this.diaryCommentServices.praiseComment(commentId);
+      return this.recipeCommentServices.praiseComment(commentId);
     } else {
       return { code: RESPONSE_CODE.NOTPARAMETER };
     }
@@ -59,7 +59,7 @@ export class UserDiaryCommentController {
   @Roles(1, 2)
   public async deleteComment(@Param("id") commentId: any) {
     if (!_.isEmpty(commentId)) {
-      return this.diaryCommentServices.deleteComment(commentId);
+      return this.recipeCommentServices.deleteComment(commentId);
     } else {
       return { code: RESPONSE_CODE.NOTPARAMETER };
     }

@@ -24,9 +24,7 @@ export class UserService {
 
   //   根据ID查找用户
   public async findUserById(userId: any) {
-    const user = await this.userRepository.findOne(userId, {
-      relations: ["roles"],
-    });
+    const user = await this.userRepository.findOne(userId);
     if (!_.isEmpty(user)) {
       return { data: user, code: RESPONSE_CODE.SUCCESS };
     } else {
@@ -38,7 +36,8 @@ export class UserService {
   public async saveUser(data: any) {
     const user = await this.userRepository.save(data);
     if (!_.isEmpty(user)) {
-      return { data: user, code: RESPONSE_CODE.SUCCESS };
+      const users = await this.userRepository.find({ relations: ["roles"] });
+      return { data: users, code: RESPONSE_CODE.SUCCESS };
     } else {
       return { code: RESPONSE_CODE.NOTVALUE };
     }
@@ -51,7 +50,8 @@ export class UserService {
       user = await this.userRepository.save(
         this.userRepository.merge(user as any, data),
       );
-      return { data: user, code: RESPONSE_CODE.SUCCESS };
+      const users = await this.userRepository.find({ relations: ["roles"] });
+      return { data: users, code: RESPONSE_CODE.SUCCESS };
     } else {
       return { code: RESPONSE_CODE.NOTVALUE };
     }

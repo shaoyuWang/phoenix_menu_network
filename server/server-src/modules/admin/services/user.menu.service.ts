@@ -26,9 +26,7 @@ export class UserMenuService {
 
   //   根据ID查找菜单
   public async findMenuById(menuId: any) {
-    const menu = await this.menuRepository.findOne(menuId, {
-      relations: ["recipes", "comments"],
-    });
+    const menu = await this.menuRepository.findOne(menuId);
     if (!_.isEmpty(menu)) {
       return { data: menu, code: RESPONSE_CODE.SUCCESS };
     } else {
