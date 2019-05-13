@@ -11,10 +11,9 @@
         <el-table-column prop="name" label="Name" class-name="table_column"></el-table-column>
         <el-table-column prop="email" label="Email" class-name="table_column"></el-table-column>
         <el-table-column prop="phone" label="TelePhone" class-name="table_column"></el-table-column>
-        <el-table-column prop="collection_number" label="Collection Number" class-name="table_column"></el-table-column>
-        <el-table-column prop="menu_number" label="Menu Number" class-name="table_column"></el-table-column>
+        <el-table-column prop="collectionNumber" label="Collection Number" class-name="table_column"></el-table-column>
+        <el-table-column prop="menuNumber" label="Menu Number" class-name="table_column"></el-table-column>
         <el-table-column prop="roles" label="Role" class-name="table_column" :formatter='formatter'></el-table-column>
-        <el-table-column prop="visitor" label="Visitor" class-name="table_column"></el-table-column>
         <el-table-column label="Operation" class-name="table_column">
           <template slot-scope="scope">
             <el-button size="small" @click="copyUser(scope.$index,scope.row)" type="warning" plain>Update</el-button>
@@ -58,49 +57,7 @@ export default {
   data() {
     return {
       title: '',
-      users: [
-        {
-          id: 1,
-          username: 'admin',
-          password: 'admin',
-          name: 'admin',
-          email: '153089195@qq.com',
-          phone: 18698763511,
-          collection_number: 1,
-          menu_number: 1,
-          roles: [
-            { id: 1, name: 'admin'},{ id: 2, name: 'user'},
-          ],
-          visitor: 0
-        },
-        {
-          id: 2,
-          username: 'admin',
-          password: 'admin',
-          name: 'admin',
-          email: '153089195@qq.com',
-          phone: 18698763511,
-          collection_number: 1,
-          menu_number: 1,
-          roles: [],
-          visitor: 0
-        },
-        {
-          id: 3,
-          username: 'admin',
-          password: 'admin',
-          name: 'admin',
-          email: '153089195@qq.com',
-          phone: 18698763511,
-          collection_number: 1,
-          menu_number: 1,
-          roles: [
-            { id: 1, name: 'admin'},{ id: 2, name: 'user'},
-          ],
-          visitor: 0
-        },
-
-      ],
+      users: [],
       roles: [],
       data: [],
       dialogFormVisible: false,
@@ -120,7 +77,7 @@ export default {
     };
   },
   mounted(){
-    // this.getUsers();
+    this.getUsers();
     // this.getRoles();
   },
   methods: {
@@ -281,16 +238,17 @@ export default {
     },
     // 获取用户
     getUsers() {
-      // this.$axios({
-      //   url: '/api/v1/users',
-      //   method: 'get',
-      // }).then(res=> {
-      //   if(res.data.code == 200){
-      //     this.users = res.data.data;
-      //   }else{
-      //     this.$router.push({ path: "/nopermisson"});
-      //   }
-      // })
+      this.$axios({
+        url: '/api/user/getAllUsers',
+        method: 'get',
+      }).then(res=> {
+        console.log(res);
+        if(res.data.code == 200){
+          this.users = res.data.data;
+        }else{
+          this.$router.push({ path: "/nopermisson"});
+        }
+      })
     },
     // 获取角色
     getRoles(){

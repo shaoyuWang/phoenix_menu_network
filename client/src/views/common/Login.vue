@@ -30,13 +30,14 @@ export default {
       this.$axios({
         url: '/auth/login',
         method: 'post',
+        // headers: { "Content-Type":"application/json;charset=utf-8" },
         data: data,
       }).then(res =>{
-        // console.log(res);
-        if(res.data.data.roles[0].id == 1){
+        console.log(res);
+        if(res.data.roles[0].id == 1){
           this.$router.push({ path: "/admin"});
         }else{
-          this.$router.push({ path: "/performance"});
+          this.$router.push({ path: "/request"});
         }
       })
     }

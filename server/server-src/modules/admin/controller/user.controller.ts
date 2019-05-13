@@ -14,7 +14,7 @@ import { UserService } from "../services/user.service";
 import _ from "lodash";
 import { RESPONSE_CODE } from "../../../framework/enums";
 
-@Controller("user")
+@Controller("/api/user")
 @UseGuards(LoginGuard)
 export class UserController {
   constructor(private readonly userServices: UserService) {}

@@ -8,9 +8,13 @@ import _ from 'lodash';
 import "bootstrap";
 import "bootstrap/dist/css/bootstrap.css";
 
+//开启debug模式
+// Vue.config.debug = true;
 Vue.config.productionTip = false;
 Vue.prototype.$axios = axios;
 Vue.prototype._ = _;
+
+axios.defaults.withCredentials=true;
 
 // 动态修改header
 router.beforeEach((to, from, next) => {
