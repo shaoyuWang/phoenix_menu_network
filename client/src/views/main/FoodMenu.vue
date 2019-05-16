@@ -1,35 +1,42 @@
 <template>
-<div class="container">
-  <div class="row">
-    <div class="col-lg-12 col-md-12 col-xs-12">
+  <el-row class="container">
+    <el-col :span="16" :offset="4">
       <div class="header">
         <span class="title-style">
           每一个菜单都是一桌美味的饭
           <span class="many"><a href="">更多菜谱&nbsp;>></a></span>
         </span>
+        <el-carousel :interval="4000" height="200px">
+            <el-carousel-item v-for="item in 6" :key="item">
+              <h3>{{ item }}</h3>
+            </el-carousel-item>
+          </el-carousel>
       </div>
-      <div class="menu-item">
-        <div class="menu-title">
-          <a href="#" class="title"><span>我的菜单</span></a>
-          <span class="menu-number"><em>10</em>篇菜单</span>
-        </div>
-        <div class="info">
-          <span class="date">2018-12-13 21:21:38</span>
-          <div class="user">
+      <div class="main">
+        <div class="menu-item" v-for="item in menuList" :key="item.id">
+          <div class="menu-title">
+            <a href="#" class="title"><span>{{item.title}}</span></a>
+            <span class="menu-number"><em>{{item.number}}</em>篇菜谱</span>
+          </div>
+          <ul class="recipe">
+            <li class="recipe-item"><img src="http://site.meishij.net/r/147/198/4174647/a4174647_144456278915386.jpg"></li>
+            <li class="recipe-item"><img src="http://site.meishij.net/r/147/198/4174647/a4174647_144456278915386.jpg"></li>
+            <li class="recipe-item"><img src="http://site.meishij.net/r/147/198/4174647/a4174647_144456278915386.jpg"></li>
+            <li class="recipe-item"><img src="http://site.meishij.net/r/147/198/4174647/a4174647_144456278915386.jpg"></li>
+            <li class="recipe-item"><img src="http://site.meishij.net/r/147/198/4174647/a4174647_144456278915386.jpg"></li>
+            <li class="recipe-item"><img src="http://site.meishij.net/r/147/198/4174647/a4174647_144456278915386.jpg"></li>
+            <li class="recipe-item"><img src="http://site.meishij.net/r/147/198/4174647/a4174647_144456278915386.jpg"></li>
+          </ul>
+          <div class="info">
             <img src="https://s1.c.meishij.net/images/default/tx2_5.png">
-            <span class="username">中天北极紫微大帝</span>
+            <span class="username">{{item.user.username}}</span>
+            <span class="menu-date">{{item.createDate}}</span>
           </div>
         </div>
-        <div class="recipe">
-          <img src="http://site.meishij.net/r/147/198/4174647/a4174647_144456278915386.jpg">
-          <img src="http://site.meishij.net/r/147/198/4174647/a4174647_144456278915386.jpg">
-          <img src="http://site.meishij.net/r/147/198/4174647/a4174647_144456278915386.jpg">
-          <img src="http://site.meishij.net/r/147/198/4174647/a4174647_144456278915386.jpg">
-        </div>
       </div>
-    </div>
-  </div>
-</div>
+    </el-col>
+    <Footer></Footer>
+  </el-row>
 </template>
 
 <script>
@@ -38,7 +45,26 @@ export default {
   components: {Footer},
   data() {
     return {
-
+      menuList:[
+        {
+          id:1,
+          title: '我的菜谱',
+          number:10,
+          createDate: '2018-12-13',
+          user:{
+            username: '中天北极紫微大帝',
+          }
+        },
+        {
+          id: 2,
+          title: '我的菜谱',
+          number: 10,
+          createDate: '2018-12-13',
+          user:{
+            username: '中天北极紫微大帝',
+          }
+        }
+      ]
     }
   }
 }
@@ -46,68 +72,79 @@ export default {
 
 <style lang="scss" scoped>
   @import "../../styles/style.scss";
-  .row{
-    width: $width60;
-    margin: $size0 auto;
-    .menu-item{
-      background-color: $color_white;
-      padding: $size10;
-      &::after{content: ''; display: block; clear: both;}
-      .menu-title{
-        // padding: $size10 $size20;
-        padding-top: $size10;
-        padding-left: $size20;
-        letter-spacing: $size2;
-        &::after{content: ''; display: block; clear: both;}
-        .title{
-          font-size: $font_size2;
-          float: $position_left;
-        }
-        .menu-number{
-          float: $position_right;
-          font-size: $font_size1;
-          padding-top: $size6;
-          padding-right: $size10;
-          em{
-            font-style: normal;
-            color: #f40;
+  .container{
+    .header{
+      margin-bottom: $size20;
+    }
+    .main{
+      .menu-item{
+        background-color: $color_white;
+        padding: $size10;
+        margin-bottom: $size10;
+        border-radius: $size10;
+        &::after{content: ''; display: block; clear: both;};
+        ul,li{list-style: none;};
+        .menu-title{
+          padding-top: $size10;
+          padding-left: $size20;
+          letter-spacing: $size2;
+          &::after{content: ''; display: block; clear: both;}
+          .title{
+            font-size: $font_size2;
+            float: $position_left;
+          }
+          .menu-number{
+            float: $position_right;
+            font-size: $font_size1;
+            padding-top: $size6;
+            padding-right: $size10;
+            em{
+              font-style: normal;
+              color: #f40;
+            }
           }
         }
-      }
-      .info{
-        float: $position_left;
-        margin: $size10;
-        color: #999;
-        width: 18%;
-        height: 180px;
-        position: relative;
-        .date{
-          position: absolute;
-          top: $size0;
-          padding-left: $size10;
-        }
-        .user{
-          position: absolute;
-          bottom: $size0;
-          width: $width100;
-          img{
-            width: $size40;
+        .recipe{
+          display: block;
+          margin-top: $size10;
+          width: auto;
+          height: 210px;
+          overflow: scroll;
+          overflow-x: auto;
+          white-space:nowrap;
+          .recipe-item{
             display: inline-block;
+            margin: 0 2px;
+            width: 220px;
+            height: 200px;
+          }
+          img{
+            width: 220px;
+            height: 200px;
+            border-radius: $size5;
+            padding-right: $size1;
+          }
+        }
+        .info{
+          margin-top: $size10;
+          text-align: right;
+          color: #999;
+          width: 100%;
+          img{
+            width: $size20;
+            display: inline-block;
+            margin: 0 10px;
           }
           .username{
+            text-align: right;
             display: inline-block;
             text-overflow: ellipsis;
+            margin-right: 10px;
           }
-        }
-      }
-      .recipe{
-        float: left;
-        margin-top: $size10;
-        width: 78%;
-        img{
-          width: 25%;
-          border-radius: $size5;
-          padding-right: $size1;
+          .menu-date{
+            display: inline-block;
+            text-align: right;
+          }
         }
       }
     }

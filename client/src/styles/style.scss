@@ -1,48 +1,81 @@
 @import "variables";
 
 a{
-    color: $color_black;
-    list-style: none;
-    display: block;
-    &:hover{text-decoration: none;}
+  color: $color_black;
+  list-style: none;
+  display: block;
+  &:hover{text-decoration: none;}
 }
 
 body {
-    background-color: $color_background !important;
-    font-family: $font_family !important;
-    font-size: $size12;
+  background-color: $color_background !important;
+  font-family: $font_family !important;
+  font-size: $size12;
 }
 
 .title-style{
-    display: block;
-    width: $width100;
-    text-align: $position_center;
-    padding: $size40 $size0;
-    color: $color_title;
-    font-size: $font_size3;
-    position: relative;
-    letter-spacing: $size8;
-    .many{
-      position: absolute;
-      right: $size0;
-      font-size: $font_size1;
-      padding-top: $size12;
-      letter-spacing: $size1;
-      a{ text-decoration: none; color: $color_title_many; &:hover{color: $color_title_hover;}}
-    }
+  display: block;
+  width: $width100;
+  text-align: $position_center;
+  padding: $size40 $size0;
+  color: $color_title;
+  font-size: $font_size3;
+  position: relative;
+  letter-spacing: $size8;
+  .many{
+    position: absolute;
+    right: $size0;
+    font-size: $font_size1;
+    padding-top: $size12;
+    letter-spacing: $size1;
+    a{ text-decoration: none; color: $color_title_many; &:hover{color: $color_title_hover;}}
+  }
 }
 
 .el-table{
-    .el-table__body{
-        .el-table__expanded-cell{
-            padding: 0;
-            .el-table{
-                margin: 10px;
-            }
-        }
+  .el-table__body{
+    .el-table__expanded-cell{
+      padding: 0;
+      .el-table{
+          margin: 10px;
+      }
     }
+  }
 }
- .active{
+  .tab_active{
     border-bottom: 2px solid transparent;
     border-color: #ff7675;
- }
+  }
+
+
+  .list-item{
+    padding: 6px;
+    float: left;
+    a{
+      text-decoration: none;
+      &:hover{transform: scale(1.05); transition-duration:0.5s;}
+      .item-img{
+        width: 210px;
+        .img-responsive {
+          width: $width100;
+          height: 200px;
+        }
+      }
+      .item-info{
+        span{display: block;padding: $size10 $size15;}
+        width: $width100;
+        background-color: $color_white;
+        .info-title{
+          font-size: $font_size2;
+          color: $color_title;
+          font-weight: $font_bold;
+        }
+        .info-user{
+          font-size: $font_size1;
+          color: $color_user_title;
+          overflow: hidden;
+          width: 100%;
+        }
+      }
+    }
+  }

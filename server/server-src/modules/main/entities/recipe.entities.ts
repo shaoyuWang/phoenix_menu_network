@@ -27,11 +27,14 @@ export class RecipeEntity extends FrameworkEntity {
   @Column("varchar", { name: "name" })
   public name: string;
 
-  @Column({ name: "level", length: 100 })
-  public level: string;
+  @Column({ name: "level" })
+  public level: number;
 
-  @Column({ name: "time", length: 100 })
-  public time: string;
+  @Column({ name: "time" })
+  public time: number;
+
+  @Column({ name: "time_type" })
+  public timeType: number;
 
   @Column("text", { name: "evaluate" })
   public evaluate: string;

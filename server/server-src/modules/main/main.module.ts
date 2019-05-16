@@ -4,32 +4,28 @@ import {
   RecipeCommentService,
   SortService,
   SortKindService,
-  TasteService,
-  TechnologyService,
   MaterialService,
   MaterialKindService,
+  TasteService,
+  TechnologyService,
   EffectService,
 } from "./services";
 import {
-  RecipeCommentController,
-  TasteController,
-  TechnologyController,
-  SortController,
-  SortKindController,
-  MaterialController,
-  MaterialKindController,
-  EffectController,
+  IndexController,
+  RecipeCookingController,
+  ThreeMealsController,
+  FoodMenuController,
+  GoumetMasterController,
 } from "./controller";
+import { RecipeVideoController } from "./controller/recipe.video.controller";
 
 const controllers = [
-  RecipeCommentController,
-  TasteController,
-  TechnologyController,
-  SortController,
-  SortKindController,
-  MaterialController,
-  MaterialKindController,
-  EffectController,
+  IndexController,
+  RecipeCookingController,
+  ThreeMealsController,
+  FoodMenuController,
+  GoumetMasterController,
+  RecipeVideoController,
 ];
 
 const services = [
@@ -37,11 +33,11 @@ const services = [
   RecipeCommentService,
   SortService,
   SortKindService,
+  MaterialService,
+  MaterialKindService,
   TasteService,
   TechnologyService,
   EffectService,
-  MaterialService,
-  MaterialKindService,
 ];
 
 @Module({
