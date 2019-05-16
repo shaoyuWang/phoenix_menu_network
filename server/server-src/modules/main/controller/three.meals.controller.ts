@@ -3,7 +3,7 @@ import { Roles } from "../../../framework/decorators/role.decorator";
 import { LoginGuard } from "../../../framework/guards";
 import { RESPONSE_CODE } from "../../../framework/enums";
 import _ from "lodash";
-import { RecipeService, SortKindService } from "../services";
+import { RecipeService } from "../services";
 
 @Controller("/main/foodMeals")
 @UseGuards(LoginGuard)
