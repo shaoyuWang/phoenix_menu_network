@@ -7,7 +7,7 @@ import {
 } from './views/admin';
 import {
   Index, RecipeVideo, RecipeCooking, Navbar, ThreeMeals,
-  FoodMenu, GourmetMaster, AllTemplate, FoodHealth, UserCenter,
+  FoodMenu, GourmetMaster, AllTemplate, FoodHealth, UserCenter, RecipeTemplate, DiaryTemplate,
 } from './views/main';
 
 Vue.use(Router);
@@ -185,6 +185,20 @@ export default new Router({
           component: AllTemplate,
           meta: {
             title: '全部',
+          },
+        },
+        {
+          path: 'recipeTemplate',
+          component: RecipeTemplate,
+          meta: {
+            title: '菜谱',
+          },
+        },
+        {
+          path: 'diaryTemplate',
+          component: DiaryTemplate,
+          meta: {
+            title: '菜谱',
           },
         },
       ],

@@ -8,6 +8,8 @@ import GourmetMaster from './GourmetMaster.vue';
 import AllTemplate from './AllTemplate.vue';
 import UserCenter from './UserCenter.vue';
 import FoodHealth from './FoodHealth.vue';
+import RecipeTemplate from './RecipeTemplate.vue';
+import DiaryTemplate from './DiaryTemplate.vue';
 
 export {
   Navbar,
@@ -20,4 +22,6 @@ export {
   GourmetMaster,
   AllTemplate,
   UserCenter,
+  RecipeTemplate,
+  DiaryTemplate,
 };

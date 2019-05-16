@@ -6,8 +6,8 @@
           <span class="title-style">{{item.title}}</span>
           <ul>
             <li v-for="food in item.items" :key="food.id">
-              <a href="#" class="food">
-                <img class="img-responsive" :src="food.img" alt="" ref="img" @click="indent()">
+              <a class="food" @click="jumpRecipe(food.id)">
+                <img class="img-responsive" :src="food.img">
                 <div class="info">
                   <span class="info-title">{{food.title}}</span>
                   <span class="info-description">{{food.description}}</span>
@@ -214,8 +214,8 @@ export default {
     }
   },
   methods:{
-    indent(){
-      console.log(this.$refs);
+    jumpRecipe(id){
+      this.$router.push({path: '/request/recipeTemplate', query: { id }});
     }
   }
 }
@@ -288,7 +288,7 @@ export default {
           }
         }
         .tab-content{
-          overflow: auto;
+          overflow: hidden;
           a{
             display: block;
             float: $position_left;
