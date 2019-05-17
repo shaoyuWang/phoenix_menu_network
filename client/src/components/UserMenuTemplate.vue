@@ -123,6 +123,7 @@ export default {
                 overflow: scroll;
                 overflow-x: auto;
                 white-space:nowrap;
+                &::-webkit-scrollbar {display:none};
                 .recipe-item{
                     display: inline-block;
                     margin: $size0 $size2;
