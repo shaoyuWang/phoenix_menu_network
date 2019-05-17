@@ -74,6 +74,22 @@
                         <span>收藏:&nbsp;11</span>
                     </div>
                 </div>
+                <div class="comment">
+                    <ul class="comment-list">
+                        <li class="comment-item" v-for="item in 5" :key="item">
+                            <div class="comment-operation">
+                                <el-button class="comment-praise" type="text">点赞 0</el-button>
+                            </div>
+                            <span class="comment-info">这东西不错。我感觉行</span>
+                            <span class="comment-user-info">2019-01-01 19:10:10&nbsp;&nbsp;来自&nbsp;中天北极紫微大帝</span>
+                        </li>
+                    </ul>
+                    <div class="comment-publish">
+                        <span class="publish-title">发表评论</span>
+                        <el-input type="textarea" :autosize="{ minRows: 2, maxRows: 4}" placeholder="请输入评论" v-model="comment"></el-input>
+                        <div class="operation"><el-button type="primary" plain>发表</el-button></div>
+                    </div>
+                </div>
             </el-col>
         </el-col>
         <Footer></Footer>
@@ -86,7 +102,7 @@ export default {
     components:{Footer},
     data(){
         return {
-
+            comment: '',
         }
     },
     mounted(){
@@ -324,6 +340,52 @@ export default {
                         margin: 5px 0;
                         font-size: 14px;
                         color: rgba(48, 45, 45, 0.548);
+                    }
+                }
+            }
+            .comment{
+                background-color: white;
+                ul,li{list-style: none;}
+                .comment-list{
+                    padding: 10px;
+                    margin: 0;
+                    .comment-item{
+                        padding: 10px 0;
+                        border-bottom: 1px solid rgba(0, 0, 0, 0.274);
+                        .comment-operation{
+                            text-align: right;
+                            .comment-praise{color: rgba(12, 141, 12, 0.329); &:hover{color: #f40;}}
+                        }
+                        .comment-info{ 
+                            display: block; 
+                            padding-left: $size5; 
+                            text-indent: 
+                            $font_size2;
+                        }
+                        .comment-user-info{ 
+                            display: block; 
+                            text-align: right; 
+                            padding-top: $size10; 
+                            font-size: 12px;
+                        }
+                    }
+                }
+                .comment-publish{
+                    padding: 10px;
+                    .publish-title{
+                        display: block;
+                        font-size: 18px;
+                        padding-bottom: 10px;
+                        border-bottom: 1px solid rgba(0, 0, 0, 0.267);
+                    }
+                    .el-textarea{
+                        margin: 10px 0;
+                    }
+                    .operation{
+                        text-align: right;
+                        .el-button{
+                            padding: 8px 12px;
+                        }
                     }
                 }
             }
