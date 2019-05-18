@@ -1,6 +1,7 @@
 import { Module } from "@nestjs/common";
 import { TypeOrmModule } from "@nestjs/typeorm";
-import { AdminModule } from "./modules/admin";
+import { coreModule } from "./framework/core";
+import { adminModule } from "./modules/admin";
 import { mainModule } from "./modules/main";
 // import { DATABASE_CONFIG } from './framework/config';
 import {
@@ -82,7 +83,8 @@ const modules = [
     username: DATABASE_USERNAME,
   }),
   RepositoryModule.forFeature(entities),
-  AdminModule,
+  coreModule,
+  adminModule,
   mainModule,
 ];
 

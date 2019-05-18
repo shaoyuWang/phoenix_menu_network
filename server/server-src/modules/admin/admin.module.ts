@@ -48,4 +48,4 @@ const services = [
   controllers: controllers,
   providers: services,
 })
-export class AdminModule {}
+export class adminModule {}
