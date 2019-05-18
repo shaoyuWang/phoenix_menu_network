@@ -10,7 +10,10 @@
       </div>
       <div class="main">
         <div class="header">
-          <span>内容精选</span>
+          <span class="title-style">
+          内容精选
+          <span class="many"><a @click="more(3)">更多日记&nbsp;>></a></span>
+        </span>
         </div>
         <div class="list-item" v-for="item in diaryList" :key="item.id">
             <a href="#">
@@ -75,13 +78,6 @@ export default {
   }
   .main{
     margin-top: $size20;
-    .header{
-      text-align: $position_center;
-      font-size: $font_size3;
-      color: $color_title;
-      letter-spacing: $size8;
-      padding: $size20 $size0;
-    }
     .diary-item{
       float: left;
       margin: $size10;

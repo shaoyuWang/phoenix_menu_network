@@ -5,52 +5,46 @@
         <el-carousel-item v-for="item in bannerList" :key="item.id">
           <span class="title-style">{{item.title}}</span>
           <ul>
-            <li v-for="food in item.items" :key="food.id">
+            <li v-for="food in item.recipes" :key="food.id">
               <a class="food" @click="jumpRecipe(food.id)">
-                <img class="img-responsive" :src="food.img">
+                <img class="img-responsive" :src="img">
                 <div class="info">
-                  <span class="info-title">{{food.title}}</span>
-                  <span class="info-description">{{food.description}}</span>
+                  <span class="info-title">{{food.name}}</span>
+                  <span class="info-description">{{food.evaluate}}</span>
                 </div>
               </a>
             </li>
           </ul>
         </el-carousel-item>
       </el-carousel>
-      <div class="main-food">
+      <el-col :span="16" :offset="4" class="main-food">
         <span class="title-style">
           二月，阳气生发，适当春捂
-          <span class="many"><a href="#">更多食材&nbsp;>></a></span>
+          <span class="many"><a @click="more(2)">更多食材&nbsp;>></a></span>
         </span>
         <div class="recommend-food">
-          <ul class="nav nav-tabs tabs" role="tablist">
-            <li role="presentation" class="active"><a href="#fruit" aria-controls="fruit" role="tab" data-toggle="tab">水果</a></li>
-            <li role="presentation"><a href="#vegetable" aria-controls="vegetable" role="tab" data-toggle="tab">蔬菜</a></li>
-            <li role="presentation"><a href="#grain" aria-controls="grain" role="tab" data-toggle="tab">五谷</a></li>
-            <li role="presentation"><a href="#fresh" aria-controls="fresh" role="tab" data-toggle="tab">生鲜</a></li>
-          </ul>
-          <div class="tab-content">
-            <div role="tabpanel" class="tab-pane" :id="items.classify" v-for="items in tabList" :key="items.id">
-              <a href="#" v-for="item in items.tabs" :key="item.id">
-                <img class="img-responsive" :src="item.img">
-                <div class="info">
-                  <span class="icon"></span><span>{{item.name}}</span>
-                </div>
-              </a>
-            </div>
-          </div>
+          <el-tabs v-model="activeName">
+            <el-tab-pane :label="item.name" :name="item.name" v-for="item in materialKindList" :key="item.id">
+              <ul class="kind-list">
+                <li class="material-item" v-for="materialItem in item.materials" :key="materialItem.id">
+                  <img class="material-img" :src="img">
+                  <span class="material-name">{{materialItem.name}}</span>
+                </li>
+              </ul>
+            </el-tab-pane>
+          </el-tabs>
         </div>
-      </div>
+      </el-col>
       <el-col :span="16" :offset="4" class="main-recommend">
         <span class="title-style">每日推荐菜谱
-          <span class="many"><a href="">更多菜谱&nbsp;>></a></span>
+          <span class="many"><a @click="more(1)">更多菜谱&nbsp;>></a></span>
         </span>
-        <div class="list-item" v-for="item in menuList" :key="item.id">
-          <a href="#">
-            <div class="item-img"><img class="img-responsive" :src="item.img"></div>
+        <div class="list-item" v-for="item in recipeList" :key="item.id">
+          <a @click="jumpRecipe(item.id)">
+            <div class="item-img"><img class="img-responsive" :src="img"></div>
             <div class="item-info">
-              <span class="info-title">{{item.title}}</span>
-              <span class="info-user">{{item.username}}</span>
+              <span class="info-title">{{item.name}}</span>
+              <span class="info-user">{{item.user.name}}</span>
             </div>
           </a>
         </div>
@@ -64,158 +58,73 @@
   import Footer from './Footer.vue';
 export default {
   components: {Footer},
-  mounted(){
-    $('#fruit').addClass('active');
-    $('.el-menu-demo li:first').css('margin-left','20px');
-  },
   data(){
     return {
       autoplay: false,
-      bannerList: [
-        { 
-          id: 1, 
-          title: '今日早餐推荐：趁“早”爱自己，善待你的胃',
-          items: [
-            { id: 1, img: 'https://s1.ig.meishij.net/p/20190222/0e1486237ec2b3fab35ac1643225c2b1.jpg', title: '红烧黄花鱼', description: '鱼肉软绵，汤汁醇厚'},
-            { id: 2, img: 'https://s1.ig.meishij.net/p/20190225/5c3cfecbc666b3a256d5fd348ee82323.jpg', title: '红烧黄花鱼', description: '鱼肉软绵，汤汁醇厚'},
-            { id: 3, img: 'https://s1.ig.meishij.net/p/20190225/52836834688cc3530d95d0ccf25384a0.jpg', title: '红烧黄花鱼', description: '鱼肉软绵，汤汁醇厚'},
-            { id: 4, img: 'https://s1.ig.meishij.net/p/20190222/0e1486237ec2b3fab35ac1643225c2b1.jpg', title: '红烧黄花鱼', description: '鱼肉软绵，汤汁醇厚'},
-            { id: 5, img: 'https://s1.ig.meishij.net/p/20190225/52836834688cc3530d95d0ccf25384a0.jpg', title: '红烧黄花鱼', description: '鱼肉软绵，汤汁醇厚'},
-          ]
-        },
-        { 
-          id: 2, 
-          title: '今日午餐推荐：让嘴巴过足瘾的午餐',
-          items: [
-            { id: 1, img: 'https://s1.ig.meishij.net/p/20190222/0e1486237ec2b3fab35ac1643225c2b1.jpg', title: '红烧黄花鱼', description: '鱼肉软绵，汤汁醇厚'},
-            { id: 2, img: 'https://s1.ig.meishij.net/p/20190225/5c3cfecbc666b3a256d5fd348ee82323.jpg', title: '红烧黄花鱼', description: '鱼肉软绵，汤汁醇厚'},
-            { id: 3, img: 'https://s1.ig.meishij.net/p/20190225/52836834688cc3530d95d0ccf25384a0.jpg', title: '红烧黄花鱼', description: '鱼肉软绵，汤汁醇厚'},
-            { id: 4, img: 'https://s1.ig.meishij.net/p/20190225/5c3cfecbc666b3a256d5fd348ee82323.jpg', title: '红烧黄花鱼', description: '鱼肉软绵，汤汁醇厚'},
-            { id: 5, img: 'https://s1.ig.meishij.net/p/20190222/0e1486237ec2b3fab35ac1643225c2b1.jpg', title: '红烧黄花鱼', description: '鱼肉软绵，汤汁醇厚'},
-          ]
-        },
-        { 
-          id: 3, 
-          title: '今日下午茶推荐：惬意时光，美味甜蜜齐分享',
-          items: [
-            { id: 1, img: 'https://s1.ig.meishij.net/p/20190222/0e1486237ec2b3fab35ac1643225c2b1.jpg', title: '红烧黄花鱼', description: '鱼肉软绵，汤汁醇厚'},
-            { id: 2, img: 'https://s1.ig.meishij.net/p/20190225/5c3cfecbc666b3a256d5fd348ee82323.jpg', title: '红烧黄花鱼', description: '鱼肉软绵，汤汁醇厚'},
-            { id: 3, img: 'https://s1.ig.meishij.net/p/20190225/52836834688cc3530d95d0ccf25384a0.jpg', title: '红烧黄花鱼', description: '鱼肉软绵，汤汁醇厚'},
-            { id: 4, img: 'https://s1.ig.meishij.net/p/20190225/5c3cfecbc666b3a256d5fd348ee82323.jpg', title: '红烧黄花鱼', description: '鱼肉软绵，汤汁醇厚'},
-            { id: 5, img: 'https://s1.ig.meishij.net/p/20190222/0e1486237ec2b3fab35ac1643225c2b1.jpg', title: '红烧黄花鱼', description: '鱼肉软绵，汤汁醇厚'},
-          ]
-        },
-      ],
-      tabList:[
-        { id: 1, 
-          classify: 'fruit',
-          tabs: [
-            { id: 1, name: '菠萝', img: 'https://s1.ig.meishij.net/p/20190225/5c3cfecbc666b3a256d5fd348ee82323.jpg'},
-            { id: 2, name: '菠萝', img: 'https://s1.ig.meishij.net/p/20190225/52836834688cc3530d95d0ccf25384a0.jpg'},
-            { id: 3, name: '菠萝', img: 'https://s1.ig.meishij.net/p/20190225/5c3cfecbc666b3a256d5fd348ee82323.jpg'},
-            { id: 4, name: '菠萝', img: 'https://s1.ig.meishij.net/p/20190225/52836834688cc3530d95d0ccf25384a0.jpg'},
-            { id: 5, name: '菠萝', img: 'https://s1.ig.meishij.net/p/20190225/5c3cfecbc666b3a256d5fd348ee82323.jpg'},
-            { id: 6, name: '菠萝', img: 'https://s1.ig.meishij.net/p/20190225/52836834688cc3530d95d0ccf25384a0.jpg'},
-            { id: 7, name: '菠萝', img: 'https://s1.ig.meishij.net/p/20190225/5c3cfecbc666b3a256d5fd348ee82323.jpg'},
-            { id: 8, name: '菠萝', img: 'https://s1.ig.meishij.net/p/20190225/52836834688cc3530d95d0ccf25384a0.jpg'},
-          ] 
-        },
-        { id: 2,
-          classify: 'vegetable',
-          tabs: [
-            { id: 1, name: '菠萝', img: 'https://s1.ig.meishij.net/p/20190225/5c3cfecbc666b3a256d5fd348ee82323.jpg'},
-            { id: 2, name: '菠萝', img: 'https://s1.ig.meishij.net/p/20190222/0e1486237ec2b3fab35ac1643225c2b1.jpg'},
-            { id: 3, name: '菠萝', img: 'https://s1.ig.meishij.net/p/20190225/5c3cfecbc666b3a256d5fd348ee82323.jpg'},
-            { id: 4, name: '菠萝', img: 'https://s1.ig.meishij.net/p/20190222/0e1486237ec2b3fab35ac1643225c2b1.jpg'},
-            { id: 5, name: '菠萝', img: 'https://s1.ig.meishij.net/p/20190225/5c3cfecbc666b3a256d5fd348ee82323.jpg'},
-            { id: 6, name: '菠萝', img: 'https://s1.ig.meishij.net/p/20190222/0e1486237ec2b3fab35ac1643225c2b1.jpg'},
-            { id: 7, name: '菠萝', img: 'https://s1.ig.meishij.net/p/20190225/5c3cfecbc666b3a256d5fd348ee82323.jpg'},
-            { id: 8, name: '菠萝', img: 'https://s1.ig.meishij.net/p/20190222/0e1486237ec2b3fab35ac1643225c2b1.jpg'},
-          ] 
-        },
-        { id: 3,
-          classify: 'grain',
-          tabs: [
-            { id: 1, name: '菠萝', img: 'https://s1.ig.meishij.net/p/20190225/5c3cfecbc666b3a256d5fd348ee82323.jpg'},
-            { id: 2, name: '菠萝', img: 'https://s1.ig.meishij.net/p/20190225/5c3cfecbc666b3a256d5fd348ee82323.jpg'},
-            { id: 3, name: '菠萝', img: 'https://s1.ig.meishij.net/p/20190225/5c3cfecbc666b3a256d5fd348ee82323.jpg'},
-            { id: 4, name: '菠萝', img: 'https://s1.ig.meishij.net/p/20190225/5c3cfecbc666b3a256d5fd348ee82323.jpg'},
-            { id: 5, name: '菠萝', img: 'https://s1.ig.meishij.net/p/20190225/5c3cfecbc666b3a256d5fd348ee82323.jpg'},
-            { id: 6, name: '菠萝', img: 'https://s1.ig.meishij.net/p/20190225/5c3cfecbc666b3a256d5fd348ee82323.jpg'},
-            { id: 7, name: '菠萝', img: 'https://s1.ig.meishij.net/p/20190225/5c3cfecbc666b3a256d5fd348ee82323.jpg'},
-            { id: 8, name: '菠萝', img: 'https://s1.ig.meishij.net/p/20190225/5c3cfecbc666b3a256d5fd348ee82323.jpg'},
-          ] 
-        },
-        { id: 4,
-          classify: 'fresh',
-          tabs: [
-            { id: 1, name: '菠萝', img: 'https://s1.ig.meishij.net/p/20190225/5c3cfecbc666b3a256d5fd348ee82323.jpg'},
-            { id: 2, name: '菠萝', img: 'https://s1.ig.meishij.net/p/20190225/5c3cfecbc666b3a256d5fd348ee82323.jpg'},
-            { id: 3, name: '菠萝', img: 'https://s1.ig.meishij.net/p/20190225/5c3cfecbc666b3a256d5fd348ee82323.jpg'},
-            { id: 4, name: '菠萝', img: 'https://s1.ig.meishij.net/p/20190225/5c3cfecbc666b3a256d5fd348ee82323.jpg'},
-            { id: 5, name: '菠萝', img: 'https://s1.ig.meishij.net/p/20190225/5c3cfecbc666b3a256d5fd348ee82323.jpg'},
-            { id: 6, name: '菠萝', img: 'https://s1.ig.meishij.net/p/20190225/5c3cfecbc666b3a256d5fd348ee82323.jpg'},
-            { id: 7, name: '菠萝', img: 'https://s1.ig.meishij.net/p/20190225/5c3cfecbc666b3a256d5fd348ee82323.jpg'},
-            { id: 8, name: '菠萝', img: 'https://s1.ig.meishij.net/p/20190225/5c3cfecbc666b3a256d5fd348ee82323.jpg'},
-          ] 
-        },
-      ],
-      menuList:[
-        {
-          id: 1,
-          img: 'https://s1.ig.meishij.net/p/20190225/5c3cfecbc666b3a256d5fd348ee82323.jpg',
-          title: '红烧黄花鱼',
-          username: '中天北极紫微大帝'
-        },
-        {
-          id: 2,
-          img: 'https://s1.ig.meishij.net/p/20190225/5c3cfecbc666b3a256d5fd348ee82323.jpg',
-          title: '红烧黄花鱼',
-          username: '中天北极紫微大帝'
-        },
-        {
-          id: 3,
-          img: 'https://s1.ig.meishij.net/p/20190225/5c3cfecbc666b3a256d5fd348ee82323.jpg',
-          title: '红烧黄花鱼',
-          username: '中天北极紫微大帝'
-        },
-        {
-          id: 4,
-          img: 'https://s1.ig.meishij.net/p/20190225/5c3cfecbc666b3a256d5fd348ee82323.jpg',
-          title: '红烧黄花鱼',
-          username: '中天北极紫微大帝'
-        },
-        {
-          id: 5,
-          img: 'https://s1.ig.meishij.net/p/20190225/5c3cfecbc666b3a256d5fd348ee82323.jpg',
-          title: '红烧黄花鱼',
-          username: '中天北极紫微大帝'
-        },
-        {
-          id: 6,
-          img: 'https://s1.ig.meishij.net/p/20190225/5c3cfecbc666b3a256d5fd348ee82323.jpg',
-          title: '红烧黄花鱼',
-          username: '中天北极紫微大帝'
-        },
-        {
-          id: 7,
-          img: 'https://s1.ig.meishij.net/p/20190225/5c3cfecbc666b3a256d5fd348ee82323.jpg',
-          title: '红烧黄花鱼',
-          username: '中天北极紫微大帝'
-        },
-        {
-          id: 8,
-          img: 'https://s1.ig.meishij.net/p/20190225/5c3cfecbc666b3a256d5fd348ee82323.jpg',
-          title: '红烧黄花鱼',
-          username: '中天北极紫微大帝'
-        },
-      ],
+      activeName: '',
+      bannerList: [],
+      img: 'https://s1.ig.meishij.net/p/20190225/5c3cfecbc666b3a256d5fd348ee82323.jpg',
+      materialKindList:[],
+      recipeList:[],
 
     }
+  },
+  mounted(){
+    $('#fruit').addClass('active');
+    $('.el-menu-demo li:first').css('margin-left','20px');
+    this.getList();
   },
   methods:{
     jumpRecipe(id){
       this.$router.push({path: '/request/recipeTemplate', query: { id }});
+    },
+    // jumpMaterial(id){
+      
+    // }
+    more(status){
+      this.$router.push({path: '/request/allTemplate', query: { status }});
+    },
+    getList(){
+      this.$axios({
+        url: '/main/index/getList',
+        method: 'get',
+      }).then(res =>{
+        console.log(res);
+        if(res.status == 200){
+          let title = ['今日早餐推荐：趁“早”爱自己，善待你的胃','今日午餐推荐：让嘴巴过足瘾的午餐','今日下午茶推荐：惬意时光，美味甜蜜齐分享'];
+          let breakfast = _.filter(res.data.data.recipes,{timeType:1});
+          let lunch = _.filter(res.data.data.recipes,{timeType:2});
+          let dinner = _.filter(res.data.data.recipes,{timeType:3});
+          for(var i = 0; i< 3; i++){
+            let temporary = [];
+            let data = [];
+            switch(i){
+              case 0: data = breakfast; break;
+              case 1: data = lunch; break;
+              case 2: data = dinner; break;
+            }
+            _.forEach(data, (item, index) => {
+              temporary.push(item);
+              if (index == 4) return false;
+            });
+            this.bannerList.push({
+              id: i,
+              title: title[i],
+              recipes: temporary,
+            });
+          }
+
+          // 获取菜谱
+          _.forEach(res.data.data.recipes, (item, index) => {
+            this.recipeList.push(item);
+            if (index == 11) return false;
+          });
+          
+          this.materialKindList = res.data.data.kinds;
+          this.activeName = this.materialKindList[0].name;
+          console.log(this.materialKindList);
+        }
+      });
     }
   }
 }
@@ -239,6 +148,7 @@ export default {
             width: $width20;
             .food{
               position: relative;
+              cursor: pointer;
               &:hover{ color: $color_title; transform: scale(1.05); transition-duration:0.5s; z-index: 100;};
               img{
                 width: $width100;
@@ -259,6 +169,10 @@ export default {
                   font-size: $font_size2;
                 }
                 .info-description{
+                  width: 100%;
+                  overflow: hidden;
+                  white-space:nowrap;
+                  text-overflow:ellipsis;
                   color: #909399;
                 }
               }
@@ -272,58 +186,36 @@ export default {
       }
     }
     .main-food{
-      width:$width_screen;
-      margin: $size0 auto;
       .recommend-food{
-        background-color: $color_background_hover;
+        background-color: white;
+        border-bottom: 1px solid rgb(156, 149, 149);
+        border-radius: 10px;
         width: $width100;
         padding: $size10;
-        .tabs{
-          border-bottom: $size0;
-          font-weight: bold;
-          .active{
-            a{
-              color: #67C23A;
+        .el-tabs{padding: 0 10px;}
+        .kind-list{
+          margin: 0;
+          padding: 0;
+          ul,li{list-style: none;}
+          .material-item{
+            display: inline-block;
+            overflow: hidden;
+            width: 100px;
+            text-align: center;
+            &:hover{
+              color: #f40;
+              transform: scale(1.05);
+              transition-duration: 0.5s;
             }
-          }
-        }
-        .tab-content{
-          overflow: hidden;
-          a{
-            display: block;
-            float: $position_left;
-            padding: $size0 $size1;
-            width: 12.4%;
-            position: relative;
-            &:after{content: '';clear: both;}
-            &:hover{color: $color_title;}
-            img{ 
-              width: $width100;
-              position: relative;
-              &:hover{
-                transform: scale(1.15);
-                transition-duration:0.5s;
-                z-index: 100;
-              }
+            .material-img{
+              display: inline-block;
+              width: 80px;
+              
             }
-            .info{
-              position: absolute;
-              z-index: 101;
-              bottom: $size0;
-              padding: $size3;
-              width: $width100;
-              background-color: rgba(255, 255, 255, 0.6);
-              span{
-                display: block;
-                float: $position_left;
-                &:after{content: ''; clear: both;}
-              }
-              .icon{
-                width: $size10;
-                height: $size10;
-                margin: $size5;
-                background-color: #999;
-              }
+            .material-name{
+              background-color: white;
+              display: block;
+              font-size: 14px;
             }
           }
         }

@@ -16,7 +16,7 @@
       <div class="main">
         <span class="title-style">
           合理的饮食，是身体健康的第一要素
-          <span class="many"><a href="">更多菜谱&nbsp;>></a></span>
+          <span class="many"><a @click="more(1)">更多菜谱&nbsp;>></a></span>
         </span>
         <div class="list-item" v-for="item in menuList" :key="item.id">
           <a href="#">
@@ -114,8 +114,12 @@ export default {
           title: '红烧黄花鱼',
           username: '中天北极紫微大帝'
         },
-      ],
-      
+      ], 
+    }
+  },
+  methods:{
+    more(status){
+      this.$router.push({path: '/request/allTemplate', query: { status }});
     }
   }
 }

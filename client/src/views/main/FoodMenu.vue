@@ -4,7 +4,7 @@
       <div class="header">
         <span class="title-style">
           每一个菜单都是一桌美味的饭
-          <span class="many"><a href="">更多菜谱&nbsp;>></a></span>
+          <span class="many"><a @click="moreMenu()">更多菜单&nbsp;>></a></span>
         </span>
         <el-carousel :interval="4000" height="200px">
             <el-carousel-item v-for="item in 6" :key="item">
@@ -15,17 +15,15 @@
       <div class="main">
         <div class="menu-item" v-for="item in menuList" :key="item.id">
           <div class="menu-title">
-            <a href="#" class="title"><span>{{item.title}}</span></a>
+            <a class="title"><span>{{item.title}}</span></a>
             <span class="menu-number"><em>{{item.number}}</em>篇菜谱</span>
           </div>
           <ul class="recipe">
-            <li class="recipe-item"><img src="http://site.meishij.net/r/147/198/4174647/a4174647_144456278915386.jpg"></li>
-            <li class="recipe-item"><img src="http://site.meishij.net/r/147/198/4174647/a4174647_144456278915386.jpg"></li>
-            <li class="recipe-item"><img src="http://site.meishij.net/r/147/198/4174647/a4174647_144456278915386.jpg"></li>
-            <li class="recipe-item"><img src="http://site.meishij.net/r/147/198/4174647/a4174647_144456278915386.jpg"></li>
-            <li class="recipe-item"><img src="http://site.meishij.net/r/147/198/4174647/a4174647_144456278915386.jpg"></li>
-            <li class="recipe-item"><img src="http://site.meishij.net/r/147/198/4174647/a4174647_144456278915386.jpg"></li>
-            <li class="recipe-item"><img src="http://site.meishij.net/r/147/198/4174647/a4174647_144456278915386.jpg"></li>
+            <li class="recipe-item" v-for="item in 8" :key="item">
+              <a @click="jumpRecipe(item)">
+                <img src="http://site.meishij.net/r/147/198/4174647/a4174647_144456278915386.jpg">
+                </a>
+              </li>
           </ul>
           <div class="info">
             <img src="https://s1.c.meishij.net/images/default/tx2_5.png">
@@ -66,6 +64,14 @@ export default {
         }
       ]
     }
+  },
+  methods:{
+    more(){
+      this.$router.push({path: '/request/moreMenu'});
+    },
+    jumpRecipe(id){
+      this.$router.push({path: '/request/recipeTemplate', query: { id }});
+    },
   }
 }
 </script>

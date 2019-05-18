@@ -18,7 +18,7 @@
         <div class="main-recommend">
           <span class="title-style">
             推荐{{title}}菜品
-            <span class="many"><a href="">更多菜谱&nbsp;>></a></span>
+            <span class="many"><a @click="more(1)">更多菜谱&nbsp;>></a></span>
           </span>
           <div class="list-item" v-for="item in menuList" :key="item.id">
             <a href="#">
@@ -86,6 +86,9 @@ export default {
     SelectContent(name,index){
       this.title = name;
       this.current = index;
+    },
+    more(status){
+      this.$router.push({path: '/request/allTemplate', query: { status }});
     }
   }
 }

@@ -2,18 +2,12 @@
   <el-col :span="24" class="container">
     <div class="main">
       <div class="logo">
-        <a href="/index">
-          <img src="../../assets/logo.png" alt="">
-        </a>
-        <div class="des">
-          <span>生如夏花之绚烂</span>
-          <span>死如秋叶之静美</span>
-        </div>
+        <img src="../../assets/logo.png" alt="">
       </div>
       <div class="info">
-        <span><em>Name&nbsp;:</em>你爸爸</span>
+        <span><em>Name&nbsp;:</em>王绍宇</span>
         <span><em>Tel&nbsp;:</em>18698763511</span>
-        <span><em>Email&nbsp;:</em>153089195@qq.com</span>
+        <span><em>Email&nbsp;:</em>sy153089195@163.com</span>
       </div>
     </div>
   </el-col>
@@ -45,21 +39,7 @@ export default {
           padding-left: $size30;
           float: left;
           overflow: hidden;
-          a{
-            float: left;
-            width: $width30;
-            &::after{content: ''; clear: both;}
-            img{display: block; width: $width100;}
-          }
-          .des{
-            padding: $size30 $size0 $size0 $size50;
-            float: left;
-            span{
-              display: block;
-              font-size: $font_size2;
-              color: rgba(255, 255, 255, 0.7);
-            }
-          }
+          img{display: block; width: $width100;}
         }
         .info{
           width: $width50;

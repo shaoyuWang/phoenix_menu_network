@@ -16,6 +16,11 @@ Vue.prototype._ = _;
 
 axios.defaults.withCredentials = true;
 
+// 跳转后返回顶部
+router.afterEach((to, from, next) => {
+  window.scrollTo(0, 0);
+});
+
 // 动态修改header
 router.beforeEach((to, from, next) => {
   /* 路由发生变化修改页面title */

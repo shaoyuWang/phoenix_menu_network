@@ -6,11 +6,17 @@
           <a href="/request/index" class="logo"><img src="../../assets/logo.png" alt=""></a>
         </div>
         <div class="header-login">
-          <!-- <a href="/login">登录</a> -->
-          <el-dropdown trigger='hover' :show-timeout="100" :hide-timeout="200" placement="bottom-start" @command="checkStatus">
-            <span>
-              <a href="#"><img class="user-photo" src="../../assets/client.jpg"/></a>
-            </span>
+          <div class="header-operation" v-show="login? false : true">
+            <a href="/login">注册</a>
+            <a href="/login">登录</a>
+          </div>
+          <el-dropdown trigger='hover' v-show="login? true : false" :show-timeout="100" :hide-timeout="200" placement="bottom-start" @command="checkStatus">
+            <div class="user-info">
+              <a href="#">
+                <img class="user-photo" src="../../assets/client.jpg"/>
+                <span class="username">{{_.isEmpty(user)? null : user.name}}</span>
+              </a>
+            </div>
             <el-dropdown-menu slot="dropdown">
               <el-dropdown-item :command="1">个人中心</el-dropdown-item>
               <el-dropdown-item :command="2">我的菜谱</el-dropdown-item>
@@ -29,7 +35,6 @@
           </el-menu-item>
           <el-menu-item index="/request/recipeCooking" @click="currentPath()">
             <span class="nav-font">菜谱菜系</span>
-            <!-- <span class="el-icon-arrow-down"></span> -->
           </el-menu-item>
           <el-menu-item index="/request/foodHealth" @click="currentPath()">
             <span class="nav-font">饮食健康</span>
@@ -57,13 +62,20 @@
 export default {
   data() {
     return {
-      activeIndex: '',
+      activeIndex: '/',
+      login: false,
+      user: ''
     };
   },
-  mounted() {
+  created() {
     this.currentPath();
+    this.authority();
   },
   methods: {
+    authority(){
+      this.user = _.isEmpty(window.user)? null: window.user;
+      !_.isEmpty(this.user) ? this.login = true : this.login = false;
+    },
     checkStatus(status){
       if(status != 6){
         this.$router.push({ path: '/userCenter', query: { status: _.toString(status)} });
@@ -77,10 +89,13 @@ export default {
         url: '/auth/logout',
         method: 'post',
       }).then(res =>{
+        console.log(res);
         this.$message({
           message: '注销成功',
           type: 'success'
         });
+        delete window.user;
+        this.authority();
         this.$router.push({ path: "/"});
       })
     },
@@ -96,36 +111,55 @@ export default {
   @import "../../styles/style.scss";
   .row{
     background-color: $color_navbar;
-    padding-top: $size10;
     .header{
       width: $width_screen;
       margin: $size0 auto;
+      overflow: hidden;
       .header-logo{
         float: $position_left;
+        width: 200px;
         .logo{
           display: block;
+          padding: 10px 0;
           text-align: $position_center;
           img{
-            width: $width50;
+            width: $width100;
           }
         }
       }
       .header-login{
         float: $position_right;
-        padding: $size20;
-        a{
-          color: $color_white;
-          padding: $size10;
-          &:hover{
-            background-color: $color_background_hover;
-            border-radius: $width20;
-            text-decoration: none;
+        &::after{ content: ''; display: block; clear: both; }
+        .header-operation{
+          padding: 25px 0;
+          a{
+            display: inline-block;
+            color: $color_white;
+            padding: $size10;
+            &:hover{
+              background-color: $color_background_hover;
+              border-radius: $width20;
+              text-decoration: none;
+            }
           }
         }
-        &::after{ content: ''; display: block; clear: both; }
-      }
-      .user-photo{
-        width: 40px;
+        .user-info{
+            padding-top: 20px;
+            width: 100px;
+            text-align: center;
+            overflow: hidden;
+          .user-photo{
+            width: 40px;
+            display: inline-block;
+          }
+          .username{
+            margin-top: 5px;
+            display: block;
+            width: 100%;
+            color: black;
+            &:hover{color: black;}
+          }
+        }
       }
     }
     .el-menu-demo{

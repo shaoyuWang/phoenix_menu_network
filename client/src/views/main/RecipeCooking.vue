@@ -7,7 +7,7 @@
             <div class="sort">
               <ul class="tab-item">
                 <span class="sort-title">{{item.name}}</span>
-                <li v-for="sortItem in item.sorts" :key="sortItem.id"><el-button ref="sortItem" type="text">{{sortItem.name}}</el-button></li>
+                <li v-for="sortItem in item.sorts" :key="sortItem.id"><el-button ref="sortItem" @click="checkSort(item.id,sortItem.id)" type="text">{{sortItem.name}}</el-button></li>
               </ul>
             </div>
           </el-tab-pane>
@@ -16,7 +16,7 @@
       <div class="main">
         <span class="title-style">
           了解咱餐饮文化大国，看中华八大菜系
-          <span class="many"><a href="">更多菜谱&nbsp;>></a></span>
+          <span class="many"><a @click="more(1)">更多菜谱&nbsp;>></a></span>
         </span>
         <div class="list-item" v-for="item in menuList" :key="item.id">
           <a href="#">
@@ -117,6 +117,15 @@ export default {
           username: '中天北极紫微大帝'
         },
       ],
+    }
+  },
+  methods:{
+    checkSort(kindId,sortId){
+      console.log(`kind:${kindId}`);
+      console.log(`sort:${sortId}`);
+    },
+    more(status){
+      this.$router.push({path: '/request/allTemplate', query: { status }});
     }
   }
 }

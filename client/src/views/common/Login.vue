@@ -34,10 +34,22 @@ export default {
         data: data,
       }).then(res =>{
         console.log(res);
-        if(res.data.roles[0].id == 1){
-          this.$router.push({ path: "/admin"});
-        }else{
-          this.$router.push({ path: "/request"});
+        if(res.status == 200){
+          let authority = false;
+          _.forEach(res.data.roles,item=>{
+            if(item.id == 1){
+              authority = true;
+            }
+          });
+          window.user = {
+            userId: res.data.id,
+            name: res.data.name,
+          }
+          if(authority){
+            this.$router.push({ path: "/admin"});
+          }else{
+            this.$router.push({ path: "/request/index"});
+          }
         }
       })
     }

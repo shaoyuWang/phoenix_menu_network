@@ -4,6 +4,7 @@ a{
   color: $color_black;
   list-style: none;
   display: block;
+  cursor: pointer;
   &:hover{text-decoration: none;}
 }
 
@@ -28,7 +29,7 @@ body {
     font-size: $font_size1;
     padding-top: $size12;
     letter-spacing: $size1;
-    a{ text-decoration: none; color: $color_title_many; &:hover{color: $color_title_hover;}}
+    a{ text-decoration: none; cursor: pointer; color: $color_title_many; &:hover{color: $color_title_hover;}}
   }
 }
 
