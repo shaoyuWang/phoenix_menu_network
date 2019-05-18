@@ -13,8 +13,7 @@ export class FoodMenuController {
   @Get("/getList")
   @Roles(2)
   public async getList() {
-    let data: any;
-    data.menus = await this.foodMenuService.getList();
+    let data = await this.foodMenuService.getList();
     return { data, code: RESPONSE_CODE.SUCCESS };
   }
 }

@@ -13,8 +13,7 @@ export class IndexController {
   @Get("/getList")
   @Roles(2)
   public async getList() {
-    let data: any;
-    data.recipes = await this.indexService.getList();
+    let data = await this.indexService.getList();
     return { data, code: RESPONSE_CODE.SUCCESS };
   }
 }
