@@ -10,6 +10,7 @@ import {
   UserMenuCommentEntity,
   UserDiaryEntity,
   UserDiaryCommentEntity,
+  UserCollectionEntity,
 } from "./modules/admin/entities";
 import _ from "lodash";
 import { RepositoryModule } from "./framework/config";
@@ -45,6 +46,7 @@ const adminEntities = [
   UserMenuCommentEntity,
   UserDiaryEntity,
   UserDiaryCommentEntity,
+  UserCollectionEntity,
 ];
 
 const mainEntities = [

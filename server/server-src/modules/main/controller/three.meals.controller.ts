@@ -3,18 +3,18 @@ import { Roles } from "../../../framework/decorators/role.decorator";
 import { LoginGuard } from "../../../framework/guards";
 import { RESPONSE_CODE } from "../../../framework/enums";
 import _ from "lodash";
-import { RecipeService } from "../services";
+import { ThreeMealsService } from "../services";
 
-@Controller("/main/foodMeals")
+@Controller("/main/threeMeals")
 @UseGuards(LoginGuard)
 export class ThreeMealsController {
-  constructor(private readonly recipeService: RecipeService) {}
+  constructor(private readonly threeMealsService: ThreeMealsService) {}
 
   @Get("/getList")
   @Roles(2)
   public async getList() {
     let data: any;
-    data.recipes = await this.recipeService.getAllRecipes();
+    data.recipes = await this.threeMealsService.getList();
     return { data, code: RESPONSE_CODE.SUCCESS };
   }
 }

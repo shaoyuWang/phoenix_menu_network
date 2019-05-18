@@ -24,9 +24,6 @@ export class UserEntity extends FrameworkEntity {
   @Column({ name: "name", length: 255 })
   public name: string;
 
-  @Column("text", { name: "sign" })
-  public sign: string;
-
   @Column({ name: "email", length: 100 })
   public email: string;
 
@@ -46,7 +43,7 @@ export class UserEntity extends FrameworkEntity {
     () => UserCollectionEntity,
     (UserCollectionEntity) => UserCollectionEntity.user,
   )
-  public recipes: UserCollectionEntity[] | null;
+  public collections: UserCollectionEntity[] | null;
 
   @ManyToMany(() => RoleEntity)
   @JoinTable({

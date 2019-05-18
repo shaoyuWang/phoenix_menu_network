@@ -3,18 +3,18 @@ import { Roles } from "../../../framework/decorators/role.decorator";
 import { LoginGuard } from "../../../framework/guards";
 import { RESPONSE_CODE } from "../../../framework/enums";
 import _ from "lodash";
-import { UserMenuService } from "../../admin/services";
+import { FoodMenuService } from "../services";
 
 @Controller("/main/foodMenu")
 @UseGuards(LoginGuard)
 export class FoodMenuController {
-  constructor(private readonly userMenuService: UserMenuService) {}
+  constructor(private readonly foodMenuService: FoodMenuService) {}
 
   @Get("/getList")
   @Roles(2)
   public async getList() {
     let data: any;
-    data.menus = await this.userMenuService.getAllMenus();
+    data.menus = await this.foodMenuService.getList();
     return { data, code: RESPONSE_CODE.SUCCESS };
   }
 }
