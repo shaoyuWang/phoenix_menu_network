@@ -11,9 +11,8 @@ export class RecipeCookingController {
   constructor(private readonly recipeCookingService: RecipeCookingService) {}
 
   @Get("/getList")
-  @Roles(2)
+  // @Roles(2)
   public async getList() {
-    let data = await this.recipeCookingService.getList();
-    return { data, code: RESPONSE_CODE.SUCCESS };
+    return await this.recipeCookingService.getList();
   }
 }

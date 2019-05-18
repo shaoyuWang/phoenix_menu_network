@@ -10,3 +10,4 @@ export * from "./material.kind.entities";
 export * from "./major.recipe.material.entities";
 export * from "./auxiliary.recipe.material.entities";
 export * from "./recipe.comment.entities";
+export * from "./recipe.video.entities";

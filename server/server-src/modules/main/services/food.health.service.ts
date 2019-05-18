@@ -3,27 +3,35 @@ import { InjectRepository } from "@nestjs/typeorm";
 import { Repository } from "typeorm";
 import _ from "lodash";
 import { RESPONSE_CODE } from "../../../framework/enums";
-import { RecipeEntity, SortKindEntity } from "../entities";
+import { RecipeEntity, EffectEntity } from "../entities";
 
 @Injectable()
-export class RecipeCookingService {
+export class FoodHealthService {
   constructor(
     @InjectRepository(RecipeEntity)
     private readonly recipeRepository: Repository<RecipeEntity>,
-    @InjectRepository(SortKindEntity)
-    private readonly sortKindRepository: Repository<SortKindEntity>,
+    @InjectRepository(EffectEntity)
+    private readonly effectRepository: Repository<EffectEntity>,
   ) {}
 
   //   获取列表
   public async getList() {
     let data: any;
     let recipes = await this.recipeRepository.find({
-      relations: ["user", "sort", "effects"],
+      relations: [
+        "user",
+        "sort",
+        "technology",
+        "taste",
+        "majorMaterials",
+        "auxiliaryMaterials",
+        "comments",
+        // "steps",
+        "effects",
+      ],
     });
-    let sortKinds = await this.sortKindRepository.find({
-      relations: ["sorts"],
-    });
-    data = _.assign({}, { recipes }, { sortKinds });
+    let effects = await this.effectRepository.find();
+    data = _.assign({}, { recipes }, { effects });
     if (!_.isEmpty(data)) {
       return { data, code: RESPONSE_CODE.SUCCESS };
     } else {

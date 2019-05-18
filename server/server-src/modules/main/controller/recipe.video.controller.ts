@@ -6,14 +6,13 @@ import _ from "lodash";
 import { RecipeVideoService } from "../services";
 
 @Controller("/main/recipeVideo")
-@UseGuards(LoginGuard)
+// @UseGuards(LoginGuard)
 export class RecipeVideoController {
   constructor(private readonly recipeVideoService: RecipeVideoService) {}
 
   @Get("/getList")
-  @Roles(2)
+  // @Roles(2)
   public async getList() {
-    let data = await this.recipeVideoService.getList();
-    return { data, code: RESPONSE_CODE.SUCCESS };
+    return await this.recipeVideoService.getList();
   }
 }

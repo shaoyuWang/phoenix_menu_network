@@ -1,5 +1,6 @@
-import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, PrimaryGeneratedColumn, ManyToMany } from "typeorm";
 import { FrameworkEntity } from "../../../framework/entities/freamework.entities";
+import { RecipeEntity } from "./recipe.entities";
 
 @Entity({ name: "m_effect" })
 export class EffectEntity extends FrameworkEntity {

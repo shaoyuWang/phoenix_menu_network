@@ -3,20 +3,24 @@ import { InjectRepository } from "@nestjs/typeorm";
 import { Repository } from "typeorm";
 import _ from "lodash";
 import { RESPONSE_CODE } from "../../../framework/enums";
-import { UserEntity } from "../../admin/entities";
+import { RecipeEntity } from "../entities";
 
 @Injectable()
 export class ThreeMealsService {
   constructor(
-    @InjectRepository(UserEntity)
-    private readonly userRepository: Repository<UserEntity>,
+    @InjectRepository(RecipeEntity)
+    private readonly recipeRepository: Repository<RecipeEntity>,
   ) {}
 
   //   获取列表
   public async getList() {
-    const users = await this.userRepository.find();
-    if (!_.isEmpty(users)) {
-      return { data: users, code: RESPONSE_CODE.SUCCESS };
+    let data: any;
+    let recipes = await this.recipeRepository.find({
+      relations: ["user", "effects"],
+    });
+    data = _.assign({}, { recipes });
+    if (!_.isEmpty(data)) {
+      return { data, code: RESPONSE_CODE.SUCCESS };
     } else {
       return { code: RESPONSE_CODE.NOTVALUE };
     }

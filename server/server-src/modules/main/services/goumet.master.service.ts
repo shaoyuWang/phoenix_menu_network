@@ -3,20 +3,22 @@ import { InjectRepository } from "@nestjs/typeorm";
 import { Repository } from "typeorm";
 import _ from "lodash";
 import { RESPONSE_CODE } from "../../../framework/enums";
-import { UserEntity } from "../../admin/entities";
+import { UserEntity, UserDiaryEntity } from "../../admin/entities";
 
 @Injectable()
 export class GoumetMasterService {
   constructor(
-    @InjectRepository(UserEntity)
-    private readonly userRepository: Repository<UserEntity>,
+    @InjectRepository(UserDiaryEntity)
+    private readonly userDiaryRepository: Repository<UserDiaryEntity>,
   ) {}
 
   //   获取列表
   public async getList() {
-    const users = await this.userRepository.find();
-    if (!_.isEmpty(users)) {
-      return { data: users, code: RESPONSE_CODE.SUCCESS };
+    let data: any;
+    let diarys = await this.userDiaryRepository.find({ relations: ["user"] });
+    data = _.assign({}, { diarys });
+    if (!_.isEmpty(data)) {
+      return { data: data, code: RESPONSE_CODE.SUCCESS };
     } else {
       return { code: RESPONSE_CODE.NOTVALUE };
     }

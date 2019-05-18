@@ -3,20 +3,22 @@ import { InjectRepository } from "@nestjs/typeorm";
 import { Repository } from "typeorm";
 import _ from "lodash";
 import { RESPONSE_CODE } from "../../../framework/enums";
-import { UserEntity } from "../../admin/entities";
+import { RecipeVideoEntity } from "../entities";
 
 @Injectable()
 export class RecipeVideoService {
   constructor(
-    @InjectRepository(UserEntity)
-    private readonly userRepository: Repository<UserEntity>,
+    @InjectRepository(RecipeVideoEntity)
+    private readonly recipeVideoRepository: Repository<RecipeVideoEntity>,
   ) {}
 
   //   获取列表
   public async getList() {
-    const users = await this.userRepository.find();
-    if (!_.isEmpty(users)) {
-      return { data: users, code: RESPONSE_CODE.SUCCESS };
+    let data: any;
+    let videos = await this.recipeVideoRepository.find({ relations: ["user"] });
+    data = _.assign({}, { videos });
+    if (!_.isEmpty(data)) {
+      return { data, code: RESPONSE_CODE.SUCCESS };
     } else {
       return { code: RESPONSE_CODE.NOTVALUE };
     }

@@ -1,5 +1,6 @@
-import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, PrimaryGeneratedColumn, OneToMany } from "typeorm";
 import { FrameworkEntity } from "../../../framework/entities/freamework.entities";
+import { MaterialEntity } from "./material.entities";
 
 @Entity({ name: "m_material_kind" })
 export class MaterialKindEntity extends FrameworkEntity {
@@ -11,4 +12,7 @@ export class MaterialKindEntity extends FrameworkEntity {
 
   @Column({ name: "description" })
   public description: string;
+
+  @OneToMany(() => MaterialEntity, (MaterialEntity) => MaterialEntity.kind)
+  public materials: MaterialEntity[] | null;
 }

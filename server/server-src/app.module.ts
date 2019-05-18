@@ -27,6 +27,7 @@ import {
   MajorRecipeMaterialMappingEntity,
   AuxiliaryRecipeMaterialMappingEntity,
   MaterialKindEntity,
+  RecipeVideoEntity,
 } from "./modules/main/entities";
 
 const {
@@ -62,6 +63,7 @@ const mainEntities = [
   MaterialKindEntity,
   MajorRecipeMaterialMappingEntity,
   AuxiliaryRecipeMaterialMappingEntity,
+  RecipeVideoEntity,
 ];
 
 const entities = [...adminEntities, ...mainEntities];

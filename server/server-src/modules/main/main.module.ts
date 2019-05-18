@@ -6,6 +6,7 @@ import {
   RecipeCookingController,
   RecipeVideoController,
   ThreeMealsController,
+  FoodHealthController,
 } from "./controller";
 import {
   IndexService,
@@ -14,11 +15,13 @@ import {
   RecipeCookingService,
   RecipeVideoService,
   ThreeMealsService,
+  FoodHealthService,
 } from "./services";
 
 const controllers = [
   IndexController,
   FoodMenuController,
+  FoodHealthController,
   GoumetMasterController,
   RecipeCookingController,
   RecipeVideoController,
@@ -28,6 +31,7 @@ const controllers = [
 const services = [
   IndexService,
   FoodMenuService,
+  FoodHealthService,
   GoumetMasterService,
   RecipeCookingService,
   RecipeVideoService,
