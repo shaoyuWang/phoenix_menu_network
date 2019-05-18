@@ -24,14 +24,21 @@ export class UploadController {
   // @Roles(2)
   public async uploadImg(@UploadedFile() file) {
     const nameList = _.split(file.originalname, ".");
-    const random = _.random(100000, 999999);
-    const fileName = `${random}${new Date().getTime()}.${
-      nameList[nameList.length - 1]
-    }`;
-    const writeImage = createWriteStream(
-      join(__dirname, "../../../assets/imgs", `${fileName}`),
-    );
-    writeImage.write(file.buffer);
-    return { writeImage, code: RESPONSE_CODE.SUCCESS };
+    if (
+      _.toLower(nameList[nameList.length - 1]) == "jpg" ||
+      _.toLower(nameList[nameList.length - 1]) == "jpeg"
+    ) {
+      const random = _.random(100000, 999999);
+      const fileName = `${random}${new Date().getTime()}.${
+        nameList[nameList.length - 1]
+      }`;
+      const writeImage = createWriteStream(
+        join(__dirname, "../../../assets/imgs", `${fileName}`),
+      );
+      writeImage.write(file.buffer);
+      return { fileName, code: RESPONSE_CODE.SUCCESS };
+    } else {
+      return { code: RESPONSE_CODE.NOTPARAMETER };
+    }
   }
 }

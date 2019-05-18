@@ -20,10 +20,10 @@ export class IndexService {
     let recipes = await this.recipeRepository.find({
       relations: ["user"],
     });
-    let materials = await this.materialKindRepository.find({
+    let kinds = await this.materialKindRepository.find({
       relations: ["materials"],
     });
-    data = _.assign({}, { recipes }, { materials });
+    data = _.assign({}, { recipes }, { kinds });
     if (!_.isEmpty(data)) {
       return { data, code: RESPONSE_CODE.SUCCESS };
     } else {
