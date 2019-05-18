@@ -1,7 +1,6 @@
 import {
   Body,
   Controller,
-  Delete,
   Get,
   Param,
   Post,
@@ -14,29 +13,19 @@ import { UserDiaryService } from "../services/user.diary.service";
 import _ from "lodash";
 import { RESPONSE_CODE } from "../../../framework/enums";
 
-@Controller("diary")
-@UseGuards(LoginGuard)
+@Controller("admin/diary")
+// @UseGuards(LoginGuard)
 export class UserDiaryController {
   constructor(private readonly diaryServices: UserDiaryService) {}
 
   @Get("/getAllDiarys")
-  @Roles(1, 2)
+  // @Roles(1, 2)
   public async getDiarys() {
     return this.diaryServices.getAllDiarys();
   }
 
-  //   @Get("/findDiaryById/:id")
-  //   @Roles(1, 2)
-  //   public async findDiaryById(@Param("id") diaryId: any) {
-  //     if (!_.isEmpty(diaryId)) {
-  //       return this.diaryServices.findDiaryById(diaryId);
-  //     } else {
-  //       return { code: 500 };
-  //     }
-  //   }
-
   @Post("/saveDiary")
-  @Roles(1, 2)
+  // @Roles(1, 2)
   public async saveDiary(@Body() data: any) {
     if (!_.isEmpty(data)) {
       return this.diaryServices.saveDiary(data);
@@ -46,7 +35,7 @@ export class UserDiaryController {
   }
 
   @Put("/updateDiary/:id")
-  @Roles(1)
+  // @Roles(1)
   public async updateDiary(@Param("id") diaryId: any, @Body() data: any) {
     if (!_.isEmpty(diaryId) && !_.isEmpty(data)) {
       return this.diaryServices.updateDiary(diaryId, data);

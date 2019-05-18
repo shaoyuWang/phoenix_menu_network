@@ -7,7 +7,6 @@ import {
 } from "typeorm";
 import { FrameworkEntity } from "../../../framework/entities/freamework.entities";
 import { RecipeEntity } from "./recipe.entities";
-import { UserEntity } from "../../admin/entities";
 
 @Entity({ name: "m_recipe_comment" })
 export class RecipeCommentEntity extends FrameworkEntity {
@@ -20,11 +19,13 @@ export class RecipeCommentEntity extends FrameworkEntity {
   @Column({ name: "praise" })
   public praise: number;
 
+  @Column({ name: "user_id" })
+  public userId: number;
+
+  @Column({ name: "user_name" })
+  public username: string;
+
   @JoinColumn({ name: "recipe_id" })
   @ManyToOne(() => RecipeEntity)
-  public recipeId: RecipeEntity | null;
-
-  @JoinColumn({ name: "user_id" })
-  @ManyToOne(() => UserEntity)
-  public user: UserEntity | null;
+  public recipe: RecipeEntity | null;
 }

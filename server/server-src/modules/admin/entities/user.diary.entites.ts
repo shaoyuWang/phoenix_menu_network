@@ -22,9 +22,6 @@ export class UserDiaryEntity extends FrameworkEntity {
   @Column("text", { name: "info" })
   public info: string;
 
-  @Column({ name: "comment_number" })
-  public commentNumber: number;
-
   @JoinColumn({ name: "user_id" })
   @ManyToOne(() => UserEntity)
   public user: UserEntity | null;

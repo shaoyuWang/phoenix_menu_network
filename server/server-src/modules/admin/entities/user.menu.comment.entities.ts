@@ -6,7 +6,6 @@ import {
   ManyToOne,
 } from "typeorm";
 import { FrameworkEntity } from "../../../framework/entities/freamework.entities";
-import { UserEntity } from "./user.entities";
 import { UserMenuEntity } from "./user.menu.entities";
 
 @Entity({ name: "s_user_menu_comment" })
@@ -20,9 +19,11 @@ export class UserMenuCommentEntity extends FrameworkEntity {
   @Column({ name: "praise" })
   public praise: number;
 
-  @JoinColumn({ name: "user_id" })
-  @ManyToOne(() => UserEntity)
-  public user: UserEntity | null;
+  @Column({ name: "user_id" })
+  public userId: number;
+
+  @Column({ name: "user_name" })
+  public username: string;
 
   @JoinColumn({ name: "menu_id" })
   @ManyToOne(() => UserMenuEntity)

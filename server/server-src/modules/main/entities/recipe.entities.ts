@@ -7,7 +7,6 @@ import {
   OneToMany,
   JoinTable,
   ManyToMany,
-  OneToOne,
 } from "typeorm";
 import { FrameworkEntity } from "../../../framework/entities/freamework.entities";
 import { UserEntity } from "../../admin/entities";
@@ -18,6 +17,7 @@ import { MajorRecipeMaterialMappingEntity } from "./major.recipe.material.entiti
 import { AuxiliaryRecipeMaterialMappingEntity } from "./auxiliary.recipe.material.entities";
 import { EffectEntity } from "./effect.entities";
 import { StepEntity } from "./step.entities";
+import { RecipeCommentEntity } from "./recipe.comment.entities";
 
 @Entity({ name: "m_recipe" })
 export class RecipeEntity extends FrameworkEntity {
@@ -58,7 +58,7 @@ export class RecipeEntity extends FrameworkEntity {
   @ManyToOne(() => TasteEntity)
   public taste: TasteEntity | null;
 
-  @OneToMany(() => StepEntity, (StepEntity) => StepEntity.id)
+  @OneToMany(() => StepEntity, (StepEntity) => StepEntity.recipe)
   public steps: StepEntity[] | null;
 
   @OneToMany(
@@ -81,5 +81,11 @@ export class RecipeEntity extends FrameworkEntity {
     joinColumn: { name: "recipe_id" },
     name: "m_recipe_effect_mapping",
   })
-  public roles: EffectEntity[] | null;
+  public effects: EffectEntity[] | null;
+
+  @OneToMany(
+    () => RecipeCommentEntity,
+    (RecipeCommentEntity) => RecipeCommentEntity.recipe,
+  )
+  public comments: RecipeCommentEntity | null;
 }

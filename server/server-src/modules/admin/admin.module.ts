@@ -10,6 +10,7 @@ import {
   RoleService,
   UserDiaryService,
   UserMenuService,
+  RecipeService,
 } from "./services";
 import { UserService } from "./services/user.service";
 import { UserDiaryController } from "./controller/user.diary.controller";
@@ -18,6 +19,7 @@ import { UserMenuController } from "./controller/user.menu.controller";
 import { UserMenuCommentController } from "./controller/user.menu.comment.controller";
 import { UserDiaryCommentService } from "./services/user.diary.comment.service";
 import { UserMenuCommentService } from "./services/user.menu.comment.service";
+import { RecipeController } from "./controller/recipe.controller";
 
 const controllers = [
   AuthorityController,
@@ -27,6 +29,7 @@ const controllers = [
   UserDiaryCommentController,
   UserMenuController,
   UserMenuCommentController,
+  RecipeController,
 ];
 
 const services = [
@@ -38,6 +41,7 @@ const services = [
   UserDiaryCommentService,
   UserMenuService,
   UserMenuCommentService,
+  RecipeService,
 ];
 
 @Module({

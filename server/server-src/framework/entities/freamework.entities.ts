@@ -1,9 +1,9 @@
-import { Column } from "typeorm";
+import { Column, CreateDateColumn, UpdateDateColumn } from "typeorm";
 
 export abstract class FrameworkEntity {
-  @Column("datetime", { name: "create_date", nullable: true })
+  @CreateDateColumn({ name: "create_date" })
   public createDate: Date;
 
-  @Column("datetime", { name: "update_date", nullable: true })
+  @UpdateDateColumn({ name: "update_date" })
   public updateDate: Date;
 }
