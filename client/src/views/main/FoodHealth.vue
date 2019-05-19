@@ -2,12 +2,14 @@
   <el-row class="container">
     <el-col :span="16" :offset="4">
       <div class="tabs">
-        <el-tabs v-model="tabValue" type="card">
-          <el-tab-pane :label="item.name"  v-for="item in tabList" :key="item.id">
+        <el-tabs v-model="activeName" type="card">
+          <el-tab-pane :label="item.name" :name="item.name" v-for="item in effectKindList" :key="item.id">
             <div class="sort">
               <ul class="tab-item">
                 <span class="sort-title">{{item.name}}</span>
-                <li v-for="sortItem in item.sorts" :key="sortItem.id"><el-button ref="sortItem" type="text">{{sortItem.name}}</el-button></li>
+                <li v-for="effectItem in item.effects" :key="effectItem.id">
+                  <el-button @click="checkEffect(effectItem.id)" type="text">{{effectItem.name}}</el-button>
+                </li>
               </ul>
             </div>
           </el-tab-pane>
@@ -18,12 +20,12 @@
           合理的饮食，是身体健康的第一要素
           <span class="many"><a @click="more(1)">更多菜谱&nbsp;>></a></span>
         </span>
-        <div class="list-item" v-for="item in menuList" :key="item.id">
-          <a href="#">
-            <div class="item-img"><img class="img-responsive" :src="item.img"></div>
+        <div class="list-item" v-for="item in recipeList" :key="item.id">
+          <a @click="jumpRecipe(item.id)">
+            <div class="item-img"><img class="img-responsive" :src="img"></div>
             <div class="item-info">
-              <span class="info-title">{{item.title}}</span>
-              <span class="info-user">{{item.username}}</span>
+              <span class="info-title">{{item.name}}</span>
+              <span class="info-user">{{item.user.name}}</span>
             </div>
           </a>
         </div>
@@ -37,89 +39,72 @@
 import Footer from './Footer.vue';
 export default {
   components: {Footer},
-  mounted(){
-    console.log(this.$refs.tabItem);
-  },
   data(){
     return {
-      tabValue: '',
-      tabList:[
-        {
-          id: 1,
-          name: '功能性调节',
-          sorts: [
-            { id: 1, name: '清热去火'},
-            { id: 2, name: '减肥'},
-            { id: 3, name: '祛痰'},
-            { id: 4, name: '消化不良'},
-        ]   
-        },
-        {
-          id: 2,
-          name: '疾病调节',
-          sorts: [
-            { id: 1, name: '糖尿病'},
-            { id: 2, name: '高血压'},
-            { id: 3, name: '痛风'},
-            { id: 4, name: '胃炎'},
-            ]
-        },
-      ],
-      menuList:[
-        {
-          id: 1,
-          img: 'https://s1.ig.meishij.net/p/20190225/5c3cfecbc666b3a256d5fd348ee82323.jpg',
-          title: '红烧黄花鱼',
-          username: '中天北极紫微大帝'
-        },
-        {
-          id: 2,
-          img: 'https://s1.ig.meishij.net/p/20190225/5c3cfecbc666b3a256d5fd348ee82323.jpg',
-          title: '红烧黄花鱼',
-          username: '中天北极紫微大帝'
-        },
-        {
-          id: 3,
-          img: 'https://s1.ig.meishij.net/p/20190225/5c3cfecbc666b3a256d5fd348ee82323.jpg',
-          title: '红烧黄花鱼',
-          username: '中天北极紫微大帝'
-        },
-        {
-          id: 4,
-          img: 'https://s1.ig.meishij.net/p/20190225/5c3cfecbc666b3a256d5fd348ee82323.jpg',
-          title: '红烧黄花鱼',
-          username: '中天北极紫微大帝'
-        },
-        {
-          id: 5,
-          img: 'https://s1.ig.meishij.net/p/20190225/5c3cfecbc666b3a256d5fd348ee82323.jpg',
-          title: '红烧黄花鱼',
-          username: '中天北极紫微大帝'
-        },
-        {
-          id: 6,
-          img: 'https://s1.ig.meishij.net/p/20190225/5c3cfecbc666b3a256d5fd348ee82323.jpg',
-          title: '红烧黄花鱼',
-          username: '中天北极紫微大帝'
-        },
-        {
-          id: 7,
-          img: 'https://s1.ig.meishij.net/p/20190225/5c3cfecbc666b3a256d5fd348ee82323.jpg',
-          title: '红烧黄花鱼',
-          username: '中天北极紫微大帝'
-        },
-        {
-          id: 8,
-          img: 'https://s1.ig.meishij.net/p/20190225/5c3cfecbc666b3a256d5fd348ee82323.jpg',
-          title: '红烧黄花鱼',
-          username: '中天北极紫微大帝'
-        },
-      ], 
+      activeName: '',
+      img: 'https://s1.ig.meishij.net/p/20190225/5c3cfecbc666b3a256d5fd348ee82323.jpg',
+      recipeTemp: [],
+      effectKindList: [],
+      recipeList: [],
     }
   },
+  mounted(){
+    this.getList();
+  },
   methods:{
+    jumpRecipe(id){
+      this.$router.push({path: '/request/recipeTemplate', query: { id }});
+    },
     more(status){
       this.$router.push({path: '/request/allTemplate', query: { status }});
+    },
+    checkEffect(effectId){
+      this.recipeList = [];
+      _.forEach(this.recipeTemp, item=>{
+        let judge = false;
+        _.forEach(item.effects,effectItem=>{
+          if(effectItem.id == effectId){
+            judge = true;
+          }
+        });
+        if(judge){
+          this.recipeList.push(item);
+        }
+      })
+      console.log(this.recipeList);
+    },
+    getList(){
+      this.$axios({
+        url: '/main/foodHealth/getList',
+        method: 'get',
+      }).then(res =>{
+        console.log(res);
+        if(res.status == 200){
+          _.forEach(res.data.data.recipes, (item,index)=>{
+            this.recipeTemp.push(item);
+            if(index == 16) return false;
+          });
+          
+          _.forEach(res.data.data.effectKinds, (item)=>{
+            this.effectKindList.push(item);
+          });
+          this.activeName = this.effectKindList[0].name;
+          this.initList();
+        }
+      });
+    },
+    initList(){
+      _.forEach(this.recipeTemp, item=>{
+        let judge = false;
+        _.forEach(item.effects,effectItem=>{
+          if(effectItem.id == this.effectKindList[0].effects[0].id){
+            judge = true;
+          }
+        });
+        if(judge){
+          this.recipeList.push(item);
+        }
+      })
     }
   }
 }

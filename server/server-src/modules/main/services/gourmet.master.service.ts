@@ -3,10 +3,10 @@ import { InjectRepository } from "@nestjs/typeorm";
 import { Repository } from "typeorm";
 import _ from "lodash";
 import { RESPONSE_CODE } from "../../../framework/enums";
-import { UserEntity, UserDiaryEntity } from "../../admin/entities";
+import { UserDiaryEntity } from "../../admin/entities";
 
 @Injectable()
-export class GoumetMasterService {
+export class GourmetMasterService {
   constructor(
     @InjectRepository(UserDiaryEntity)
     private readonly userDiaryRepository: Repository<UserDiaryEntity>,

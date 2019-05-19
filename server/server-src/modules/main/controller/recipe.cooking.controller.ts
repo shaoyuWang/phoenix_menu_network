@@ -6,7 +6,7 @@ import _ from "lodash";
 import { RecipeCookingService } from "../services";
 
 @Controller("/main/recipeCooking")
-@UseGuards(LoginGuard)
+// @UseGuards(LoginGuard)
 export class RecipeCookingController {
   constructor(private readonly recipeCookingService: RecipeCookingService) {}
 

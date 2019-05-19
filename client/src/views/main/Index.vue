@@ -78,9 +78,6 @@ export default {
     jumpRecipe(id){
       this.$router.push({path: '/request/recipeTemplate', query: { id }});
     },
-    // jumpMaterial(id){
-      
-    // }
     more(status){
       this.$router.push({path: '/request/allTemplate', query: { status }});
     },

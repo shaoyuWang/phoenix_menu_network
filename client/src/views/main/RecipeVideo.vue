@@ -3,8 +3,8 @@
     <el-col :span="16" :offset="4">
       <div class="main">
         <div class="list-item" v-for="item in videoList" :key="item.id">
-          <a href="#" id="menu-item">
-            <div class="item-img"><img class="img-responsive" :src="item.finishPhoto"></div>
+          <a @click="jumpVideoTemplate(item.id)">
+            <div class="item-img"><img class="img-responsive" :src="video"></div>
             <div class="item-info">
               <span class="info-title">{{item.name}}</span>
             </div>
@@ -22,39 +22,31 @@ export default {
   components: {Footer},
   data() {
     return {
-      videoList:[
-        {
-          id:1,
-          name: '红烧排骨',
-          finishPhoto: 'https://s1.ig.meishij.net/p/20190225/5c3cfecbc666b3a256d5fd348ee82323.jpg'
-        },
-        {
-          id:2,
-          name: '红烧排骨',
-          finishPhoto: 'https://s1.ig.meishij.net/p/20190225/5c3cfecbc666b3a256d5fd348ee82323.jpg'
-        },
-        {
-          id:3,
-          name: '红烧排骨',
-          finishPhoto: 'https://s1.ig.meishij.net/p/20190225/5c3cfecbc666b3a256d5fd348ee82323.jpg'
-        },
-        {
-          id:4,
-          name: '红烧排骨',
-          finishPhoto: 'https://s1.ig.meishij.net/p/20190225/5c3cfecbc666b3a256d5fd348ee82323.jpg'
-        },
-        {
-          id:5,
-          name: '红烧排骨',
-          finishPhoto: 'https://s1.ig.meishij.net/p/20190225/5c3cfecbc666b3a256d5fd348ee82323.jpg'
-        },
-        {
-          id:6,
-          name: '红烧排骨',
-          finishPhoto: 'https://s1.ig.meishij.net/p/20190225/5c3cfecbc666b3a256d5fd348ee82323.jpg'
-        },
-      ]
+      video: 'https://vdse.bdstatic.com//f13a391bcf73de64c2e965eddae17fc8?authorization=bce-auth-v1%2F40f207e648424f47b2e3dfbb1014b1a5%2F2017-05-11T09%3A02%3A31Z%2F-1%2F%2F05e5f8a459a1c44cf5507778e239fe62d4d63104a5aa5dfdc4b9efbafad673f1',
+      videoList:[]
     }
+  },
+  created(){
+    this.getList();
+  },
+  methods:{
+    jumpVideoTemplate(id){
+      this.$router.push({path: '/request/videoTemplate', query: { id }});
+    },
+    getList(){
+      this.$axios({
+        url: '/main/recipeVideo/getList',
+        method: 'get',
+      }).then(res =>{
+        console.log(res);
+        if(res.status == 200){
+          _.forEach(res.data.data.videos, (item,index)=>{
+            this.videoList.push(item);
+            if(index == 19) return false;
+          });
+        }
+      });
+    },
   }
 }
 </script>

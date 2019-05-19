@@ -4,6 +4,7 @@ export * from "./recipe.entities";
 export * from "./taste.entities";
 export * from "./technology.entities";
 export * from "./effect.entities";
+export * from "./effect.kind.entities";
 export * from "./step.entities";
 export * from "./material.entities";
 export * from "./material.kind.entities";

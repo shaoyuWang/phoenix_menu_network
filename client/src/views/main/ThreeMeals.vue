@@ -4,15 +4,15 @@
       <div class="banner">
         <span class="title-style">精选推荐</span>
         <el-carousel :interval="4000" type="card" height="200px">
-          <el-carousel-item v-for="item in 6" :key="item">
-            <h3>{{ item }}</h3>
+          <el-carousel-item v-for="item in bannerList" :key="item.id">
+            <img class="banner-img" :src="img">
           </el-carousel-item>
         </el-carousel>
       </div>
       <div class="main">
         <ul class="tab">
-          <li v-for="(item,index) in itemList" :key="index">
-            <a @click="SelectContent(item.name,index)" :class="{tab_active: index == current}">{{item.name}}</a>
+          <li v-for="item in itemList" :key="item.timeType">
+            <a @click="SelectContent(item.name, item.timeType)" :class="{tab_active: item.timeType == current}">{{item.name}}</a>
           </li>
         </ul>
         <div class="main-recommend">
@@ -20,12 +20,12 @@
             推荐{{title}}菜品
             <span class="many"><a @click="more(1)">更多菜谱&nbsp;>></a></span>
           </span>
-          <div class="list-item" v-for="item in menuList" :key="item.id">
-            <a href="#">
-              <div class="item-img"><img class="img-responsive" :src="item.img"></div>
+          <div class="list-item" v-for="item in recipeList" :key="item.id">
+            <a @click="jumpRecipe(item.id)">
+              <div class="item-img"><img class="img-responsive" :src="img"></div>
               <div class="item-info">
-                <span class="info-title">{{item.title}}</span>
-                <span class="info-user">{{item.username}}</span>
+                <span class="info-title">{{item.name}}</span>
+                <span class="info-user">{{item.user.name}}</span>
               </div>
             </a>
           </div>
@@ -42,53 +42,56 @@ export default {
   components: {Footer},
   data() {
     return {
-      current: 0,
+      current: 1,
       title: '早餐',
+      img: 'https://s1.ig.meishij.net/p/20190225/5c3cfecbc666b3a256d5fd348ee82323.jpg',
       itemList: [
-        {name: '早餐'},{name: '午餐'},{name: '晚餐'}
+        {timeType: 1, name: '早餐'},{timeType: 2, name: '午餐'},{timeType: 3, name: '晚餐'}
       ],
-      menuList:[
-        {
-          id: 1,
-          img: 'https://s1.st.meishij.net/r/145/214/5241145/s5241145_155694793439005.jpg',
-          title: '花开富贵卷',
-          username: '中天北极紫微大帝'
-        },
-        {
-          id: 2,
-          img: 'https://s1.st.meishij.net/r/197/182/6108197/s6108197_155629783855746.jpg',
-          title: '蒜香凉拌三丝',
-          username: '中天北极紫微大帝'
-        },
-        {
-          id: 3,
-          img: 'https://s1.st.meishij.net/r/155/60/5140155/s5140155_155196470921235.jpg',
-          title: '蜜汁鸡翅',
-          username: '中天北极紫微大帝'
-        },
-        {
-          id: 4,
-          img: 'https://s1.st.meishij.net/r/83/154/13351083/s13351083_155635662091593.jpg',
-          title: '法式黑椒烤牛肉肠',
-          username: '中天北极紫微大帝'
-        },
-        {
-          id: 5,
-          img: 'https://s1.ig.meishij.net/p/20190225/5c3cfecbc666b3a256d5fd348ee82323.jpg',
-          title: '红烧黄花鱼',
-          username: '中天北极紫微大帝'
-        },
-      ],
+      bannerList: [],
+      recipeList: [],
+      recipeTemp: [],
     }
   },
+  created(){
+    this.getList();
+  },
   methods:{
+    jumpRecipe(id){
+      this.$router.push({path: '/request/recipeTemplate', query: { id }});
+    },
     // 显示当前内容
-    SelectContent(name,index){
+    SelectContent(name, timeType){
       this.title = name;
-      this.current = index;
+      this.current = timeType;
+      this.recipeList = _.filter(this.recipeTemp, { timeType: timeType});
     },
     more(status){
       this.$router.push({path: '/request/allTemplate', query: { status }});
+    },
+    getList(){
+      this.$axios({
+        url: '/main/threeMeals/getList',
+        method: 'get',
+      }).then(res =>{
+        console.log(res);
+        if(res.status == 200){
+          _.forEach(res.data.data.recipes, (item,index)=>{
+            this.bannerList.push(item);
+            if(index == 4) return false;
+          });
+
+          _.forEach(res.data.data.recipes, (item,index)=>{
+            this.recipeTemp.push(item);
+            if(index == 14) return false;
+          });
+          this.initList();
+        }
+      });
+    },
+    initList(){
+      this.recipeList = _.filter(this.recipeTemp, { timeType: this.itemList[0].timeType});
+      console.log(this.recipeTemp);
     }
   }
 }
@@ -113,6 +116,10 @@ export default {
   }
   .banner{
     width: $width100;
+    overflow: hidden;
+    .banner-img{
+      width: 100%;
+    }
   }
   .main{
     text-align: center;

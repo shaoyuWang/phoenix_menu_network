@@ -3,11 +3,11 @@
         <el-col :span="16" :offset="4">
             <el-col :span="14" :offset="2" class="main">
                 <div class="title">
-                    <span class="title-font">我的日记</span>
+                    <span class="title-font">{{diary.title}}</span>
                 </div>
                 <el-col :span="24" class="diary-base">
                     <div class="diary-info">
-                        这东西不错。我感觉行这东西不错。我感觉行这东西不错。我感觉行这东西不错。我感觉行这东西不错。我感觉行这东西不错。我感觉行
+                        {{diary.info}}
                     </div>
                 </el-col>
             </el-col>
@@ -15,29 +15,29 @@
                 <div class="user">
                     <div class="user-header">
                         <div class="user-img"><img src="../../assets/logo.jpg"></div>
-                        <span class="username">中天北极紫微大帝</span>
+                        <span class="username">{{user.name}}</span>
                     </div>
                     <div class="user-info">
-                        <span>菜谱:&nbsp;11</span>
-                        <span>菜单:&nbsp;11</span>
-                        <span>日记:&nbsp;11</span>
-                        <span>收藏:&nbsp;11</span>
+                        <span>菜谱:&nbsp;{{user.recipeLength}}</span>
+                        <span>菜单:&nbsp;{{user.menuLength}}</span>
+                        <span>日记:&nbsp;{{user.diaryLength}}</span>
+                        <span>收藏:&nbsp;{{user.collectionLength}}</span>
                     </div>
                 </div>
                 <div class="comment">
                     <ul class="comment-list">
-                        <li class="comment-item" v-for="item in 5" :key="item">
+                        <li class="comment-item" v-for="item in diary.comments" :key="item.id">
                             <div class="comment-operation">
-                                <el-button class="comment-praise" type="text">点赞 0</el-button>
+                                <el-button class="comment-praise" @click="praise(item.id)" type="text">点赞 {{item.praise}}</el-button>
                             </div>
-                            <span class="comment-info">这东西不错。我感觉行</span>
-                            <span class="comment-user-info">2019-01-01 19:10:10&nbsp;&nbsp;来自&nbsp;中天北极紫微大帝</span>
+                            <span class="comment-info">{{item.comment}}</span>
+                            <span class="comment-user-info">{{item.createDate}}&nbsp;&nbsp;来自&nbsp;{{item.username}}</span>
                         </li>
                     </ul>
                     <div class="comment-publish">
                         <span class="publish-title">发表评论</span>
-                        <el-input type="textarea" :autosize="{ minRows: 2, maxRows: 4}" placeholder="请输入评论" v-model="diary"></el-input>
-                        <div class="operation"><el-button type="primary" plain>发表</el-button></div>
+                        <el-input type="textarea" :autosize="{ minRows: 2, maxRows: 4}" placeholder="请输入评论" v-model="comment"></el-input>
+                        <div class="operation"><el-button @click="publishComment()" type="primary" plain>发表</el-button></div>
                     </div>
                 </div>
             </el-col>
@@ -52,14 +52,93 @@ export default {
     components:{Footer},
     data(){
         return {
+            comment: '',
             diary: '',
+            user: '',
+            diaryId: '',
         }
     },
     mounted(){
-        console.log(this.$route.query.id);
+        this.getList();
+        this.getUserInfo();
     },
     methods:{
-
+        getUserName(item){
+            if(!_.isEmpty(item.user)){
+                console.log(item.user);
+                return item.user.name;
+            }
+        },
+        publishComment(){
+            let data = {
+                comment:this.comment,
+                praise: 0,
+                diary:this.diary,
+                userId: _.isEmpty(window.user)? 2: window.user.userId,
+                username: _.isEmpty(window.user)? '': window.user.uesrname,
+            }
+            if(!_.isEmpty(data.comment)){
+                this.$axios({
+                    url:`/main/diaryTemplate/publishComment`,
+                    method: 'post',
+                    data: data,
+                }).then(res=>{
+                    console.log(res);
+                    if(res.data.code == 200){
+                        this.comment = '';
+                        this.getList();
+                    }
+                });
+            }else{
+                this.$message({
+                    message: '请输入评论信息',
+                    type: 'warning'
+                });
+            }
+        },
+        praise(commentId){
+            let data = {commentId};
+            this.$axios({
+                url:`/main/diaryTemplate/praiseComment`,
+                method: 'post',
+                data: data,
+            }).then(res=>{
+                if(res.data.code == 200){
+                    this.$message({
+                        message: '点赞成功',
+                        type: 'success'
+                    });
+                    this.getList();
+                }
+            });
+        },
+        getList(){
+            this.diaryId = _.toNumber(this.$route.query.id);
+            this.$axios({
+                url:`/main/diaryTemplate/findDiaryById/${this.diaryId}`,
+                method: 'get',
+            }).then(res=>{
+                console.log(res);
+                if(res.data.code == 200){
+                    this.diary = res.data.data.diary;
+                }
+            });
+        },
+        getUserInfo(){
+            let userId = _.isEmpty(window.user)? 1 : window.user.id;
+            this.$axios({
+                url:`/main/diaryTemplate/findUserById/${userId}`,
+                method: 'get',
+            }).then(res=>{
+                if(res.data.code == 200){
+                    this.user = res.data.data.user;
+                    this.user.menuLength = this.user.menus.length;
+                    this.user.diaryLength = this.user.diarys.length;
+                    this.user.collectionLength = this.user.collections.length;
+                    this.user.recipeLength = this.user.recipes.length;
+                }
+            });
+        }
     }
 }
 </script>

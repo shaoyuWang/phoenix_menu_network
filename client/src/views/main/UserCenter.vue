@@ -148,7 +148,7 @@ export default {
                     display: inline-block;
                     padding: $size5 $size10;
                     img{
-                        width: $size50;
+                        width: $size100;
                     }
                 }
             }

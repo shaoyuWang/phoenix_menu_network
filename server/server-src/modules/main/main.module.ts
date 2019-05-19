@@ -2,40 +2,52 @@ import { Module } from "@nestjs/common";
 import {
   IndexController,
   FoodMenuController,
-  GoumetMasterController,
+  GourmetMasterController,
   RecipeCookingController,
   RecipeVideoController,
   ThreeMealsController,
   FoodHealthController,
+  RecipeTemplateController,
+  DiaryTemplateController,
+  AllTemplateController,
 } from "./controller";
 import {
   IndexService,
   FoodMenuService,
-  GoumetMasterService,
+  GourmetMasterService,
   RecipeCookingService,
   RecipeVideoService,
   ThreeMealsService,
   FoodHealthService,
+  RecipeTemplateService,
+  DiaryTemplateService,
+  AllTemplateService,
 } from "./services";
 
 const controllers = [
   IndexController,
   FoodMenuController,
   FoodHealthController,
-  GoumetMasterController,
+  GourmetMasterController,
   RecipeCookingController,
   RecipeVideoController,
   ThreeMealsController,
+  RecipeTemplateController,
+  DiaryTemplateController,
+  AllTemplateController,
 ];
 
 const services = [
   IndexService,
   FoodMenuService,
   FoodHealthService,
-  GoumetMasterService,
+  GourmetMasterService,
   RecipeCookingService,
   RecipeVideoService,
   ThreeMealsService,
+  RecipeTemplateService,
+  DiaryTemplateService,
+  AllTemplateService,
 ];
 
 @Module({

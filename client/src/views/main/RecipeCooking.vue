@@ -2,12 +2,14 @@
   <el-row class="container">
     <el-col :span="16" :offset="4">
       <div class="tabs">
-        <el-tabs v-model="tabValue" type="card">
-          <el-tab-pane :label="item.name"  v-for="item in tabList" :key="item.id">
+        <el-tabs v-model="activeName" type="card">
+          <el-tab-pane :label="item.name" :name="item.name" v-for="item in sortKindList" :key="item.id">
             <div class="sort">
               <ul class="tab-item">
                 <span class="sort-title">{{item.name}}</span>
-                <li v-for="sortItem in item.sorts" :key="sortItem.id"><el-button ref="sortItem" @click="checkSort(item.id,sortItem.id)" type="text">{{sortItem.name}}</el-button></li>
+                <li v-for="sortItem in item.sorts" :key="sortItem.id">
+                  <el-button @click="checkSort(sortItem.name)" type="text">{{sortItem.name}}</el-button>
+                </li>
               </ul>
             </div>
           </el-tab-pane>
@@ -15,15 +17,15 @@
       </div>
       <div class="main">
         <span class="title-style">
-          了解咱餐饮文化大国，看中华八大菜系
+          了解餐饮文化大国，看中华八大菜系
           <span class="many"><a @click="more(1)">更多菜谱&nbsp;>></a></span>
         </span>
-        <div class="list-item" v-for="item in menuList" :key="item.id">
-          <a href="#">
-            <div class="item-img"><img class="img-responsive" :src="item.img"></div>
+        <div class="list-item" v-for="item in recipeList" :key="item.id">
+          <a @click="jumpRecipe(item.id)">
+            <div class="item-img"><img class="img-responsive" :src="img"></div>
             <div class="item-info">
-              <span class="info-title">{{item.title}}</span>
-              <span class="info-user">{{item.username}}</span>
+              <span class="info-title">{{item.name}}</span>
+              <span class="info-user">{{item.user.name}}</span>
             </div>
           </a>
         </div>
@@ -38,94 +40,50 @@ import Footer from './Footer.vue';
 export default {
   components: {Footer},
   mounted(){
-    console.log(this.$refs.sortItem);
+    this.getList();
   },
   data(){
     return {
-      tabValue: '',
-      tabList:[
-        {
-          id: 1,
-          name: '家常菜谱',
-          title: 'home',
-          sorts: [
-            { id: 1, name: '家常菜'},
-            { id: 2, name: '私房菜'},
-            { id: 3, name: '海鲜菜'},
-            { id: 4, name: '凉拌菜'},
-          ]
-        },
-        {
-          id: 2,
-          name: '中华菜系',
-          title: 'kind',
-          sorts: [
-            { id: 1, name: '东北菜'},
-            { id: 2, name: '西北菜'},
-            { id: 3, name: '南北菜'},
-            { id: 4, name: '北北菜'},
-          ]
-        },
-      ],
-      menuList:[
-        {
-          id: 1,
-          img: 'https://s1.ig.meishij.net/p/20190225/5c3cfecbc666b3a256d5fd348ee82323.jpg',
-          title: '红烧黄花鱼',
-          username: '中天北极紫微大帝'
-        },
-        {
-          id: 2,
-          img: 'https://s1.ig.meishij.net/p/20190225/5c3cfecbc666b3a256d5fd348ee82323.jpg',
-          title: '红烧黄花鱼',
-          username: '中天北极紫微大帝'
-        },
-        {
-          id: 3,
-          img: 'https://s1.ig.meishij.net/p/20190225/5c3cfecbc666b3a256d5fd348ee82323.jpg',
-          title: '红烧黄花鱼',
-          username: '中天北极紫微大帝'
-        },
-        {
-          id: 4,
-          img: 'https://s1.ig.meishij.net/p/20190225/5c3cfecbc666b3a256d5fd348ee82323.jpg',
-          title: '红烧黄花鱼',
-          username: '中天北极紫微大帝'
-        },
-        {
-          id: 5,
-          img: 'https://s1.ig.meishij.net/p/20190225/5c3cfecbc666b3a256d5fd348ee82323.jpg',
-          title: '红烧黄花鱼',
-          username: '中天北极紫微大帝'
-        },
-        {
-          id: 6,
-          img: 'https://s1.ig.meishij.net/p/20190225/5c3cfecbc666b3a256d5fd348ee82323.jpg',
-          title: '红烧黄花鱼',
-          username: '中天北极紫微大帝'
-        },
-        {
-          id: 7,
-          img: 'https://s1.ig.meishij.net/p/20190225/5c3cfecbc666b3a256d5fd348ee82323.jpg',
-          title: '红烧黄花鱼',
-          username: '中天北极紫微大帝'
-        },
-        {
-          id: 8,
-          img: 'https://s1.ig.meishij.net/p/20190225/5c3cfecbc666b3a256d5fd348ee82323.jpg',
-          title: '红烧黄花鱼',
-          username: '中天北极紫微大帝'
-        },
-      ],
+      activeName: '',
+      img: 'https://s1.ig.meishij.net/p/20190225/5c3cfecbc666b3a256d5fd348ee82323.jpg',
+      sortKindList: [],
+      recipeTemp: [],
+      recipeList: [],
     }
   },
   methods:{
-    checkSort(kindId,sortId){
-      console.log(`kind:${kindId}`);
-      console.log(`sort:${sortId}`);
+    checkSort(sortName){
+      this.recipeList = _.filter(this.recipeTemp,{ sort: { name:sortName } });
+      console.log(this.recipeList);
+    },
+    jumpRecipe(id){
+      this.$router.push({path: '/request/recipeTemplate', query: { id }});
     },
     more(status){
       this.$router.push({path: '/request/allTemplate', query: { status }});
+    },
+    getList(){
+      this.$axios({
+        url: '/main/recipeCooking/getList',
+        method: 'get',
+      }).then(res =>{
+        console.log(res);
+        if(res.status == 200){
+          _.forEach(res.data.data.recipes, (item,index)=>{
+            this.recipeTemp.push(item);
+            if(index == 15) return false;
+          });
+          
+          _.forEach(res.data.data.sortKinds, (item)=>{
+            this.sortKindList.push(item);
+          });
+          this.activeName = this.sortKindList[0].name;
+          this.initList();
+        }
+      });
+    },
+    initList(){
+      this.recipeList = _.filter(this.recipeTemp, { sort: { name: this.sortKindList[0].sorts[0].name}});
     }
   }
 }

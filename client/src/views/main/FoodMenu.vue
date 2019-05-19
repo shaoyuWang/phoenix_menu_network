@@ -7,27 +7,27 @@
           <span class="many"><a @click="moreMenu()">更多菜单&nbsp;>></a></span>
         </span>
         <el-carousel :interval="4000" height="200px">
-            <el-carousel-item v-for="item in 6" :key="item">
-              <h3>{{ item }}</h3>
+            <el-carousel-item v-for="item in bannerList" :key="item.id">
+              <span>{{ item.name }}</span>
             </el-carousel-item>
           </el-carousel>
       </div>
       <div class="main">
         <div class="menu-item" v-for="item in menuList" :key="item.id">
           <div class="menu-title">
-            <a class="title"><span>{{item.title}}</span></a>
-            <span class="menu-number"><em>{{item.number}}</em>篇菜谱</span>
+            <a class="title"><span>{{item.name}}</span></a>
+            <span class="menu-number"><em>{{item.length}}</em>篇菜谱</span>
           </div>
           <ul class="recipe">
-            <li class="recipe-item" v-for="item in 8" :key="item">
-              <a @click="jumpRecipe(item)">
+            <li class="recipe-item" v-for="item in item.recipes" :key="item.id">
+              <a @click="jumpRecipe(item.id)">
                 <img src="http://site.meishij.net/r/147/198/4174647/a4174647_144456278915386.jpg">
                 </a>
               </li>
           </ul>
           <div class="info">
             <img src="https://s1.c.meishij.net/images/default/tx2_5.png">
-            <span class="username">{{item.user.username}}</span>
+            <span class="username">{{item.user.name}}</span>
             <span class="menu-date">{{item.createDate}}</span>
           </div>
         </div>
@@ -43,34 +43,40 @@ export default {
   components: {Footer},
   data() {
     return {
-      menuList:[
-        {
-          id:1,
-          title: '我的菜谱',
-          number:10,
-          createDate: '2018-12-13',
-          user:{
-            username: '中天北极紫微大帝',
-          }
-        },
-        {
-          id: 2,
-          title: '我的菜谱',
-          number: 10,
-          createDate: '2018-12-13',
-          user:{
-            username: '中天北极紫微大帝',
-          }
-        }
-      ]
+      bannerList: [],
+      menuList:[],
     }
   },
+  created(){
+    this.getList();
+  },
   methods:{
+    jumpRecipe(id){
+      this.$router.push({path: '/request/recipeTemplate', query: { id }});
+    },
     more(){
       this.$router.push({path: '/request/moreMenu'});
     },
-    jumpRecipe(id){
-      this.$router.push({path: '/request/recipeTemplate', query: { id }});
+    getList(){
+      this.$axios({
+        url: '/main/foodMenu/getList',
+        method: 'get',
+      }).then(res =>{
+        console.log(res);
+        if(res.status == 200){
+          _.forEach(res.data.data.recipes, (item,index)=>{
+            this.bannerList.push(item);
+            if(index == 4) return false;
+          });
+
+          _.forEach(res.data.data.menus, (item,index)=>{
+            item.length = item.recipes.length;
+            this.menuList.push(item);
+            if(index == 5) return false;
+          });
+          console.log(this.menuList);
+        }
+      });
     },
   }
 }

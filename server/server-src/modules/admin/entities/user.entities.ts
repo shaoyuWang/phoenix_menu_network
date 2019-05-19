@@ -9,6 +9,9 @@ import {
 import { RoleEntity } from "./role.entities";
 import { FrameworkEntity } from "../../../framework/entities/freamework.entities";
 import { UserCollectionEntity } from "./user.collection.entities";
+import { UserMenuEntity } from "./user.menu.entities";
+import { UserDiaryEntity } from "./user.diary.entites";
+import { RecipeEntity } from "../../main/entities";
 
 @Entity({ name: "s_user" })
 export class UserEntity extends FrameworkEntity {
@@ -44,6 +47,15 @@ export class UserEntity extends FrameworkEntity {
     (UserCollectionEntity) => UserCollectionEntity.user,
   )
   public collections: UserCollectionEntity[] | null;
+
+  @OneToMany(() => UserMenuEntity, (UserMenuEntity) => UserMenuEntity.user)
+  public menus: UserMenuEntity[] | null;
+
+  @OneToMany(() => UserDiaryEntity, (UserDiaryEntity) => UserDiaryEntity.user)
+  public diarys: UserDiaryEntity[] | null;
+
+  @OneToMany(() => RecipeEntity, (RecipeEntity) => RecipeEntity.user)
+  public recipes: RecipeEntity[] | null;
 
   @ManyToMany(() => RoleEntity)
   @JoinTable({

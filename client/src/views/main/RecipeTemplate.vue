@@ -3,7 +3,7 @@
         <el-col :span="16" :offset="4">
             <el-col :span="14" :offset="2" class="main">
                 <div class="title">
-                    <span class="title-font">红烧牛肉盖饭</span>
+                    <span class="title-font">{{recipe.name}}</span>
                 </div>
                 <el-col :span="24" class="recipe-base">
                     <el-col :span="10">
@@ -11,44 +11,44 @@
                     </el-col>
                     <el-col :span="14" class="info">
                         <ul class="effect">
-                            <li class="effect-item" v-for="item in 6" :key="item"><span>舒筋活血</span></li>
+                            <li class="effect-item" v-for="item in recipe.effects" :key="item.id"><span>{{item.name}}</span></li>
                         </ul>
                         <div class="center">
-                            <div class="left"><span>工艺</span><span class="font">烤</span></div>
-                            <div class="right"><span>难度</span><span class="font">适中</span></div>
+                            <div class="left"><span>工艺</span><span class="font">{{checkName(recipe.technology)}}</span></div>
+                            <div class="right"><span>难度</span><span class="font">{{checkLevel(recipe.level)}}</span></div>
                         </div>
                         <div class="bottom">
-                            <div class="left"><span>口味</span><span class="font">香辣</span></div>
-                            <div class="right"><span>时间</span><span class="font">10分</span></div>
+                            <div class="left"><span>口味</span><span class="font">{{checkName(recipe.taste)}}</span></div>
+                            <div class="right"><span>时间</span><span class="font">{{recipe.time}}分</span></div>
                         </div>
                     </el-col>
                 </el-col>
                 <el-col :span="24" class="recipe-info">
                     <span class="description">
-                        外酥里嫩的鱼排，大人孩子都爱吃。自己在家做鱼排，用料更实惠，口口都是鱼肉。不过如果用油炸的做法，不但相对油腻，而且比较费油，油炸过的油倒掉浪费，存放久了容易氧化，食用复炸油对健康也有一定损害
+                        {{recipe.evaluate}}
                     </span>
                     <div class="material">
                         <span class="major">主料:</span>
                         <ul class="material-info">
-                            <li class="material-item" v-for="item in 6" :key="item">
+                            <li class="material-item" v-for="item in recipe.majorMaterials" :key="item.id">
                                 <img src="../../assets/headerbackground.jpg">
-                                <span class="name">土豆</span>
-                                <span class="quality">100克</span>
+                                <span class="name">{{item.name}}</span>
+                                <span class="quality">{{item.quality}}</span>
                             </li>
                         </ul>
                         <span class="major">辅料:</span>
                         <ul class="material-info">
-                            <li class="material-item" v-for="item in 6" :key="item">
+                            <li class="material-item" v-for="item in recipe.auxiliaryMaterials" :key="item.id">
                                 <img src="../../assets/headerbackground.jpg">
-                                <span class="name">土豆</span>
-                                <span class="quality">100克</span>
+                                <span class="name">{{item.name}}</span>
+                                <span class="quality">{{item.quality}}</span>
                             </li>
                         </ul>
                     </div>
                 </el-col>
                 <el-col :span="24" class="step-info">
                     <div class="recipe-name">
-                        <span>红烧牛肉盖饭的做法</span>
+                        <span>{{recipe.name}}的做法</span>
                     </div>
                     <ul class="step-list">
                         <li class="step-item" v-for="item in 5" :key="item">
@@ -65,29 +65,29 @@
                 <div class="user">
                     <div class="user-header">
                         <div class="user-img"><img src="../../assets/logo.jpg"></div>
-                        <span class="username">中天北极紫微大帝</span>
+                        <span class="username">{{user.name}}</span>
                     </div>
                     <div class="user-info">
-                        <span>菜谱:&nbsp;11</span>
-                        <span>菜单:&nbsp;11</span>
-                        <span>日记:&nbsp;11</span>
-                        <span>收藏:&nbsp;11</span>
+                        <span>菜谱:&nbsp;{{user.recipeLength}}</span>
+                        <span>菜单:&nbsp;{{user.menuLength}}</span>
+                        <span>日记:&nbsp;{{user.diaryLength}}</span>
+                        <span>收藏:&nbsp;{{user.collectionLength}}</span>
                     </div>
                 </div>
                 <div class="comment">
                     <ul class="comment-list">
-                        <li class="comment-item" v-for="item in 5" :key="item">
+                        <li class="comment-item" v-for="item in recipe.comments" :key="item.id">
                             <div class="comment-operation">
-                                <el-button class="comment-praise" type="text">点赞 0</el-button>
+                                <el-button class="comment-praise" @click="praise(item.id)" type="text">点赞 {{item.praise}}</el-button>
                             </div>
-                            <span class="comment-info">这东西不错。我感觉行</span>
-                            <span class="comment-user-info">2019-01-01 19:10:10&nbsp;&nbsp;来自&nbsp;中天北极紫微大帝</span>
+                            <span class="comment-info">{{item.comment}}</span>
+                            <span class="comment-user-info">{{item.createDate}}&nbsp;&nbsp;来自&nbsp;{{item.username}}</span>
                         </li>
                     </ul>
                     <div class="comment-publish">
                         <span class="publish-title">发表评论</span>
                         <el-input type="textarea" :autosize="{ minRows: 2, maxRows: 4}" placeholder="请输入评论" v-model="comment"></el-input>
-                        <div class="operation"><el-button type="primary" plain>发表</el-button></div>
+                        <div class="operation"><el-button @click="publishComment()" type="primary" plain>发表</el-button></div>
                     </div>
                 </div>
             </el-col>
@@ -103,13 +103,99 @@ export default {
     data(){
         return {
             comment: '',
+            recipe: '',
+            user:'',
+            recipeId: '',
         }
     },
     mounted(){
-        console.log(this.$route.query.id);
+        this.getList();
+        this.getUserInfo();
     },
     methods:{
-
+        checkLevel(item){
+            switch(_.toNumber(item)){
+                case 1: return '轻松'; break;
+                case 2: return '适中'; break;
+                case 3: return '中等'; break;
+                case 3: return '较难'; break;
+                case 4: return '困难'; break;
+            }
+        },
+        checkName(item){
+            if(!_.isEmpty(item)){
+                return item.name;
+            }
+        },
+        publishComment(){
+            let data = {
+                comment:this.comment,
+                praise: 0,
+                recipe:this.recipe,
+                userId: _.isEmpty(window.user)? 2: window.user.userId,
+                username: _.isEmpty(window.user)? '': window.user.uesrname,
+            }
+            if(!_.isEmpty(data.comment)){
+                this.$axios({
+                    url:`/main/recipeTemplate/publishComment`,
+                    method: 'post',
+                    data: data,
+                }).then(res=>{
+                    console.log(res);
+                    if(res.data.code == 200){
+                        this.comment = '';
+                        this.getList();
+                    }
+                });
+            }else{
+                this.$message({
+                    message: '请输入评论信息',
+                    type: 'warning'
+                });
+            }
+        },
+        praise(commentId){
+            let data = {commentId};
+            this.$axios({
+                url:`/main/recipeTemplate/praiseComment`,
+                method: 'post',
+                data: data,
+            }).then(res=>{
+                if(res.data.code == 200){
+                    this.$message({
+                        message: '点赞成功',
+                        type: 'success'
+                    });
+                    this.getList();
+                }
+            });
+        },
+        getList(){
+            this.recipeId = _.toNumber(this.$route.query.id);
+            this.$axios({
+                url:`/main/recipeTemplate/findRecipeById/${this.recipeId}`,
+                method: 'get',
+            }).then(res=>{
+                if(res.data.code == 200){
+                    this.recipe = res.data.data.recipe;
+                }
+            });
+        },
+        getUserInfo(){
+            let userId = _.isEmpty(window.user)? 1 : window.user.id;
+            this.$axios({
+                url:`/main/recipeTemplate/findUserById/${userId}`,
+                method: 'get',
+            }).then(res=>{
+                if(res.data.code == 200){
+                    this.user = res.data.data.user;
+                    this.user.menuLength = this.user.menus.length;
+                    this.user.diaryLength = this.user.diarys.length;
+                    this.user.collectionLength = this.user.collections.length;
+                    this.user.recipeLength = this.user.recipes.length;
+                }
+            });
+        }
     }
 }
 </script>
