@@ -8,3 +8,4 @@ export * from "./recipe.video.controller";
 export * from "./recipe.template.controller";
 export * from "./diary.template.controller";
 export * from "./all.template.controller";
+export * from "./user.center.controller";

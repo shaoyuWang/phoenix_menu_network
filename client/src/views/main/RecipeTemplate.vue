@@ -128,12 +128,13 @@ export default {
             }
         },
         publishComment(){
+            let user = JSON.parse(sessionStorage.getItem('user'));
             let data = {
                 comment:this.comment,
                 praise: 0,
                 recipe:this.recipe,
-                userId: _.isEmpty(window.user)? 2: window.user.userId,
-                username: _.isEmpty(window.user)? '': window.user.uesrname,
+                userId: _.isEmpty(user)? null : user.id,
+                username: _.isEmpty(user)? '' : user.name,
             }
             if(!_.isEmpty(data.comment)){
                 this.$axios({
@@ -182,7 +183,7 @@ export default {
             });
         },
         getUserInfo(){
-            let userId = _.isEmpty(window.user)? 1 : window.user.id;
+            let userId = _.isEmpty(JSON.parse(sessionStorage.getItem('user')))? 1 : JSON.parse(sessionStorage.getItem('user')).id;
             this.$axios({
                 url:`/main/recipeTemplate/findUserById/${userId}`,
                 method: 'get',

@@ -11,35 +11,31 @@
                     <div class="user-header"><img src="../../assets/client.jpg" alt="用户头像"></div>
                     <div class="username">aaa</div>
                 </div>
-                <el-menu :default-active="defaultActive" class="el-menu-vertical-demo">
-                    <el-menu-item index="1" @click="checkNav($event)">
+                <el-menu :default-active="defaultActive" router class="el-menu-vertical-demo">
+                    <el-menu-item index="/userCenter/myInfo" @click="checkNav($event)">
                         <i class="el-icon-menu"></i>
                         <span slot="title">个人信息</span>
                     </el-menu-item>
-                    <el-menu-item index="2" @click="checkNav($event)">
+                    <el-menu-item index="/userCenter/myRecipe" @click="checkNav($event)">
                         <i class="el-icon-setting"></i>
                         <span slot="title">我的菜谱</span>
                     </el-menu-item>
-                    <el-menu-item index="3" @click="checkNav($event)">
+                    <el-menu-item index="/userCenter/myCollection" @click="checkNav($event)" disabled>
                         <i class="el-icon-menu"></i>
                         <span slot="title">我的收藏</span>
                     </el-menu-item>
-                    <el-menu-item index="4" @click="checkNav($event)">
+                    <el-menu-item index="/userCenter/myMenu" @click="checkNav($event)">
                         <i class="el-icon-setting"></i>
                         <span slot="title">我的菜单</span>
                     </el-menu-item>
-                    <el-menu-item index="5" @click="checkNav($event)">
+                    <el-menu-item index="/userCenter/myDiary" @click="checkNav($event)">
                         <i class="el-icon-menu"></i>
                         <span slot="title">我的日记</span>
                     </el-menu-item>
                 </el-menu>
             </el-col>
             <el-col :span="16" class="main">
-                <UserModifyTemplate :userInfo='user' v-show="checkUserModify"></UserModifyTemplate>
-                <UserRecipeTemplate v-show="checkUserRecipe"></UserRecipeTemplate>
-                <UserCollectTemplate v-show="checkUserCollect"></UserCollectTemplate>
-                <UserMenuTemplate :userInfo='user' v-show="checkUserMenu"></UserMenuTemplate>
-                <UserDiaryTemplate v-show="checkUserDiary"></UserDiaryTemplate>
+                <router-view></router-view>
             </el-col>
         </el-col>
         <Footer class="footer"></Footer>
@@ -48,90 +44,27 @@
 
 <script>
 import Footer from './Footer.vue';
-import UserModifyTemplate from '../../components/UserModifyTemplate.vue';
-import UserRecipeTemplate from '../../components/UserRecipeTemplate.vue';
-import UserCollectTemplate from '../../components/UserCollectTemplate';
-import UserMenuTemplate from '../../components/UserMenuTemplate.vue';
-import UserDiaryTemplate from '../../components/UserDiaryTemplate.vue';
 
 export default {
-    components: {UserModifyTemplate, UserMenuTemplate, UserCollectTemplate, UserRecipeTemplate, UserDiaryTemplate, Footer},
     data(){
         return {
-            defaultActive: '1',
-            checkUserModify: false,
-            checkUserRecipe: false,
-            checkUserCollect: false,
-            checkUserMenu: false,
-            checkUserDiary: false,
-            user: {id: 1, username: 'aaa'}
+            defaultActive: '',
+            user: {id: 2, username: 'aaa'}
         }
     },
-    mounted(){
-        this.defaultActive = this.$route.query.status;
-        this.checkShow();
+    created(){
+        this.checkPath();
     },
     methods:{
-        checkShow(){
-            switch(this.defaultActive){
-                case '1': this.checkUserModify = true; break;
-                case '2': this.checkUserRecipe = true; break;
-                case '3': this.checkUserCollect = true; break;
-                case '4': this.checkUserMenu = true; break;
-                case '5': this.checkUserDiary = true; break;
-                default: this.checkUserModify = true; break;
-            }
-        },
-        checkNav(event){
-            switch(event.index){
-                case '1': {
-                    this.checkUserModify = true;
-                    this.checkUserRecipe = false;
-                    this.checkUserCollect = false;
-                    this.checkUserMenu = false;
-                    this.checkUserDiary = false;
-                    break;
-                }
-                case '2': {
-                    this.checkUserModify = false;
-                    this.checkUserRecipe = true;
-                    this.checkUserCollect = false; 
-                    this.checkUserMenu = false;
-                    this.checkUserDiary = false;
-                    break;
-                }
-                case '3': {
-                    this.checkUserModify = false;
-                    this.checkUserRecipe = false;
-                    this.checkUserCollect = true; 
-                    this.checkUserMenu = false;
-                    this.checkUserDiary = false;
-                    break;
-                }
-                case '4': {
-                    this.checkUserModify = false;
-                    this.checkUserRecipe = false;
-                    this.checkUserCollect = false;
-                    this.checkUserMenu = true;
-                    this.checkUserDiary = false;
-                    break;
-                }
-                case '5': {
-                    this.checkUserModify = false;
-                    this.checkUserRecipe = false;
-                    this.checkUserCollect = false;
-                    this.checkUserMenu = false;
-                    this.checkUserDiary = true;
-                    break;
-                }
-                default: {
-                    this.checkUserModify = true;
-                    this.checkUserRecipe = false;
-                    this.checkUserCollect = false;
-                    this.checkUserMenu = false;
-                    this.checkUserDiary = false;
-                    break;
-                }
+        checkPath(){
+            let status = _.toNumber(this.$route.query.status);
+            switch(status){
+                case 1: this.defaultActive = '/userCenter/myInfo'; break;
+                case 2: this.defaultActive = '/userCenter/myRecipe'; break;
+                case 3: this.defaultActive = '/userCenter/myRecipe'; break;
+                case 4: this.defaultActive = '/userCenter/myMenu'; break;
+                case 5: this.defaultActive = '/userCenter/myDiary'; break;
+                default: this.defaultActive = '/userCenter/myInfo'; break;
             }
         }
     }

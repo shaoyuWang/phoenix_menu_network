@@ -8,3 +8,4 @@ export * from "./food.health.service";
 export * from "./recipe.template.service";
 export * from "./diary.template.service";
 export * from "./all.template.service";
+export * from "./user.center.service";

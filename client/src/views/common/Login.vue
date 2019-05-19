@@ -41,10 +41,10 @@ export default {
               authority = true;
             }
           });
-          window.user = {
-            userId: res.data.id,
-            name: res.data.name,
-          }
+          // console.log(res);
+          sessionStorage.setItem("user",JSON.stringify(res.data));
+          console.log(JSON.parse(sessionStorage.getItem('user')));
+          
           if(authority){
             this.$router.push({ path: "/admin"});
           }else{

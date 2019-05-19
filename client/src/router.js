@@ -10,6 +10,9 @@ import {
   FoodMenu, GourmetMaster, AllTemplate, FoodHealth, UserCenter, RecipeTemplate, DiaryTemplate,
 } from './views/main';
 
+import { UserModifyTemplate, UserRecipeTemplate, UserMenuTemplate, UserDiaryTemplate } from '../src/components';
+
+
 Vue.use(Router);
 
 export default new Router({
@@ -130,6 +133,7 @@ export default new Router({
     {
       path: '/request',
       component: Navbar,
+      redirect: 'request/index',
       children: [
         {
           path: 'index',
@@ -206,9 +210,37 @@ export default new Router({
     {
       path: '/userCenter',
       component: UserCenter,
-      meta: {
-        title: '用户中心',
-      },
+      redirect: 'userCenter/myInfo',
+      children: [
+        {
+          path: 'myInfo',
+          component: UserModifyTemplate,
+          meta: {
+            title: '我的信息',
+          },
+        },
+        {
+          path: 'myRecipe',
+          component: UserRecipeTemplate,
+          meta: {
+            title: '我的菜谱',
+          },
+        },
+        {
+          path: 'myMenu',
+          component: UserMenuTemplate,
+          meta: {
+            title: '我的菜单',
+          },
+        },
+        {
+          path: 'myDiary',
+          component: UserDiaryTemplate,
+          meta: {
+            title: '我的日记',
+          },
+        },
+      ]
     },
   ],
 });

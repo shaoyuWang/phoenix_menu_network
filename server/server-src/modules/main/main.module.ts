@@ -10,6 +10,7 @@ import {
   RecipeTemplateController,
   DiaryTemplateController,
   AllTemplateController,
+  UserCenterController,
 } from "./controller";
 import {
   IndexService,
@@ -22,6 +23,7 @@ import {
   RecipeTemplateService,
   DiaryTemplateService,
   AllTemplateService,
+  UserCenterService,
 } from "./services";
 
 const controllers = [
@@ -35,6 +37,7 @@ const controllers = [
   RecipeTemplateController,
   DiaryTemplateController,
   AllTemplateController,
+  UserCenterController,
 ];
 
 const services = [
@@ -48,6 +51,7 @@ const services = [
   RecipeTemplateService,
   DiaryTemplateService,
   AllTemplateService,
+  UserCenterService,
 ];
 
 @Module({

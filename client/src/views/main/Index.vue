@@ -86,7 +86,6 @@ export default {
         url: '/main/index/getList',
         method: 'get',
       }).then(res =>{
-        console.log(res);
         if(res.status == 200){
           let title = ['今日早餐推荐：趁“早”爱自己，善待你的胃','今日午餐推荐：让嘴巴过足瘾的午餐','今日下午茶推荐：惬意时光，美味甜蜜齐分享'];
           let breakfast = _.filter(res.data.data.recipes,{timeType:1});
@@ -119,7 +118,6 @@ export default {
           
           this.materialKindList = res.data.data.kinds;
           this.activeName = this.materialKindList[0].name;
-          console.log(this.materialKindList);
         }
       });
     }

@@ -8,22 +8,16 @@
                 <el-input v-model="user.username" placeholder="Please Input Username" :disabled="true" autocomplete="off" style="width: 90%;"></el-input>
             </el-form-item>
             <el-form-item label="登录密码" label-width="120px" style="padding: 10px 0;">
-                <el-input v-model="user.username" type="password" placeholder="Please Input Password" autocomplete="off" style="width: 90%;"></el-input>
-            </el-form-item>
-            <el-form-item label="修改密码" label-width="120px" style="padding: 10px 0;">
-                <el-input v-model="user.username" type="password" placeholder="Please Input Password" autocomplete="off" style="width: 90%;"></el-input>
-            </el-form-item>
-            <el-form-item label="确认修改" label-width="120px" style="padding: 10px 0;">
-                <el-input v-model="user.username" type="password" placeholder="Please Input Password" autocomplete="off" style="width: 90%;"></el-input>
+                <el-input v-model="user.password" type="password" placeholder="Please Input Password" autocomplete="off" style="width: 90%;"></el-input>
             </el-form-item>
             <el-form-item label="用户名" label-width="120px" style="padding: 10px 0;">
-                <el-input v-model="user.username" placeholder="Please Input Name" autocomplete="off" style="width: 90%;"></el-input>
+                <el-input v-model="user.name" placeholder="Please Input Name" autocomplete="off" style="width: 90%;"></el-input>
             </el-form-item>
             <el-form-item label="电子邮箱" label-width="120px" style="padding: 10px 0;">
-                <el-input v-model="user.username" placeholder="Please Input Email" autocomplete="off" style="width: 90%;"></el-input>
+                <el-input v-model="user.email" placeholder="Please Input Email" autocomplete="off" style="width: 90%;"></el-input>
             </el-form-item>
             <el-form-item label="电话号码" label-width="120px" style="padding: 10px 0;">
-                <el-input v-model="user.username" placeholder="Please Input Telephone" autocomplete="off" style="width: 90%;"></el-input>
+                <el-input v-model="user.phone" placeholder="Please Input Telephone" autocomplete="off" style="width: 90%;"></el-input>
             </el-form-item>
             <el-form-item style="text-align:center;">
                 <el-button type="primary" @click="submitForm()">提交</el-button>
@@ -35,14 +29,16 @@
 
 <script>
 export default {
-    props:['userInfo'],
+    props:['userId'],
     data(){
         return {
-            user:'',
+            userId: '',
+            modifyPassword: '',
+            user: {},
         }
     },
     created(){
-        this.user = this.userInfo;
+        this.getUser();
     },
     methods:{
         submitForm(){
@@ -51,6 +47,18 @@ export default {
         resetForm(){
 
         },
+        getUser(){
+            this.userId = _.isEmpty(JSON.parse(sessionStorage.getItem('user')))? null: JSON.parse(sessionStorage.getItem('user')).id;
+            this.$axios({
+                url: `/main/userCenter/getUser/${this.userId}`,
+                method: 'get',
+            }).then(res =>{
+                console.log(res);
+                if(res.status == 200){
+                    this.user = res.data.data.user;
+                }
+            });
+        }
     }
 }
 </script>

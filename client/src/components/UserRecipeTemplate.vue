@@ -19,16 +19,35 @@
 
 <script>
 export default {
-    props:['userInfo'],
+    props:['userId'],
     data(){
         return {
-            user:'',
+            userId:'',
+            recipeList: [],
         }
     },
     created(){
-        this.user = this.userInfo;
+        this.getRecipe();
     },
     methods:{
+        getRecipe(){
+            this.userId = _.isEmpty(JSON.parse(sessionStorage.getItem('user')))? null: JSON.parse(sessionStorage.getItem('user')).id;
+            this.$axios({
+                url: `/main/userCenter/getRecipes/${this.userId}`,
+                method: 'get',
+            }).then(res =>{
+                console.log(res);
+                if(res.status == 200){
+                    this.recipeList = res.data.data.recipes;
+                    if(_.isEmpty(this.recipeList)){
+                        this.$message({
+                        message: '暂无菜谱信息',
+                        type: 'error'
+                        });
+                    }
+                }
+            });
+        }
     }
 }
 </script>

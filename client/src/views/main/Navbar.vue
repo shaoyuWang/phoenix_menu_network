@@ -73,12 +73,12 @@ export default {
   },
   methods: {
     authority(){
-      this.user = _.isEmpty(window.user)? null: window.user;
+      this.user = _.isEmpty(JSON.parse(sessionStorage.getItem('user')))? null: JSON.parse(sessionStorage.getItem('user'));
       !_.isEmpty(this.user) ? this.login = true : this.login = false;
     },
     checkStatus(status){
       if(status != 6){
-        this.$router.push({ path: '/userCenter', query: { status: _.toString(status)} });
+        this.$router.push({ path: '/userCenter', query: { status }});
       }else{
         console.log('注销');
         this.logout();
@@ -94,7 +94,7 @@ export default {
           message: '注销成功',
           type: 'success'
         });
-        delete window.user;
+        sessionStorage.clear();
         this.authority();
         this.$router.push({ path: "/"});
       })

@@ -5,11 +5,11 @@
         </div>
         <el-col :span="24" class="infomation">
             <div class="list">
-                <div class="item" v-for="item in 4" :key="item">
+                <div class="item" v-for="item in diaryList" :key="item.id">
                     <img src="http://site.meishij.net/r/147/198/4174647/a4174647_144456278915386.jpg">
                     <div class="info">
-                        <span class="recipe-name">红烧牛肉</span>
-                        <span class="time"><i class="el-icon-date"></i>&nbsp;&nbsp;2019-1-1</span>
+                        <span class="recipe-name">{{item.name}}</span>
+                        <span class="time"><i class="el-icon-date"></i>&nbsp;&nbsp;{{item.createDate}}</span>
                     </div>
                 </div>
             </div>
@@ -19,16 +19,34 @@
 
 <script>
 export default {
-    props:['userInfo'],
+    props:['userId'],
     data(){
         return {
-            user:'',
+            diaryList:'',
+            userId: '',
         }
     },
-    created(){
-        this.user = this.userInfo;
+    mounted(){
+        this.getDiary();
     },
     methods:{
+        getDiary(){
+            this.userId = _.isEmpty(JSON.parse(sessionStorage.getItem('user')))? null: JSON.parse(sessionStorage.getItem('user')).id;
+            this.$axios({
+                url: `/main/userCenter/getDiary/${this.userId}`,
+                method: 'get',
+            }).then(res =>{
+                if(res.status == 200){
+                    this.diaryList = res.data.data.diarys;
+                    if(_.isEmpty(this.diaryList)){
+                        this.$message({
+                        message: '暂无日记信息',
+                        type: 'error'
+                        });
+                    }
+                }
+            });
+        }
     }
 }
 </script>
