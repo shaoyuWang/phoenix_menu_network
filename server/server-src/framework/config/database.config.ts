@@ -18,5 +18,5 @@ export const DATABASE_CONFIG: ConnectionOptions = {
   port: 3306,
   synchronize: true,
   type: "mysql",
-  username: "root"
+  username: "root",
 };

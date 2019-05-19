@@ -36,7 +36,7 @@ export class UploadController {
         join(__dirname, "../../../assets/imgs", `${fileName}`),
       );
       writeImage.write(file.buffer);
-      return { fileName, code: RESPONSE_CODE.SUCCESS };
+      return { writeImage, code: RESPONSE_CODE.SUCCESS };
     } else {
       return { code: RESPONSE_CODE.NOTPARAMETER };
     }

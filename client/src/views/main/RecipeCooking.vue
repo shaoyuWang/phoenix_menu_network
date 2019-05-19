@@ -41,11 +41,12 @@ export default {
   components: {Footer},
   mounted(){
     this.getList();
+    this.img = require("/Users/wangshaoyu/Desktop/Graduation design/phoenix_menu_network/server/server-src/assets/imgs/2150721558273824152.jpg");
   },
   data(){
     return {
       activeName: '',
-      img: 'https://s1.ig.meishij.net/p/20190225/5c3cfecbc666b3a256d5fd348ee82323.jpg',
+      img: '',
       sortKindList: [],
       recipeTemp: [],
       recipeList: [],
