@@ -75,14 +75,12 @@ export default {
           this.recipeList.push(item);
         }
       })
-      console.log(this.recipeList);
     },
     getList(){
       this.$axios({
         url: '/main/foodHealth/getList',
         method: 'get',
       }).then(res =>{
-        console.log(res);
         if(res.status == 200){
           _.forEach(res.data.data.recipes, (item,index)=>{
             this.recipeTemp.push(item);

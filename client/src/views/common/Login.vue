@@ -33,7 +33,6 @@ export default {
         // headers: { "Content-Type":"application/json;charset=utf-8" },
         data: data,
       }).then(res =>{
-        console.log(res);
         if(res.status == 200){
           let authority = false;
           _.forEach(res.data.roles,item=>{
@@ -41,10 +40,7 @@ export default {
               authority = true;
             }
           });
-          // console.log(res);
-          sessionStorage.setItem("user",JSON.stringify(res.data));
-          console.log(JSON.parse(sessionStorage.getItem('user')));
-          
+          sessionStorage.setItem("user",JSON.stringify(res.data));          
           if(authority){
             this.$router.push({ path: "/admin"});
           }else{

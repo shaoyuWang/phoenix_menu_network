@@ -59,7 +59,6 @@ export default {
     },
     checkSort(sortName){
       this.recipeList = _.filter(this.recipeTemp,{ sort: { name:sortName } });
-      console.log(this.recipeList);
     },
     jumpRecipe(id){
       this.$router.push({path: '/request/recipeTemplate', query: { id }});
@@ -72,7 +71,6 @@ export default {
         url: '/main/recipeCooking/getList',
         method: 'get',
       }).then(res =>{
-        console.log(res);
         if(res.status == 200){
           _.forEach(res.data.data.recipes, (item,index)=>{
             this.recipeTemp.push(item);

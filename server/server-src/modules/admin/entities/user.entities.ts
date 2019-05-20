@@ -18,10 +18,10 @@ export class UserEntity extends FrameworkEntity {
   @PrimaryGeneratedColumn()
   public id: number;
 
-  @Column({ name: "username", length: 100 })
+  @Column({ name: "username", length: 100, select: false })
   public username: string;
 
-  @Column({ name: "password", length: 100 })
+  @Column({ name: "password", length: 100, select: false })
   public password: string;
 
   @Column({ name: "name", length: 255 })

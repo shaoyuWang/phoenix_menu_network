@@ -63,7 +63,6 @@ export default {
             }).then(res=>{
                 if(res.data.code == 200){
                     this.infoList = res.data.data.info;
-                    console.log(this.infoList);
                 }
             });
         }

@@ -61,14 +61,12 @@ export default {
         url: '/main/foodMenu/getList',
         method: 'get',
       }).then(res =>{
-        console.log(res);
         if(res.status == 200){
           _.forEach(res.data.data.menus, (item,index)=>{
             item.length = item.recipes.length;
             this.menuList.push(item);
             if(index == 5) return false;
           });
-          console.log(this.menuList);
         }
       });
     },

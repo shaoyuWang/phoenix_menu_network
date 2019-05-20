@@ -20,8 +20,8 @@
                 <el-input v-model="user.phone" placeholder="Please Input Telephone" autocomplete="off" style="width: 90%;"></el-input>
             </el-form-item>
             <el-form-item style="text-align:center;">
-                <el-button type="primary" @click="submitForm()">修改</el-button>
-                <el-button @click="resetForm()">重置</el-button>
+                <el-button type="primary" @click="submit()">修改</el-button>
+                <el-button @click="reset()">重置</el-button>
             </el-form-item>
       </el-form>
     </el-col>
@@ -34,17 +34,18 @@ export default {
             userId: '',
             modifyPassword: '',
             user: {},
+            userTemp:{},
         }
     },
     created(){
         this.getUser();
     },
     methods:{
-        submitForm(){
+        submit(){
 
         },
-        resetForm(){
-
+        reset(){
+            this.getUser();
         },
         getUser(){
             this.userId = _.isEmpty(JSON.parse(sessionStorage.getItem('user')))? null: JSON.parse(sessionStorage.getItem('user')).id;
@@ -52,7 +53,6 @@ export default {
                 url: `/main/userCenter/getUser/${this.userId}`,
                 method: 'get',
             }).then(res =>{
-                console.log(res);
                 if(res.status == 200){
                     this.user = res.data.data.user;
                 }

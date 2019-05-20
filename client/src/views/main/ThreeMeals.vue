@@ -78,7 +78,6 @@ export default {
         url: '/main/threeMeals/getList',
         method: 'get',
       }).then(res =>{
-        console.log(res);
         if(res.status == 200){
           _.forEach(res.data.data.recipes, (item,index)=>{
             this.bannerList.push(item);
@@ -95,7 +94,6 @@ export default {
     },
     initList(){
       this.recipeList = _.filter(this.recipeTemp, { timeType: this.itemList[0].timeType});
-      console.log(this.recipeTemp);
     }
   }
 }

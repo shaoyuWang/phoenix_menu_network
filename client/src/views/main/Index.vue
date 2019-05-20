@@ -121,7 +121,6 @@ export default {
           });
           
           this.materialKindList = res.data.data.kinds;
-          console.log(this.materialKindList);
           this.activeName = this.materialKindList[0].name;
         }
       });

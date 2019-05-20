@@ -43,7 +43,6 @@ export default {
         url: '/main/recipeVideo/getList',
         method: 'get',
       }).then(res =>{
-        console.log(res);
         if(res.status == 200){
           _.forEach(res.data.data.videos, (item,index)=>{
             this.videoList.push(item);

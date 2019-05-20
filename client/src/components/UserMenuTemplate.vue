@@ -42,7 +42,6 @@ export default {
                 url: `/main/userCenter/getMenu/${this.userId}`,
                 method: 'get',
             }).then(res =>{
-                console.log(res);
                 if(res.status == 200){
                     this.menuList = res.data.data.menus;
                     if(_.isEmpty(this.menuList)){

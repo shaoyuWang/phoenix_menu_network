@@ -40,7 +40,6 @@ export default {
                 url: `/main/userCenter/getRecipe/${this.userId}`,
                 method: 'get',
             }).then(res =>{
-                console.log(res);
                 if(res.status == 200){
                     this.recipeList = res.data.data.recipes;
                     if(_.isEmpty(this.recipeList)){

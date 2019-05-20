@@ -242,7 +242,6 @@ export default {
         url: '/api/user/getAllUsers',
         method: 'get',
       }).then(res=> {
-        console.log(res);
         if(res.data.code == 200){
           this.users = res.data.data;
         }else{

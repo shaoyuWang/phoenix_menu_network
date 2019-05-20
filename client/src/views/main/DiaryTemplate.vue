@@ -70,7 +70,6 @@ export default {
         },
         getUserName(item){
             if(!_.isEmpty(item.user)){
-                console.log(item.user);
                 return item.user.name;
             }
         },
@@ -89,7 +88,6 @@ export default {
                     method: 'post',
                     data: data,
                 }).then(res=>{
-                    console.log(res);
                     if(res.data.code == 200){
                         this.comment = '';
                         this.getList();
@@ -124,7 +122,6 @@ export default {
                 url:`/main/diaryTemplate/findDiaryById/${this.diaryId}`,
                 method: 'get',
             }).then(res=>{
-                console.log(res);
                 if(res.data.code == 200){
                     this.diary = res.data.data.diary;
                 }

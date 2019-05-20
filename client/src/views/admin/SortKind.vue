@@ -100,7 +100,6 @@ export default {
     // 提交点击事件
     Submit(){
       this.dialogFormVisible = false;
-      console.log(this.form.kind_id);
     },
     //取消方法
     Close(){
@@ -119,7 +118,6 @@ export default {
       this.dialogFormVisible = true;
       this.checkHidden = true;
       this.title = '修改菜谱种类';
-      console.log(data);
     },
     // 添加菜谱分类
     addSort(){
@@ -133,7 +131,6 @@ export default {
       this.dialogFormVisible = true;
       this.checkHidden = false;
       this.title = '修改菜谱分类';
-      console.log(data);
     }
   }
 };

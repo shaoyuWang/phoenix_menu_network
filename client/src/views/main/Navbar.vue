@@ -85,7 +85,6 @@ export default {
       if(status != 6){
         this.$router.push({ path: '/userCenter', query: { status }});
       }else{
-        console.log('注销');
         this.logout();
       }
     },
@@ -94,7 +93,6 @@ export default {
         url: '/auth/logout',
         method: 'post',
       }).then(res =>{
-        console.log(res);
         this.$message({
           message: '注销成功',
           type: 'success'

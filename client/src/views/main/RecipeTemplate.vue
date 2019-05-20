@@ -147,7 +147,6 @@ export default {
                     method: 'post',
                     data: data,
                 }).then(res=>{
-                    console.log(res);
                     if(res.data.code == 200){
                         this.comment = '';
                         this.getList();
