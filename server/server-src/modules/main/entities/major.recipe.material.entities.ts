@@ -22,6 +22,9 @@ export class MajorRecipeMaterialMappingEntity extends FrameworkEntity {
   @Column({ name: "quality", length: 100 })
   public quality: string;
 
+  @Column({ name: "photo", length: 255 })
+  public photo: string;
+
   @JoinColumn({ name: "recipe_id" })
   @ManyToOne(() => RecipeEntity)
   public recipe: number;

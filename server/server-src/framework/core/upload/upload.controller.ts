@@ -22,23 +22,47 @@ export class UploadController {
   @Post("/img")
   @UseInterceptors(FileInterceptor("file"))
   // @Roles(2)
-  public async uploadImg(@UploadedFile() file) {
+  public async uploadImg(@UploadedFile() file: any) {
     const nameList = _.split(file.originalname, ".");
     if (
-      _.toLower(nameList[nameList.length - 1]) == "jpg" ||
-      _.toLower(nameList[nameList.length - 1]) == "jpeg"
+      _.toLower(nameList[nameList.length - 1]) != "jpg" ||
+      _.toLower(nameList[nameList.length - 1]) != "jpeg"
     ) {
-      const random = _.random(100000, 999999);
-      const fileName = `${random}${new Date().getTime()}.${
-        nameList[nameList.length - 1]
-      }`;
-      const writeImage = createWriteStream(
-        join(__dirname, "../../../assets/imgs", `${fileName}`),
-      );
-      writeImage.write(file.buffer);
-      return { writeImage, code: RESPONSE_CODE.SUCCESS };
-    } else {
       return { code: RESPONSE_CODE.NOTPARAMETER };
     }
+    const random = _.random(100000, 999999);
+    const fileName = `${random}${new Date().getTime()}.${
+      nameList[nameList.length - 1]
+    }`;
+    let writeImage = createWriteStream(
+      join(
+        "/Users/wangshaoyu/Desktop/Graduation design/phoenix_menu_network/client/src/assets/imgs",
+        `${fileName}`,
+      ),
+    );
+    writeImage.write(file.buffer);
+    return { writeImage, code: RESPONSE_CODE.SUCCESS };
+  }
+
+  @Post("/video")
+  @UseInterceptors(FileInterceptor("file"))
+  // @Roles(2)
+  public async uploadVideo(@UploadedFile() file: any) {
+    const nameList = _.split(file.originalname, ".");
+    if (_.toLower(nameList[nameList.length - 1]) != "mp4") {
+      return { code: RESPONSE_CODE.NOTPARAMETER };
+    }
+    const random = _.random(100000, 999999);
+    const fileName = `${random}${new Date().getTime()}.${
+      nameList[nameList.length - 1]
+    }`;
+    let writeImage = createWriteStream(
+      join(
+        "/Users/wangshaoyu/Desktop/Graduation design/phoenix_menu_network/client/src/assets/videos",
+        `${fileName}`,
+      ),
+    );
+    writeImage.write(file.buffer);
+    return { writeImage, code: RESPONSE_CODE.SUCCESS };
   }
 }

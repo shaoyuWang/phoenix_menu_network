@@ -13,7 +13,7 @@ export class StepEntity extends FrameworkEntity {
   @Column({ name: "step" })
   public step: number;
 
-  @Column({ name: "photo", nullable: true, length: 100 })
+  @Column({ name: "photo", length: 255 })
   public photo: string;
 
   @ManyToOne(() => RecipeEntity)

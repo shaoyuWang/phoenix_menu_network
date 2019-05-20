@@ -19,6 +19,9 @@ export class AuxiliaryRecipeMaterialMappingEntity extends FrameworkEntity {
   @Column({ name: "name", length: 100 })
   public name: string;
 
+  @Column({ name: "photo", length: 255 })
+  public photo: string;
+
   @Column({ name: "quality", length: 100 })
   public quality: string;
 

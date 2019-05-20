@@ -39,7 +39,7 @@ export class RecipeEntity extends FrameworkEntity {
   @Column("text", { name: "evaluate" })
   public evaluate: string;
 
-  @Column({ name: "finishPhoto", length: 100 })
+  @Column({ name: "finishPhoto", length: 255 })
   public finishPhoto: string;
 
   @JoinColumn({ name: "user_id" })

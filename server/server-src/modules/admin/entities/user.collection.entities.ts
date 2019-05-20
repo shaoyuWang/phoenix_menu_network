@@ -20,7 +20,7 @@ export class UserCollectionEntity extends FrameworkEntity {
   @Column({ name: "recipe_name" })
   public recipeName: string;
 
-  @Column({ name: "recipe_finish_photo", length: 100 })
+  @Column({ name: "recipe_finish_photo", length: 255 })
   public recipeFinishPhoto: string;
 
   @ManyToOne(() => UserEntity)

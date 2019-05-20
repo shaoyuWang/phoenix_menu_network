@@ -16,7 +16,7 @@ export class RecipeVideoEntity extends FrameworkEntity {
   @Column({ name: "name", length: 100 })
   public name: string;
 
-  @Column({ name: "video" })
+  @Column({ name: "video", length: 255 })
   public video: string;
 
   @JoinColumn({ name: "user_id" })
