@@ -10,6 +10,7 @@ import UserCenter from './UserCenter.vue';
 import FoodHealth from './FoodHealth.vue';
 import RecipeTemplate from './RecipeTemplate.vue';
 import DiaryTemplate from './DiaryTemplate.vue';
+import VideoTemplate from './VideoTemplate.vue';
 
 export {
   Navbar,
@@ -24,4 +25,5 @@ export {
   UserCenter,
   RecipeTemplate,
   DiaryTemplate,
+  VideoTemplate,
 };

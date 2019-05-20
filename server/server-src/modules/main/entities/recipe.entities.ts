@@ -36,7 +36,7 @@ export class RecipeEntity extends FrameworkEntity {
   @Column({ name: "time_type" })
   public timeType: number;
 
-  @Column("text", { name: "evaluate" })
+  @Column({ name: "evaluate", length: 100 })
   public evaluate: string;
 
   @Column({ name: "finishPhoto", length: 255 })

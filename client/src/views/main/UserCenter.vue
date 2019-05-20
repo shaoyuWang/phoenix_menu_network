@@ -8,28 +8,28 @@
         <el-col :span="16" :offset="4">
             <el-col :span="8" class="nav">
                 <div class="user">
-                    <div class="user-header"><img src="../../assets/client.jpg" alt="用户头像"></div>
-                    <div class="username">aaa</div>
+                    <div class="user-header"><img :src="handleImg(user.photo)" alt="用户头像"></div>
+                    <div class="username">{{user.name}}</div>
                 </div>
                 <el-menu :default-active="defaultActive" router class="el-menu-vertical-demo">
-                    <el-menu-item index="/userCenter/myInfo" @click="checkNav($event)">
+                    <el-menu-item index="/userCenter/myInfo">
                         <i class="el-icon-menu"></i>
                         <span slot="title">个人信息</span>
                     </el-menu-item>
-                    <el-menu-item index="/userCenter/myRecipe" @click="checkNav($event)">
-                        <i class="el-icon-setting"></i>
+                    <el-menu-item index="/userCenter/myRecipe">
+                        <i class="el-icon-edit"></i>
                         <span slot="title">我的菜谱</span>
                     </el-menu-item>
-                    <el-menu-item index="/userCenter/myCollection" @click="checkNav($event)" disabled>
-                        <i class="el-icon-menu"></i>
+                    <el-menu-item index="/userCenter/myCollection" disabled>
+                        <i class="el-icon-document"></i>
                         <span slot="title">我的收藏</span>
                     </el-menu-item>
-                    <el-menu-item index="/userCenter/myMenu" @click="checkNav($event)">
+                    <el-menu-item index="/userCenter/myMenu">
                         <i class="el-icon-setting"></i>
                         <span slot="title">我的菜单</span>
                     </el-menu-item>
-                    <el-menu-item index="/userCenter/myDiary" @click="checkNav($event)">
-                        <i class="el-icon-menu"></i>
+                    <el-menu-item index="/userCenter/myDiary">
+                        <i class="el-icon-share"></i>
                         <span slot="title">我的日记</span>
                     </el-menu-item>
                 </el-menu>
@@ -48,14 +48,20 @@ import Footer from './Footer.vue';
 export default {
     data(){
         return {
-            defaultActive: '',
-            user: {id: 2, username: 'aaa'}
+            user: '',
+            defaultActive: ''
         }
     },
     created(){
+        this.user = _.isEmpty(JSON.parse(sessionStorage.getItem('user')))? null: JSON.parse(sessionStorage.getItem('user'));
         this.checkPath();
     },
     methods:{
+        handleImg(photo){
+            if(!_.isEmpty(photo)){
+                return require(`../../assets/imgs/${photo}`);
+            }
+        },
         checkPath(){
             let status = _.toNumber(this.$route.query.status);
             switch(status){
@@ -96,12 +102,13 @@ export default {
                 background-image: url('../../assets/headerbackground.jpg');
                 background-repeat: no-repeat;
                 background-size: 100% 100%;
+                text-align: center;
                 .user-header{
-                    margin: 0 auto;
+                    display: inline-block;
                     width: 100px;
-                    height: 100px;
-                    // background-color: black;
+                    height: 80px;
                     border-radius: 50%;
+                    margin-top: 40px;
                     overflow: hidden;
                     img{
                         display: inline-block;
@@ -111,7 +118,6 @@ export default {
                 }
                 .username{
                     margin-top: 10px;
-                    text-align: center;
                 }
             }
         }

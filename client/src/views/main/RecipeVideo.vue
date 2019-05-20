@@ -4,9 +4,12 @@
       <div class="main">
         <div class="list-item" v-for="item in videoList" :key="item.id">
           <a @click="jumpVideoTemplate(item.id)">
-            <div class="item-img"><img class="img-responsive" :src="handleVideo(item.video)"></div>
+            <div class="item-img">
+              <video class="img-responsive" preload="auto" :src="handleVideo(item.video)"></video>
+            </div>
             <div class="item-info">
               <span class="info-title">{{item.name}}</span>
+              <span class="info-user">{{item.user.name}}</span>
             </div>
           </a>
         </div>
@@ -22,8 +25,7 @@ export default {
   components: {Footer},
   data() {
     return {
-      video: 'https://vdse.bdstatic.com//f13a391bcf73de64c2e965eddae17fc8?authorization=bce-auth-v1%2F40f207e648424f47b2e3dfbb1014b1a5%2F2017-05-11T09%3A02%3A31Z%2F-1%2F%2F05e5f8a459a1c44cf5507778e239fe62d4d63104a5aa5dfdc4b9efbafad673f1',
-      videoList:[]
+      videoList:[],
     }
   },
   created(){
@@ -44,7 +46,6 @@ export default {
         console.log(res);
         if(res.status == 200){
           _.forEach(res.data.data.videos, (item,index)=>{
-            item.video = require(`../../assets/videos/${item.video}`);
             this.videoList.push(item);
             if(index == 19) return false;
           });
@@ -61,36 +62,9 @@ export default {
     margin-top: $size30;
     .main{
       overflow: hidden;
-      .menu-item{
-        width: 220px;
-        padding: $size5;
-        float: left;
-        a{
-          text-decoration: none;
-          &:hover{
-            transition-duration: 0.5s;
-            box-shadow: $size0 $size0 $size20 #000;
-          }
-          .item-img{
-            img{
-              width: $width100; 
-              height: 210px;
-            }
-          }
-          .item-info{
-            span{
-              display: block;
-              padding: $size20 $size0 $size40 $size20;
-            }
-            width: $width100;
-            background-color: $color_white;
-            .info-title{
-              font-size: $font_size2;
-              color: $color_title;
-              font-weight: $font_bold;
-            }
-          }
-        }
+      .img-responsive{
+        width: 110% !important;
+        height: 110% !important;
       }
     }
   }

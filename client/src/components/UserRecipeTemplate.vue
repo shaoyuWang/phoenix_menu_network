@@ -19,7 +19,6 @@
 
 <script>
 export default {
-    props:['userId'],
     data(){
         return {
             userId:'',
@@ -38,7 +37,7 @@ export default {
         getRecipe(){
             this.userId = _.isEmpty(JSON.parse(sessionStorage.getItem('user')))? null: JSON.parse(sessionStorage.getItem('user')).id;
             this.$axios({
-                url: `/main/userCenter/getRecipes/${this.userId}`,
+                url: `/main/userCenter/getRecipe/${this.userId}`,
                 method: 'get',
             }).then(res =>{
                 console.log(res);

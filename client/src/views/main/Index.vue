@@ -1,7 +1,7 @@
 <template>
   <el-row>
     <el-col class="row">
-      <el-carousel indicator-position="outside" :interval='5000' :autoplay="autoplay" arrow="never" height="450px">
+      <el-carousel indicator-position="outside" :interval='3000' :autoplay="autoplay" arrow="never" height="450px">
         <el-carousel-item v-for="item in bannerList" :key="item.id">
           <span class="title-style">{{item.title}}</span>
           <ul>
@@ -27,7 +27,7 @@
             <el-tab-pane :label="item.name" :name="item.name" v-for="item in materialKindList" :key="item.id">
               <ul class="kind-list">
                 <li class="material-item" v-for="materialItem in item.materials" :key="materialItem.id">
-                  <img class="material-img" :src="handleImg(item.photo)">
+                  <img class="material-img" :src="handleImg(materialItem.photo)">
                   <span class="material-name">{{materialItem.name}}</span>
                 </li>
               </ul>
@@ -60,7 +60,7 @@ export default {
   components: {Footer},
   data(){
     return {
-      autoplay: false,
+      autoplay: true,
       activeName: '',
       bannerList: [],
       materialKindList:[],
@@ -121,6 +121,7 @@ export default {
           });
           
           this.materialKindList = res.data.data.kinds;
+          console.log(this.materialKindList);
           this.activeName = this.materialKindList[0].name;
         }
       });

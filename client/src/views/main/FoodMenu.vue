@@ -6,11 +6,6 @@
           每一个菜单都是一桌美味的饭
           <span class="many"><a @click="moreMenu()">更多菜单&nbsp;>></a></span>
         </span>
-        <el-carousel :interval="4000" height="200px">
-            <el-carousel-item v-for="item in bannerList" :key="item.id">
-              <span>{{ item.name }}</span>
-            </el-carousel-item>
-          </el-carousel>
       </div>
       <div class="main">
         <div class="menu-item" v-for="item in menuList" :key="item.id">
@@ -43,7 +38,6 @@ export default {
   components: {Footer},
   data() {
     return {
-      bannerList: [],
       menuList:[],
     }
   },
@@ -69,11 +63,6 @@ export default {
       }).then(res =>{
         console.log(res);
         if(res.status == 200){
-          _.forEach(res.data.data.recipes, (item,index)=>{
-            this.bannerList.push(item);
-            if(index == 4) return false;
-          });
-
           _.forEach(res.data.data.menus, (item,index)=>{
             item.length = item.recipes.length;
             this.menuList.push(item);

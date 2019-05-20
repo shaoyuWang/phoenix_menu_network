@@ -20,7 +20,6 @@
 
 <script>
 export default {
-    props:['userId'],
     data(){
         return {
             userId: '',

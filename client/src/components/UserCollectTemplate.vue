@@ -19,7 +19,6 @@
 
 <script>
 export default {
-    props:['userInfo'],
     data(){
         return {
             user:'',

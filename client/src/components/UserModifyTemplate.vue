@@ -20,7 +20,7 @@
                 <el-input v-model="user.phone" placeholder="Please Input Telephone" autocomplete="off" style="width: 90%;"></el-input>
             </el-form-item>
             <el-form-item style="text-align:center;">
-                <el-button type="primary" @click="submitForm()">提交</el-button>
+                <el-button type="primary" @click="submitForm()">修改</el-button>
                 <el-button @click="resetForm()">重置</el-button>
             </el-form-item>
       </el-form>
@@ -29,7 +29,6 @@
 
 <script>
 export default {
-    props:['userId'],
     data(){
         return {
             userId: '',

@@ -7,7 +7,7 @@ import {
 } from './views/admin';
 import {
   Index, RecipeVideo, RecipeCooking, Navbar, ThreeMeals,
-  FoodMenu, GourmetMaster, AllTemplate, FoodHealth, UserCenter, RecipeTemplate, DiaryTemplate,
+  FoodMenu, GourmetMaster, AllTemplate, FoodHealth, UserCenter, RecipeTemplate, DiaryTemplate, VideoTemplate,
 } from './views/main';
 
 import { UserModifyTemplate, UserRecipeTemplate, UserMenuTemplate, UserDiaryTemplate } from '../src/components';
@@ -205,6 +205,13 @@ export default new Router({
             title: '菜谱',
           },
         },
+        {
+          path: 'videoTemplate',
+          component: VideoTemplate,
+          meta: {
+            title: '视频',
+          }
+        }
       ],
     },
     {
