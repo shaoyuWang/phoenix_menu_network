@@ -5,11 +5,11 @@
         </div>
         <el-col :span="24" class="infomation">
             <div class="list">
-                <div class="item" v-for="item in 4" :key="item">
-                    <img src="http://site.meishij.net/r/147/198/4174647/a4174647_144456278915386.jpg">
+                <div class="item" v-for="item in recipeList" :key="item.id">
+                    <img :src="handleImg(item.finishPhoto)">
                     <div class="info">
-                        <span class="recipe-name">红烧牛肉</span>
-                        <span class="time"><i class="el-icon-date"></i>&nbsp;&nbsp;2019-1-1</span>
+                        <span class="recipe-name">{{item.name}}</span>
+                        <span class="time"><i class="el-icon-date"></i>&nbsp;&nbsp;{{item.createDate}}</span>
                     </div>
                 </div>
             </div>
@@ -30,6 +30,11 @@ export default {
         this.getRecipe();
     },
     methods:{
+        handleImg(photo){
+            if(!_.isEmpty(photo)){
+                return require(`../assets/imgs/${photo}`);
+            }
+        },
         getRecipe(){
             this.userId = _.isEmpty(JSON.parse(sessionStorage.getItem('user')))? null: JSON.parse(sessionStorage.getItem('user')).id;
             this.$axios({

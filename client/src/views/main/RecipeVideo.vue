@@ -4,7 +4,7 @@
       <div class="main">
         <div class="list-item" v-for="item in videoList" :key="item.id">
           <a @click="jumpVideoTemplate(item.id)">
-            <div class="item-img"><img class="img-responsive" :src="video"></div>
+            <div class="item-img"><img class="img-responsive" :src="handleVideo(item.video)"></div>
             <div class="item-info">
               <span class="info-title">{{item.name}}</span>
             </div>
@@ -30,6 +30,9 @@ export default {
     this.getList();
   },
   methods:{
+    handleVideo(video){
+      return require(`../../assets/videos/${video}`);
+    },
     jumpVideoTemplate(id){
       this.$router.push({path: '/request/videoTemplate', query: { id }});
     },
@@ -41,6 +44,7 @@ export default {
         console.log(res);
         if(res.status == 200){
           _.forEach(res.data.data.videos, (item,index)=>{
+            item.video = require(`../../assets/videos/${item.video}`);
             this.videoList.push(item);
             if(index == 19) return false;
           });

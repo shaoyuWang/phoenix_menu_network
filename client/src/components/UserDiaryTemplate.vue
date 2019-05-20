@@ -6,7 +6,7 @@
         <el-col :span="24" class="infomation">
             <div class="list">
                 <div class="item" v-for="item in diaryList" :key="item.id">
-                    <img src="http://site.meishij.net/r/147/198/4174647/a4174647_144456278915386.jpg">
+                    <img :src="handleImg(item.photo)">
                     <div class="info">
                         <span class="recipe-name">{{item.name}}</span>
                         <span class="time"><i class="el-icon-date"></i>&nbsp;&nbsp;{{item.createDate}}</span>
@@ -30,6 +30,11 @@ export default {
         this.getDiary();
     },
     methods:{
+        handleImg(photo){
+      if(!_.isEmpty(photo)){
+        return require(`../assets/imgs/${photo}`);
+      }
+        },
         getDiary(){
             this.userId = _.isEmpty(JSON.parse(sessionStorage.getItem('user')))? null: JSON.parse(sessionStorage.getItem('user')).id;
             this.$axios({
@@ -46,7 +51,7 @@ export default {
                     }
                 }
             });
-        }
+        },
     }
 }
 </script>

@@ -5,7 +5,7 @@
         <span class="title-style">精选推荐</span>
         <el-carousel :interval="4000" type="card" height="200px">
           <el-carousel-item v-for="item in bannerList" :key="item.id">
-            <img class="banner-img" :src="img">
+            <img class="banner-img" :src="handleImg(item.finishPhoto)">
           </el-carousel-item>
         </el-carousel>
       </div>
@@ -22,7 +22,7 @@
           </span>
           <div class="list-item" v-for="item in recipeList" :key="item.id">
             <a @click="jumpRecipe(item.id)">
-              <div class="item-img"><img class="img-responsive" :src="img"></div>
+              <div class="item-img"><img class="img-responsive" :src="handleImg(item.finishPhoto)"></div>
               <div class="item-info">
                 <span class="info-title">{{item.name}}</span>
                 <span class="info-user">{{item.user.name}}</span>
@@ -44,7 +44,6 @@ export default {
     return {
       current: 1,
       title: '早餐',
-      img: 'https://s1.ig.meishij.net/p/20190225/5c3cfecbc666b3a256d5fd348ee82323.jpg',
       itemList: [
         {timeType: 1, name: '早餐'},{timeType: 2, name: '午餐'},{timeType: 3, name: '晚餐'}
       ],
@@ -57,6 +56,11 @@ export default {
     this.getList();
   },
   methods:{
+    handleImg(photo){
+      if(!_.isEmpty(photo)){
+        return require(`../../assets/imgs/${photo}`);
+      }
+    },
     jumpRecipe(id){
       this.$router.push({path: '/request/recipeTemplate', query: { id }});
     },

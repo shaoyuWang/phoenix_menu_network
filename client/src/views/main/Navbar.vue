@@ -12,8 +12,8 @@
           </div>
           <el-dropdown trigger='hover' v-show="login? true : false" :show-timeout="100" :hide-timeout="200" placement="bottom-start" @command="checkStatus">
             <div class="user-info">
-              <a href="#">
-                <img class="user-photo" src="../../assets/client.jpg"/>
+              <a>
+                <img class="user-photo" :src="_.isEmpty(user)? null : handleImg(user.photo)"/>
                 <span class="username">{{_.isEmpty(user)? null : user.name}}</span>
               </a>
             </div>
@@ -72,6 +72,11 @@ export default {
     this.authority();
   },
   methods: {
+    handleImg(photo){
+      if(!_.isEmpty(photo)){
+        return require(`../../assets/imgs/${photo}`);
+      }
+    },
     authority(){
       this.user = _.isEmpty(JSON.parse(sessionStorage.getItem('user')))? null: JSON.parse(sessionStorage.getItem('user'));
       !_.isEmpty(this.user) ? this.login = true : this.login = false;

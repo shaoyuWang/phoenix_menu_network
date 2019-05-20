@@ -21,7 +21,7 @@
           <ul class="recipe">
             <li class="recipe-item" v-for="item in item.recipes" :key="item.id">
               <a @click="jumpRecipe(item.id)">
-                <img src="http://site.meishij.net/r/147/198/4174647/a4174647_144456278915386.jpg">
+                <img :src="handleImg(item.finishPhoto)">
                 </a>
               </li>
           </ul>
@@ -51,6 +51,11 @@ export default {
     this.getList();
   },
   methods:{
+    handleImg(photo){
+      if(!_.isEmpty(photo)){
+        return require(`../../assets/imgs/${photo}`);
+      }
+    },
     jumpRecipe(id){
       this.$router.push({path: '/request/recipeTemplate', query: { id }});
     },

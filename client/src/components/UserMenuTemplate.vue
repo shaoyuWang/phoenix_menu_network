@@ -8,7 +8,9 @@
                 <el-collapse-item :title="item.name" :name='item.id' v-for="item in menuList" :key="item.id">
                     <div class="menu-header">{{item.length}}/10</div>
                     <ul class="recipe">
-                        <li class="recipe-item" v-for="recipeItem in item.recipes" :key="recipeItem.id"><img src="http://site.meishij.net/r/147/198/4174647/a4174647_144456278915386.jpg"></li>
+                        <li class="recipe-item" v-for="recipeItem in item.recipes" :key="recipeItem.id">
+                            <img :src="handleImg(item.finishPhoto)">
+                        </li>
                     </ul>
                 </el-collapse-item>
             </el-collapse>
@@ -30,6 +32,11 @@ export default {
         this.getMenu();
     },
     methods:{
+        handleImg(photo){
+            if(!_.isEmpty(photo)){
+                return require(`../assets/imgs/${photo}`);
+            }
+        },
         getMenu(){
             this.userId = _.isEmpty(JSON.parse(sessionStorage.getItem('user')))? null : JSON.parse(sessionStorage.getItem('user')).id;
             this.$axios({

@@ -7,7 +7,7 @@
           <ul>
             <li v-for="food in item.recipes" :key="food.id">
               <a class="food" @click="jumpRecipe(food.id)">
-                <img class="img-responsive" :src="img">
+                <img class="img-responsive" :src="handleImg(food.finishPhoto)">
                 <div class="info">
                   <span class="info-title">{{food.name}}</span>
                   <span class="info-description">{{food.evaluate}}</span>
@@ -27,7 +27,7 @@
             <el-tab-pane :label="item.name" :name="item.name" v-for="item in materialKindList" :key="item.id">
               <ul class="kind-list">
                 <li class="material-item" v-for="materialItem in item.materials" :key="materialItem.id">
-                  <img class="material-img" :src="img">
+                  <img class="material-img" :src="handleImg(item.photo)">
                   <span class="material-name">{{materialItem.name}}</span>
                 </li>
               </ul>
@@ -41,7 +41,7 @@
         </span>
         <div class="list-item" v-for="item in recipeList" :key="item.id">
           <a @click="jumpRecipe(item.id)">
-            <div class="item-img"><img class="img-responsive" :src="img"></div>
+            <div class="item-img"><img class="img-responsive" :src="handleImg(item.finishPhoto)"></div>
             <div class="item-info">
               <span class="info-title">{{item.name}}</span>
               <span class="info-user">{{item.user.name}}</span>
@@ -63,7 +63,6 @@ export default {
       autoplay: false,
       activeName: '',
       bannerList: [],
-      img: 'https://s1.ig.meishij.net/p/20190225/5c3cfecbc666b3a256d5fd348ee82323.jpg',
       materialKindList:[],
       recipeList:[],
 
@@ -75,6 +74,11 @@ export default {
     this.getList();
   },
   methods:{
+    handleImg(photo){
+      if(!_.isEmpty(photo)){
+        return require(`../../assets/imgs/${photo}`);
+      }
+    },
     jumpRecipe(id){
       this.$router.push({path: '/request/recipeTemplate', query: { id }});
     },

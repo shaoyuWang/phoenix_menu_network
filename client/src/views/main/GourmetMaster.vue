@@ -5,7 +5,7 @@
         <el-carousel :interval="4000" height="300px">
           <el-carousel-item v-for="item in bannerList" :key="item.id">
             <a @click="jumpDiary(item.id)">
-              <img :src="img">
+              <img :src="handleImg(item.photo)">
               <span>{{ item.title }}</span>
             </a>
           </el-carousel-item>
@@ -20,7 +20,7 @@
         </div>
         <div class="list-item" v-for="item in diaryList" :key="item.id">
             <a @click="jumpDiary(item.id)">
-              <div class="item-img"><img class="img-responsive" :src="img"></div>
+              <div class="item-img"><img class="img-responsive" :src="handleImg(item.photo)"></div>
               <div class="item-info">
                 <span class="info-title">{{item.title}}</span>
                 <span class="info-user">{{item.user.name}}</span>
@@ -36,7 +36,6 @@
 export default {
   data(){
     return {
-      img: 'https://s1.ig.meishij.net/p/20190225/5c3cfecbc666b3a256d5fd348ee82323.jpg',
       bannerList: [],
       diaryList: [],
     }
@@ -45,6 +44,11 @@ export default {
     this.getList();
   },
   methods:{
+    handleImg(photo){
+      if(!_.isEmpty(photo)){
+        return require(`../../assets/imgs/${photo}`);
+      }
+    },
     jumpDiary(id){
       this.$router.push({path: '/request/diaryTemplate', query: { id }});
     },

@@ -14,7 +14,7 @@
             <el-col :span="6" class="col-right">
                 <div class="user">
                     <div class="user-header">
-                        <div class="user-img"><img src="../../assets/logo.jpg"></div>
+                        <div class="user-img"><img :src="handleImg(user.photo)"></div>
                         <span class="username">{{user.name}}</span>
                     </div>
                     <div class="user-info">
@@ -63,6 +63,11 @@ export default {
         this.getUserInfo();
     },
     methods:{
+        handleImg(photo){
+            if(!_.isEmpty(photo)){
+            return require(`../../assets/imgs/${photo}`);
+            }
+        },
         getUserName(item){
             if(!_.isEmpty(item.user)){
                 console.log(item.user);

@@ -22,7 +22,7 @@
         </span>
         <div class="list-item" v-for="item in recipeList" :key="item.id">
           <a @click="jumpRecipe(item.id)">
-            <div class="item-img"><img class="img-responsive" :src="img"></div>
+            <div class="item-img"><img class="img-responsive" :src="handleImg(item.finishPhoto)"></div>
             <div class="item-info">
               <span class="info-title">{{item.name}}</span>
               <span class="info-user">{{item.user.name}}</span>
@@ -41,7 +41,6 @@ export default {
   components: {Footer},
   mounted(){
     this.getList();
-    this.img = require("/Users/wangshaoyu/Desktop/Graduation design/phoenix_menu_network/server/server-src/assets/imgs/2150721558273824152.jpg");
   },
   data(){
     return {
@@ -53,6 +52,11 @@ export default {
     }
   },
   methods:{
+    handleImg(photo){
+      if(!_.isEmpty(photo)){
+        return require(`../../assets/imgs/${photo}`);
+      }
+    },
     checkSort(sortName){
       this.recipeList = _.filter(this.recipeTemp,{ sort: { name:sortName } });
       console.log(this.recipeList);

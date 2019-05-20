@@ -22,7 +22,7 @@
         </span>
         <div class="list-item" v-for="item in recipeList" :key="item.id">
           <a @click="jumpRecipe(item.id)">
-            <div class="item-img"><img class="img-responsive" :src="img"></div>
+            <div class="item-img"><img class="img-responsive" :src="handleImg(item.finishPhoto)"></div>
             <div class="item-info">
               <span class="info-title">{{item.name}}</span>
               <span class="info-user">{{item.user.name}}</span>
@@ -42,7 +42,6 @@ export default {
   data(){
     return {
       activeName: '',
-      img: 'https://s1.ig.meishij.net/p/20190225/5c3cfecbc666b3a256d5fd348ee82323.jpg',
       recipeTemp: [],
       effectKindList: [],
       recipeList: [],
@@ -52,6 +51,11 @@ export default {
     this.getList();
   },
   methods:{
+    handleImg(photo){
+      if(!_.isEmpty(photo)){
+        return require(`../../assets/imgs/${photo}`);
+      }
+    },
     jumpRecipe(id){
       this.$router.push({path: '/request/recipeTemplate', query: { id }});
     },

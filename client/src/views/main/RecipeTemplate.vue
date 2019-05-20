@@ -7,7 +7,7 @@
                 </div>
                 <el-col :span="24" class="recipe-base">
                     <el-col :span="10">
-                        <img class="recipe-img" src="http://site.meishij.net/r/147/198/4174647/a4174647_144456278915386.jpg">
+                        <img class="recipe-img" :src="handleImg(recipe.finishPhoto)">
                     </el-col>
                     <el-col :span="14" class="info">
                         <ul class="effect">
@@ -31,7 +31,7 @@
                         <span class="major">主料:</span>
                         <ul class="material-info">
                             <li class="material-item" v-for="item in recipe.majorMaterials" :key="item.id">
-                                <img src="../../assets/headerbackground.jpg">
+                                <img :src="handleImg(item.photo)">
                                 <span class="name">{{item.name}}</span>
                                 <span class="quality">{{item.quality}}</span>
                             </li>
@@ -39,7 +39,7 @@
                         <span class="major">辅料:</span>
                         <ul class="material-info">
                             <li class="material-item" v-for="item in recipe.auxiliaryMaterials" :key="item.id">
-                                <img src="../../assets/headerbackground.jpg">
+                                <img :src="handleImg(item.photo)">
                                 <span class="name">{{item.name}}</span>
                                 <span class="quality">{{item.quality}}</span>
                             </li>
@@ -113,6 +113,11 @@ export default {
         this.getUserInfo();
     },
     methods:{
+        handleImg(photo){
+            if(!_.isEmpty(photo)){
+                return require(`../../assets/imgs/${photo}`);
+            }
+        },
         checkLevel(item){
             switch(_.toNumber(item)){
                 case 1: return '轻松'; break;

@@ -6,7 +6,7 @@
             </div>
             <div class="list-item" v-for="item in infoList" :key="item.id">
                 <a href="#">
-                    <div class="item-img"><img class="img-responsive" :src="img"></div>
+                    <div class="item-img"><img class="img-responsive" :src="handleImg(item)"></div>
                     <div class="item-info">
                     <span class="info-title">{{item.name}}</span>
                     <span class="info-user">{{checkName(item.user)}}</span>
@@ -33,6 +33,13 @@ export default {
         this.getList();
     },
     methods:{
+        handleImg(item){
+            if(_.isEmpty(item.finishPhoto)){
+                return require(`../../assets/imgs/${item.photo}`);
+            }else{
+                return require(`../../assets/imgs/${item.finishPhoto}`);
+            }
+        },
         checkName(item){
             if(!_.isEmpty(item)){
                 return item.name;
