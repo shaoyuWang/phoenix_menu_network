@@ -23,6 +23,10 @@
                         </div>
                     </el-col>
                 </el-col>
+                <el-col :span="24" class="recipe-operation">
+                    <el-button @click="collection()" type="success" plain>收藏</el-button>
+                    <el-button @click="addMenu()" type="primary" plain>添加到菜单</el-button>
+                </el-col>
                 <el-col :span="24" class="recipe-info">
                     <span class="description">
                         {{recipe.evaluate}}
@@ -133,7 +137,6 @@ export default {
             }
         },
         publishComment(){
-            let user = JSON.parse(sessionStorage.getItem('user'));
             let data = {
                 comment:this.comment,
                 praise: 0,
@@ -153,10 +156,7 @@ export default {
                     }
                 });
             }else{
-                this.$message({
-                    message: '请输入评论信息',
-                    type: 'warning'
-                });
+                this.$message({ message: '请输入评论信息', type: 'warning' });
             }
         },
         praise(commentId){
@@ -167,13 +167,29 @@ export default {
                 data: data,
             }).then(res=>{
                 if(res.data.code == 200){
-                    this.$message({
-                        message: '点赞成功',
-                        type: 'success'
-                    });
+                    this.$message({ message: '点赞成功', type: 'success' });
                     this.getList();
                 }
             });
+        },
+        collection(){
+            let user = _.isEmpty(JSON.parse(sessionStorage.getItem('user')))? null: JSON.parse(sessionStorage.getItem('user'));
+            let data = {
+               recipeId: this.recipe.id,
+               recipeName: this.recipe.name,
+               userId: user.id,
+               recipeFinishPhoto: this.recipe.finishPhoto,
+           };
+        //    this.$axios({
+        //         url:`/main/recipeTemplate/collectionRecipe`,
+        //         method: 'post',
+        //         data,
+        //     }).then(res=>{
+        //         if(res.data.code == 200){
+        //             this.$message({ message: '收藏成功', type: 'success' });
+        //             this.getList();
+        //         }
+        //     });
         },
         getList(){
             this.recipeId = _.toNumber(this.$route.query.id);
@@ -306,6 +322,14 @@ export default {
                         }
                     }
                 }
+            }
+            .recipe-operation{
+                margin-top: $size10;
+                padding: 20px 0;
+                text-align: center;
+                width: $width100;
+                background-color: white;
+                box-shadow: 0 0 3px rgba(255, 0, 0, 0.4);
             }
             .recipe-info{
                 margin-top: $size10;

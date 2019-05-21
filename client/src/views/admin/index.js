@@ -10,6 +10,8 @@ import SortKind from './SortKind.vue';
 import Step from './Step.vue';
 import Taste from './Taste.vue';
 import Technology from './Technology.vue';
+import RecipeComment from './RecipeComment.vue';
+import DiaryComment from './DiaryComment.vue';
 
 export {
     Admin,
@@ -23,5 +25,7 @@ export {
     UserMenuComment,
     Step,
     Taste,
-    Technology
+    Technology,
+    RecipeComment,
+    DiaryComment
 }

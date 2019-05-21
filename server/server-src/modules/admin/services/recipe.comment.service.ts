@@ -8,10 +8,10 @@ import { RESPONSE_CODE } from "../../../framework/enums";
 import { RecipeCommentEntity } from "../../main/entities";
 
 @Injectable()
-export class UserDiaryCommentService {
+export class RecipeCommentService {
   constructor(
-    @InjectRepository(UserDiaryCommentEntity)
-    private readonly commentRepository: Repository<UserDiaryCommentEntity>,
+    @InjectRepository(RecipeCommentEntity)
+    private readonly commentRepository: Repository<RecipeCommentEntity>,
   ) {}
 
   //   获取全部评论信息

@@ -4,7 +4,7 @@ import { Repository } from "typeorm";
 import _ from "lodash";
 import { RESPONSE_CODE } from "../../../framework/enums";
 import { RecipeEntity, RecipeCommentEntity } from "../entities";
-import { UserEntity } from "../../admin/entities";
+import { UserEntity, UserCollectionEntity } from "../../admin/entities";
 
 @Injectable()
 export class RecipeTemplateService {
@@ -15,6 +15,8 @@ export class RecipeTemplateService {
     private readonly userRepository: Repository<UserEntity>,
     @InjectRepository(RecipeCommentEntity)
     private readonly recipeCommentEntity: Repository<RecipeCommentEntity>,
+    @InjectRepository(UserCollectionEntity)
+    private readonly userCollectionRepository: Repository<UserCollectionEntity>,
   ) {}
 
   //  获取菜谱信息
@@ -70,6 +72,20 @@ export class RecipeTemplateService {
       return { code: RESPONSE_CODE.NOTVALUE };
     }
   }
+
+  // 收藏菜谱
+  public async collectionRecipe(info: any) {
+    let data: any;
+    let collection = await this.userCollectionRepository.save(info);
+    data = _.assign({}, { collection });
+    if (!_.isEmpty(data)) {
+      return { data, code: RESPONSE_CODE.SUCCESS };
+    } else {
+      return { code: RESPONSE_CODE.NOTVALUE };
+    }
+  }
+
+  // 添加到菜单
 
   // 点赞
   public async praiseComment(commentId: number) {

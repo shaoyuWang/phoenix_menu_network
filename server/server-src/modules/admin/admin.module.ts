@@ -3,33 +3,24 @@ import {
   AuthorityController,
   UserController,
   RoleController,
+  RecipeCommentController,
+  UserDiaryCommentController,
 } from "./controller";
 import {
   LocalStrategyService,
   SerializerService,
   RoleService,
-  UserDiaryService,
-  UserMenuService,
-  RecipeService,
+  UserService,
+  RecipeCommentService,
+  UserDiaryCommentService,
 } from "./services";
-import { UserService } from "./services/user.service";
-import { UserDiaryController } from "./controller/user.diary.controller";
-import { UserDiaryCommentController } from "./controller/user.diary.comment.controller";
-import { UserMenuController } from "./controller/user.menu.controller";
-import { UserMenuCommentController } from "./controller/user.menu.comment.controller";
-import { UserDiaryCommentService } from "./services/user.diary.comment.service";
-import { UserMenuCommentService } from "./services/user.menu.comment.service";
-import { RecipeController } from "./controller/recipe.controller";
 
 const controllers = [
   AuthorityController,
   UserController,
   RoleController,
-  UserDiaryController,
+  RecipeCommentController,
   UserDiaryCommentController,
-  UserMenuController,
-  UserMenuCommentController,
-  RecipeController,
 ];
 
 const services = [
@@ -37,11 +28,8 @@ const services = [
   SerializerService,
   UserService,
   RoleService,
-  UserDiaryService,
+  RecipeCommentService,
   UserDiaryCommentService,
-  UserMenuService,
-  UserMenuCommentService,
-  RecipeService,
 ];
 
 @Module({

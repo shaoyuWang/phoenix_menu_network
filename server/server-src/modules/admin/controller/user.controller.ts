@@ -28,31 +28,19 @@ export class UserController {
   @Get("/findUserById/:id")
   // @Roles(1, 2)
   public async findUserById(@Param("id") userId: any) {
-    if (!_.isEmpty(userId)) {
-      return this.userServices.findUserById(userId);
-    } else {
-      return { code: RESPONSE_CODE.NOTPARAMETER };
-    }
+    return this.userServices.findUserById(userId);
   }
 
   @Post("/saveUser")
   // @Roles(1, 2)
   public async saveUser(@Body() data: any) {
-    if (!_.isEmpty(data)) {
-      return this.userServices.saveUser(data);
-    } else {
-      return { code: RESPONSE_CODE.NOTPARAMETER };
-    }
+    return this.userServices.saveUser(data);
   }
 
-  @Put("/updateUser/:id")
+  @Post("/updateUser/:id")
   // @Roles(1)
   public async updateUser(@Param("id") userId: any, @Body() data: any) {
-    if (!_.isEmpty(userId) && !_.isEmpty(data)) {
-      return this.userServices.updateUser(userId, data);
-    } else {
-      return { code: RESPONSE_CODE.NOTPARAMETER };
-    }
+    return this.userServices.updateUser(userId, data);
   }
 
   // @Delete(":id")

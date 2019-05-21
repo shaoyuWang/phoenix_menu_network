@@ -16,6 +16,7 @@ export class UserService {
   public async getAllUsers() {
     let data: any;
     const users = await this.userRepository.find({ relations: ["roles"] });
+    _.orderBy(users, "id", "asc");
     data = _.assign({}, { users });
     if (!_.isEmpty(data)) {
       return { data, code: RESPONSE_CODE.SUCCESS };
@@ -37,9 +38,9 @@ export class UserService {
   }
 
   //   添加用户
-  public async saveUser(userInfo: any) {
+  public async saveUser(info: any) {
     let data: any;
-    const user = await this.userRepository.save(userInfo);
+    const user = await this.userRepository.save(info);
     data = _.assign({}, { user });
     if (!_.isEmpty(data)) {
       return { data, code: RESPONSE_CODE.SUCCESS };
@@ -49,12 +50,12 @@ export class UserService {
   }
 
   //   修改用户
-  public async updateUser(userId: any, userInfo: any) {
+  public async updateUser(userId: any, info: any) {
     let data: any;
     let user = await this.userRepository.findOne(userId);
     if (!_.isEmpty(user)) {
       user = await this.userRepository.save(
-        this.userRepository.merge(user as any, userInfo),
+        this.userRepository.merge(user as any, info),
       );
       data = _.assign({}, { user });
       return { data, code: RESPONSE_CODE.SUCCESS };

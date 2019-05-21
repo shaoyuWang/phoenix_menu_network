@@ -37,14 +37,14 @@
         <el-form-item label="内容" label-width="120px">
           <el-input v-model="form.info" type="textarea" placeholder="Please Input Information"></el-input>
         </el-form-item>
-        <!-- <el-form-item label="图片" label-width="120px">
+        <el-form-item label="图片" label-width="120px">
           <el-upload class="upload-demo" action="/upload/img" 
             name="file"
             list-type="picture" :limit="1" :on-success="handleSuccess" :on-exceed="onExceed" :before-upload="beforeUpload">
             <el-button size="small" type="primary">点击上传</el-button>
             <div slot="tip" class="el-upload__tip">只能上传jpg/jepg文件，且不超过2m</div>
         </el-upload>
-        </el-form-item> -->
+        </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button type="primary" @click="submit()">确 定</el-button>
@@ -71,7 +71,6 @@ export default {
   },
   mounted(){
     this.getDiarys();
-    console.log('1');
   },
   methods: {
     // 图片上传方法

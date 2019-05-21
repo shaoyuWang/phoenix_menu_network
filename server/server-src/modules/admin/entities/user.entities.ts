@@ -33,13 +33,7 @@ export class UserEntity extends FrameworkEntity {
   @Column("varchar", { name: "phone", nullable: true, length: 100 })
   public phone: string | null;
 
-  @Column({ name: "collection_number" })
-  public collectionNumber: number;
-
-  @Column({ name: "menu_number" })
-  public menuNumber: number;
-
-  @Column("varchar", { name: "photo", nullable: true, length: 100 })
+  @Column("varchar", { name: "photo", nullable: true })
   public photo: string | null;
 
   @OneToMany(

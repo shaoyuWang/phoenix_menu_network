@@ -20,7 +20,6 @@
             <el-menu-item index="user" >用户管理</el-menu-item>
             <el-menu-item index="role" >角色管理</el-menu-item>
             <el-menu-item index="diary" >日记管理</el-menu-item>
-            <el-menu-item index="userMenuComment" >菜单评论管理</el-menu-item>
           </el-menu-item-group>
         </el-submenu>
         <el-submenu index="2">
@@ -35,6 +34,17 @@
             <el-menu-item index="taste">菜谱口味管理</el-menu-item>
             <el-menu-item index="sortKind">菜系种类管理</el-menu-item>
             <el-menu-item index="materailMenu">材料分类管理</el-menu-item>
+          </el-menu-item-group>
+        </el-submenu>
+        <el-submenu index="3">
+          <template slot="title">
+            <i class="el-icon-location"></i>
+            <span>评论管理</span>
+          </template>
+          <el-menu-item-group>
+            <el-menu-item index="recipeComment" >菜谱评论管理</el-menu-item>
+            <el-menu-item index="diaryComment" >日记评论管理</el-menu-item>
+            <el-menu-item index="userMenuComment" disabled>菜单评论管理</el-menu-item>
           </el-menu-item-group>
         </el-submenu>
       </el-menu>

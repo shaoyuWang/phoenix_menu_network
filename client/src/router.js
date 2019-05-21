@@ -3,7 +3,7 @@ import Router from 'vue-router';
 import { NotFound, NotPermission, Login } from './views/common';
 import {
   Admin, User, Diary, Effect, MaterailMenu,
-  UserMenuComment, SortKind, Step, Taste, Technology, Recipe, Role,
+  UserMenuComment, SortKind, Step, Taste, Technology, Recipe, Role, RecipeComment, DiaryComment,
 } from './views/admin';
 import {
   Index, RecipeVideo, RecipeCooking, Navbar, ThreeMeals,
@@ -126,6 +126,20 @@ export default new Router({
           component: Technology,
           meta: {
             title: '工艺管理',
+          },
+        },
+        {
+          path: 'recipeComment',
+          component: RecipeComment,
+          meta: {
+            title: '菜谱评论管理',
+          },
+        },
+        {
+          path: 'diaryComment',
+          component: DiaryComment,
+          meta: {
+            title: '日记评论管理',
           },
         },
       ],

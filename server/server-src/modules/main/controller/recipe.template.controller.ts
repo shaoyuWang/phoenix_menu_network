@@ -28,6 +28,11 @@ export class RecipeTemplateController {
     return await this.recipeTemplateService.saveComment(data);
   }
 
+  @Post("/collectionRecipe")
+  public async collectionRecipe(@Body() data: any) {
+    return await this.recipeTemplateService.collectionRecipe(data);
+  }
+
   @Post("/praiseComment")
   // @Roles(2)
   public async praiseComment(@Body() data: any) {
