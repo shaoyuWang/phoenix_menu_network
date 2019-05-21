@@ -43,10 +43,7 @@ export default {
                 if(res.status == 200){
                     this.recipeList = res.data.data.recipes;
                     if(_.isEmpty(this.recipeList)){
-                        this.$message({
-                        message: '暂无菜谱信息',
-                        type: 'error'
-                        });
+                        this.$message({ message: '暂无菜谱信息', type: 'error' });
                     }
                 }
             });

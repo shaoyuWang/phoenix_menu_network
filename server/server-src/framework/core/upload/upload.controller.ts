@@ -14,7 +14,7 @@ import { createWriteStream } from "fs";
 import { join } from "path";
 import { RESPONSE_CODE } from "../../enums";
 
-@Controller("/upload")
+@Controller("upload")
 // @UseGuards(LoginGuard)
 export class UploadController {
   constructor() {}
@@ -24,12 +24,6 @@ export class UploadController {
   // @Roles(2)
   public async uploadImg(@UploadedFile() file: any) {
     const nameList = _.split(file.originalname, ".");
-    if (
-      _.toLower(nameList[nameList.length - 1]) != "jpg" ||
-      _.toLower(nameList[nameList.length - 1]) != "jpeg"
-    ) {
-      return { code: RESPONSE_CODE.NOTPARAMETER };
-    }
     const random = _.random(100000, 999999);
     const fileName = `${random}${new Date().getTime()}.${
       nameList[nameList.length - 1]
@@ -49,7 +43,7 @@ export class UploadController {
   // @Roles(2)
   public async uploadVideo(@UploadedFile() file: any) {
     const nameList = _.split(file.originalname, ".");
-    if (_.toLower(nameList[nameList.length - 1]) != "mp4") {
+    if (_.toLower(nameList[nameList.length - 1]) == "mp4") {
       return { code: RESPONSE_CODE.NOTPARAMETER };
     }
     const random = _.random(100000, 999999);

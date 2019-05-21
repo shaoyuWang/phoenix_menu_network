@@ -17,16 +17,20 @@ module.exports = {
         target:'http://localhost:3000',
         changeOrigin:true,
       },
+      '/upload':{
+        target:'http://localhost:3000',
+        changeOrigin:true,
+      },
     }
   },
   configureWebpack: {
     plugins: [
-        new webpack.ProvidePlugin({
-            $: 'jquery',
-            jQuery: 'jquery',
-            'window.jQuery': 'jquery',
-            Popper: ['popper.js', 'default']
-          })
+      new webpack.ProvidePlugin({
+        $: 'jquery',
+        jQuery: 'jquery',
+        'window.jQuery': 'jquery',
+        Popper: ['popper.js', 'default']
+        })
     ]
   }
 };

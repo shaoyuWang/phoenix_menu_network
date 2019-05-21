@@ -15,18 +15,18 @@ import _ from "lodash";
 import { RESPONSE_CODE } from "../../../framework/enums";
 
 @Controller("/api/user")
-@UseGuards(LoginGuard)
+// @UseGuards(LoginGuard)
 export class UserController {
   constructor(private readonly userServices: UserService) {}
 
   @Get("/getAllUsers")
-  @Roles(1, 2)
+  // @Roles(1, 2)
   public async getUsers() {
     return this.userServices.getAllUsers();
   }
 
   @Get("/findUserById/:id")
-  @Roles(1, 2)
+  // @Roles(1, 2)
   public async findUserById(@Param("id") userId: any) {
     if (!_.isEmpty(userId)) {
       return this.userServices.findUserById(userId);
@@ -36,7 +36,7 @@ export class UserController {
   }
 
   @Post("/saveUser")
-  @Roles(1, 2)
+  // @Roles(1, 2)
   public async saveUser(@Body() data: any) {
     if (!_.isEmpty(data)) {
       return this.userServices.saveUser(data);
@@ -46,7 +46,7 @@ export class UserController {
   }
 
   @Put("/updateUser/:id")
-  @Roles(1)
+  // @Roles(1)
   public async updateUser(@Param("id") userId: any, @Body() data: any) {
     if (!_.isEmpty(userId) && !_.isEmpty(data)) {
       return this.userServices.updateUser(userId, data);

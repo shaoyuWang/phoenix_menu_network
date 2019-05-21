@@ -14,19 +14,19 @@ import _ from "lodash";
 import { RESPONSE_CODE } from "../../../framework/enums";
 import { UserDiaryCommentService } from "../services/user.diary.comment.service";
 
-@Controller("diaryComment")
-@UseGuards(LoginGuard)
+@Controller("api/diaryComment")
+// @UseGuards(LoginGuard)
 export class UserDiaryCommentController {
   constructor(private readonly diaryCommentServices: UserDiaryCommentService) {}
 
   @Get("/getAllComments")
-  @Roles(1, 2)
+  // @Roles(1, 2)
   public async getComments() {
     return this.diaryCommentServices.getAllComments();
   }
 
   @Get("/findCommentById/:id")
-  @Roles(1, 2)
+  // @Roles(1, 2)
   public async findCommentById(@Param("id") commentId: any) {
     if (!_.isEmpty(commentId)) {
       return this.diaryCommentServices.findCommentById(commentId);
@@ -36,7 +36,7 @@ export class UserDiaryCommentController {
   }
 
   @Post("/saveComment")
-  @Roles(2)
+  // @Roles(2)
   public async saveComment(@Body() data: any) {
     if (!_.isEmpty(data)) {
       return this.diaryCommentServices.saveComment(data);
@@ -46,7 +46,7 @@ export class UserDiaryCommentController {
   }
 
   @Put("/praiseComment/:id")
-  @Roles(2)
+  // @Roles(2)
   public async praiseComment(@Param("id") commentId: any) {
     if (!_.isEmpty(commentId)) {
       return this.diaryCommentServices.praiseComment(commentId);
@@ -56,7 +56,7 @@ export class UserDiaryCommentController {
   }
 
   @Delete("/deleteComment/:id")
-  @Roles(1, 2)
+  // @Roles(1, 2)
   public async deleteComment(@Param("id") commentId: any) {
     if (!_.isEmpty(commentId)) {
       return this.diaryCommentServices.deleteComment(commentId);

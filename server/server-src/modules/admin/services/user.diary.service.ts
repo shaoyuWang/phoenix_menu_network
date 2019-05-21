@@ -14,50 +14,56 @@ export class UserDiaryService {
 
   //   获取全部日记信息
   public async getAllDiarys() {
+    let data: any;
     const diarys = await this.diaryRepository.find({
-      relations: ["user", "comments"],
+      relations: ["user"],
     });
-    if (!_.isEmpty(diarys)) {
-      return { data: diarys, code: RESPONSE_CODE.SUCCESS };
-    } else {
-      return { code: RESPONSE_CODE.NOTVALUE };
-    }
-  }
-
-  //   根据ID查找日记
-  public async findDiaryById(diaryId: any) {
-    const diary = await this.diaryRepository.findOne(diaryId);
-    if (!_.isEmpty(diary)) {
-      return { data: diary, code: RESPONSE_CODE.SUCCESS };
+    data = _.assign({}, { diarys });
+    if (!_.isEmpty(data)) {
+      return { data, code: RESPONSE_CODE.SUCCESS };
     } else {
       return { code: RESPONSE_CODE.NOTVALUE };
     }
   }
 
   //   添加日记
-  public async saveDiary(data: any) {
-    const diary = await this.diaryRepository.save(data);
+  public async saveDiary(info: any) {
+    let data: any;
+    const diary = await this.diaryRepository.save(info);
+    data = _.assign({}, { diary });
     if (!_.isEmpty(diary)) {
-      const diarys = await this.diaryRepository.find({
-        relations: ["user", "comments"],
-      });
-      return { data: diarys, code: RESPONSE_CODE.SUCCESS };
+      return { data, code: RESPONSE_CODE.SUCCESS };
     } else {
       return { code: RESPONSE_CODE.NOTVALUE };
     }
   }
 
   //   修改日记
-  public async updateDiary(diaryId: any, data: any) {
+  public async updateDiary(diaryId: any, info: any) {
+    let data: any;
     let diary = await this.diaryRepository.findOne(diaryId);
     if (!_.isEmpty(diary)) {
       diary = await this.diaryRepository.save(
-        this.diaryRepository.merge(diary as any, data),
+        this.diaryRepository.merge(diary as any, info),
       );
-      const diarys = await this.diaryRepository.find({
-        relations: ["user", "comments"],
-      });
-      return { data: diarys, code: RESPONSE_CODE.SUCCESS };
+      data = _.assign({}, { diary });
+      if (!_.isEmpty(data)) {
+        return { data, code: RESPONSE_CODE.SUCCESS };
+      } else {
+        return { code: RESPONSE_CODE.NOTVALUE };
+      }
+    } else {
+      return { code: RESPONSE_CODE.NOTVALUE };
+    }
+  }
+
+  // 删除日记
+  public async deleteDiary(diaryId: any) {
+    let data: any;
+    let diary = await this.diaryRepository.delete(diaryId);
+    data = _.assign({}, { diary });
+    if (!_.isEmpty(data)) {
+      return { data, code: RESPONSE_CODE.SUCCESS };
     } else {
       return { code: RESPONSE_CODE.NOTVALUE };
     }

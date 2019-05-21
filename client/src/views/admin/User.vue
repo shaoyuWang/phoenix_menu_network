@@ -1,13 +1,11 @@
 <template>
-  <el-row class="container">
-    <el-row class="header">
+  <el-col :span="24" class="row">
+    <el-col :span="24" class="header">
       <el-button type="primary" class="add" @click="addUser()">+Add</el-button>
-    </el-row>
-    <el-row class="main">
+    </el-col>
+    <el-col :span="24" class="main">
       <el-table :data="users" stripe style="width: 97%;">
         <el-table-column prop="id" label="ID" class-name="table_column" width="70"></el-table-column>
-        <!-- <el-table-column prop="username" label="Username" class-name="table_column"></el-table-column>
-        <el-table-column prop="password" label="Password" class-name="table_column"></el-table-column> -->
         <el-table-column prop="name" label="Name" class-name="table_column"></el-table-column>
         <el-table-column prop="email" label="Email" class-name="table_column"></el-table-column>
         <el-table-column prop="phone" label="TelePhone" class-name="table_column"></el-table-column>
@@ -16,33 +14,40 @@
         <el-table-column prop="roles" label="Role" class-name="table_column" :formatter='formatter'></el-table-column>
         <el-table-column label="Operation" class-name="table_column">
           <template slot-scope="scope">
-            <el-button size="small" @click="copyUser(scope.$index,scope.row)" type="warning" plain>Update</el-button>
+            <el-button size="small" @click="copyUser(scope.row)" type="warning" plain>Update</el-button>
           </template>
         </el-table-column>
       </el-table>
-    </el-row>
+    </el-col>
     <!-- 模态框 -->
     <el-dialog :title="title" :visible.sync="dialogFormVisible" center>
       <el-form :model="form">
-        <!-- <el-form-item label="Username" label-width="120px">
-          <el-input v-model="form.username" placeholder="Please Input Username" autocomplete="off"></el-input>
-        </el-form-item>
-        <el-form-item label="Password" label-width="120px">
-          <el-input type="password" v-model="form.password" placeholder="Please Input Passowrd" autocomplete="off"></el-input>
-        </el-form-item> -->
         <el-form-item label="Name" label-width="120px">
           <el-input type="name" v-model="form.name" placeholder="Please Input Passowrd" autocomplete="off"></el-input>
         </el-form-item>
         <el-form-item label="Email" label-width="120px">
           <el-input v-model="form.email" type="email" placeholder="Please Input Email" autocomplete="off"></el-input>
         </el-form-item>
+        <el-form-item label="Email" label-width="120px">
+          <el-input v-model="form.photo" type="email" placeholder="Please Input Email" autocomplete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="Photo" label-width="120px">
+          <el-upload
+            class="upload-demo"
+            action="/upload/img"
+            :limit="1"
+            :on-exceed="onExceed"
+            :before-upload="beforeUpload"
+            :on-success="handleSuccess"
+          >
+            <el-button size="small" type="primary">点击上传</el-button>
+            <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
+          </el-upload>
+      </el-form-item>
         <el-form-item label="Role" label-width="120px">
           <el-radio-group v-model="form.role_id">
-            <el-radio-button v-for="(role,index) in roles" :label="role.id" :key="index" border>{{role.name}}</el-radio-button>
+            <el-radio-button v-for="item in roles" :label="item.id" :key="item.id" border>{{item.name}}</el-radio-button>
           </el-radio-group>
-        </el-form-item>
-        <el-form-item label="Visitor" label-width="120px">
-          <el-input v-model="form.visitor" type="visitor" placeholder="Please Input Visitor" autocomplete="off"></el-input>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -50,12 +55,13 @@
         <el-button type="warning" @click="Close()">取 消</el-button>
       </div>
     </el-dialog>
-  </el-row>
+  </el-col>
 </template>
 <script>
 export default {
   data() {
     return {
+      uploadUrl:'upload/img',
       title: '',
       users: [],
       roles: [],
@@ -65,32 +71,54 @@ export default {
       roleChecked : [],
       checkedRoleId: [],
       form: {
-        username: '',
-        password: '',
         name: '',
         email: '',
         phone: '',
-        role_id: [],
-        visitor: '',
+        photo: '',
+        role_id: '',
       },
       user_id: '',
     };
   },
   mounted(){
     this.getUsers();
-    // this.getRoles();
+    this.getRoles();
   },
   methods: {
     // 拼接多个roles
     formatter(row,column){
       let allRole = ''
       if(row.roles != []){
-        for(var i = 0;i<row.roles.length;i++){
+        for(var i = 0;i < row.roles.length;i++){
           allRole += row.roles[i].name + ',';
         }
         allRole = allRole.substring(0,allRole.lastIndexOf(','));
       }
       return allRole;
+    },
+    // 图片上传方法
+    //文件上传成功的钩子函数
+    handleSuccess(res, file) {
+      this.$message({ type: "success", message: "图片上传成功" });
+      const pathList = _.split(res.writeImage.path, "/");
+      this.form.photo = pathList[ pathList.length - 1 ];
+    },
+    //上传的文件个数超出设定时触发的函数
+    onExceed(files, fileList) {
+      this.$message.error({ message: "最多只能上传一个图片" });
+    },
+    //文件上传前的前的钩子函数
+    //参数是上传的文件，若返回false，或返回Primary且被reject，则停止上传
+    beforeUpload(file) {
+      const isJPG = file.type === "image/jpeg";
+      const isLt2M = file.size / 1024 / 1024 < 2;
+      if (!isJPG) {
+        this.$message.error("上传图片必须是JPG 格式!");
+      }
+      if (!isLt2M) {
+        this.$message.error("上传图片大小不能超过 2MB!");
+      }
+      return (isJPG) && isLt2M;
     },
     // 提交点击事件
     Submit(){
@@ -243,24 +271,20 @@ export default {
         method: 'get',
       }).then(res=> {
         if(res.data.code == 200){
-          this.users = res.data.data;
-        }else{
-          this.$router.push({ path: "/nopermisson"});
+          this.users = res.data.data.users;
         }
       })
     },
     // 获取角色
     getRoles(){
-      // this.$axios({
-      //   url: '/api/v1/roles',
-      //   method: 'get',
-      // }).then(res =>{
-      //   if(res.data.code == 200){
-      //     this.roles = res.data.data;
-      //   }else{
-      //     this.$router.push({ path: "/nopermisson"});
-      //   }
-      // })
+      this.$axios({
+        url: '/api/role/getAllRoles',
+        method: 'get',
+      }).then(res =>{
+        if(res.data.code == 200){
+          this.roles = res.data.data.roles;
+        }
+      })
     },
   }
 };
@@ -269,11 +293,8 @@ export default {
 <style lang="scss" scoped>
   @import "../../styles/style.scss";
   @import "../../styles/variables.scss";
-  .container {
-    position: absolute;
-    right: 0;
-    overflow: scroll;
-    width: 80%;
+  .row {
+    overflow: hidden;
     .header {
       text-align: right;
       margin: $size20;

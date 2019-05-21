@@ -13,7 +13,7 @@ import { LoginGuard } from "../../../framework/guards";
 import _ from "lodash";
 import { RecipeService } from "../services";
 
-@Controller("admin/recipe")
+@Controller("api/recipe")
 // @UseGuards(LoginGuard)
 export class RecipeController {
   constructor(private readonly recipeServices: RecipeService) {}

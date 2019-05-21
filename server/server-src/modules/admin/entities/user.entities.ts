@@ -24,7 +24,7 @@ export class UserEntity extends FrameworkEntity {
   @Column({ name: "password", length: 100, select: false })
   public password: string;
 
-  @Column({ name: "name", length: 255 })
+  @Column({ name: "name", length: 100 })
   public name: string;
 
   @Column({ name: "email", length: 100 })

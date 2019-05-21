@@ -14,9 +14,11 @@ export class RoleService {
 
   //   获取全部角色信息
   public async getAllRoles() {
+    let data: any;
     const roles = await this.roleRepository.find();
-    if (!_.isEmpty(roles)) {
-      return { data: roles, code: RESPONSE_CODE.SUCCESS };
+    data = _.assign({}, { roles });
+    if (!_.isEmpty(data)) {
+      return { data, code: RESPONSE_CODE.SUCCESS };
     } else {
       return { code: RESPONSE_CODE.NOTVALUE };
     }
@@ -24,43 +26,54 @@ export class RoleService {
 
   //   根据ID查找角色
   public async findRoleById(roleId: any) {
+    let data: any;
     const role = await this.roleRepository.findOne(roleId);
-    if (!_.isEmpty(role)) {
-      return { data: role, code: RESPONSE_CODE.SUCCESS };
+    data = _.assign({}, { role });
+    if (!_.isEmpty(data)) {
+      return { data, code: RESPONSE_CODE.SUCCESS };
     } else {
       return { code: RESPONSE_CODE.NOTVALUE };
     }
   }
 
   //   添加角色
-  public async saveRole(data: any) {
-    const role = await this.roleRepository.save(data);
-    if (!_.isEmpty(role)) {
-      let roles = await this.roleRepository.find();
-      return { data: roles, code: RESPONSE_CODE.SUCCESS };
+  public async saveRole(info: any) {
+    let data: any;
+    const role = await this.roleRepository.save(info);
+    data = _.assign({}, { role });
+    if (!_.isEmpty(data)) {
+      return { data, code: RESPONSE_CODE.SUCCESS };
     } else {
       return { code: RESPONSE_CODE.NOTVALUE };
     }
   }
 
   //   修改角色
-  public async updateRole(roleId: any, data: any) {
+  public async updateRole(roleId: any, info: any) {
+    let data: any;
     let role = await this.roleRepository.findOne(roleId);
     if (!_.isEmpty(role)) {
       role = await this.roleRepository.save(
-        this.roleRepository.merge(role as any, data),
+        this.roleRepository.merge(role as any, info),
       );
-      let roles = await this.roleRepository.find();
-      return { data: roles, code: RESPONSE_CODE.SUCCESS };
+      data = _.assign({}, { role });
+      if (!_.isEmpty(data)) {
+        return { data, code: RESPONSE_CODE.SUCCESS };
+      } else {
+        return { code: RESPONSE_CODE.NOTVALUE };
+      }
+    } else {
+      return { code: RESPONSE_CODE.NOTVALUE };
     }
   }
 
   // 删除角色
   public async deleteRole(roleId: any) {
+    let data: any;
     let role = await this.roleRepository.delete(roleId);
-    if (!_.isEmpty(role)) {
-      let roles = await this.roleRepository.find();
-      return { data: roles, code: RESPONSE_CODE.SUCCESS };
+    data = _.assign({}, { role });
+    if (!_.isEmpty(data)) {
+      return { data, code: RESPONSE_CODE.SUCCESS };
     } else {
       return { code: RESPONSE_CODE.NOTVALUE };
     }

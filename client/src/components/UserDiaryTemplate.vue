@@ -43,10 +43,7 @@ export default {
                 if(res.status == 200){
                     this.diaryList = res.data.data.diarys;
                     if(_.isEmpty(this.diaryList)){
-                        this.$message({
-                        message: '暂无日记信息',
-                        type: 'error'
-                        });
+                        this.$message({ message: '暂无日记信息', type: 'error' });
                     }
                 }
             });

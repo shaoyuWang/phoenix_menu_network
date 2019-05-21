@@ -25,7 +25,7 @@
               <div class="item-img"><img class="img-responsive" :src="handleImg(item.finishPhoto)"></div>
               <div class="item-info">
                 <span class="info-title">{{item.name}}</span>
-                <span class="info-user">{{item.user.name}}</span>
+                <span class="info-user">{{item.evaluate}}</span>
               </div>
             </a>
           </div>

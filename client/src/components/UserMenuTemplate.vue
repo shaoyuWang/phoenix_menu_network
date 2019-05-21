@@ -45,10 +45,7 @@ export default {
                 if(res.status == 200){
                     this.menuList = res.data.data.menus;
                     if(_.isEmpty(this.menuList)){
-                        this.$message({
-                        message: '暂无菜谱信息',
-                        type: 'error'
-                        });
+                        this.$message({ message: '暂无菜谱信息', type: 'error' });
                     }
                 }
             });

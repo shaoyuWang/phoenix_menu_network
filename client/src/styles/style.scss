@@ -42,11 +42,15 @@ body {
       }
     }
   }
-}
-  .tab_active{
-    border-bottom: 2px solid transparent;
-    border-color: #ff7675;
+  .table-img{
+    width: 100px;
+    height: 80px;
   }
+}
+.tab_active{
+  border-bottom: 2px solid transparent;
+  border-color: #ff7675;
+}
 
 
   .list-item{
@@ -80,3 +84,27 @@ body {
       }
     }
   }
+
+//隐藏多余的上传按钮
+/deep/ .el-upload__input{display: none;}
+
+.table-drop-down{
+  padding: 20px;
+  overflow: hidden;
+  .table-drop-down-title{
+    float: left;
+    padding-top: 20px;
+    display: block;
+    width: 20%;
+    color: black;
+    text-align: center;
+  }
+  .table-drop-down-info{
+    float: right;
+    display: block;
+    line-height: 1.5;
+    letter-spacing: 1px;
+    width: 80%;
+    text-indent: $font_size2;
+  }
+}

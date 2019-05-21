@@ -19,6 +19,12 @@
             <el-form-item label="电话号码" label-width="120px" style="padding: 10px 0;">
                 <el-input v-model="user.phone" placeholder="Please Input Telephone" autocomplete="off" style="width: 90%;"></el-input>
             </el-form-item>
+            <el-form-item label="Photo" label-width="120px" style="padding: 10px 0;">
+                <el-upload class="upload-demo" action="upload/img" :limit="1">
+                    <el-button size="small" type="primary">点击上传</el-button>
+                    <div slot="tip" class="el-upload__tip">只能上传jpg/jepg文件，且不超过2m</div>
+                </el-upload>
+            </el-form-item>
             <el-form-item style="text-align:center;">
                 <el-button type="primary" @click="submit()">修改</el-button>
                 <el-button @click="reset()">重置</el-button>
