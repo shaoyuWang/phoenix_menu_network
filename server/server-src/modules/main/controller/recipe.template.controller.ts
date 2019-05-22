@@ -33,6 +33,16 @@ export class RecipeTemplateController {
     return await this.recipeTemplateService.collectionRecipe(data);
   }
 
+  @Post("/recipeAddMenu")
+  public async recipeAddMenu(@Body() data: any) {
+    return await this.recipeTemplateService.recipeAddMenu(data);
+  }
+
+  @Post("/createMenu")
+  public async createMenu(@Body() data: any) {
+    return await this.recipeTemplateService.createMenu(data);
+  }
+
   @Post("/praiseComment")
   // @Roles(2)
   public async praiseComment(@Body() data: any) {

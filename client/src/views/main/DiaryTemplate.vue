@@ -31,7 +31,10 @@
                                 <el-button class="comment-praise" @click="praise(item.id)" type="text">点赞 {{item.praise}}</el-button>
                             </div>
                             <span class="comment-info">{{item.comment}}</span>
-                            <span class="comment-user-info">{{item.createDate}}&nbsp;&nbsp;来自&nbsp;{{item.username}}</span>
+                            <span class="comment-user-info">
+                                {{handleDate(item.createDate)}}&nbsp;&nbsp;来自&nbsp;
+                                <span class="comment-user-name">{{item.username}}</span>
+                                </span>
                         </li>
                     </ul>
                     <div class="comment-publish">
@@ -67,6 +70,9 @@ export default {
             if(!_.isEmpty(photo)){
             return require(`../../assets/imgs/${photo}`);
             }
+        },
+        handleDate(date){
+            return this.moment(date).format('YYYY-MM-DD hh:mm:ss');
         },
         getUserName(item){
             if(!_.isEmpty(item.user)){
@@ -237,6 +243,9 @@ export default {
                             text-align: right; 
                             padding-top: $size10; 
                             font-size: 12px;
+                            .comment-user-name{
+                                color: rgba(0, 0, 0, 0.548);
+                            }
                         }
                     }
                 }

@@ -25,18 +25,6 @@ export class UserService {
     }
   }
 
-  //   根据ID查找用户
-  public async findUserById(userId: any) {
-    let data: any;
-    const user = await this.userRepository.findOne(userId);
-    data = _.assign({}, { user });
-    if (!_.isEmpty(data)) {
-      return { data, code: RESPONSE_CODE.SUCCESS };
-    } else {
-      return { code: RESPONSE_CODE.NOTVALUE };
-    }
-  }
-
   //   添加用户
   public async saveUser(info: any) {
     let data: any;

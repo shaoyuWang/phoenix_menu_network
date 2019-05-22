@@ -20,7 +20,7 @@
                         <i class="el-icon-edit"></i>
                         <span slot="title">我的菜谱</span>
                     </el-menu-item>
-                    <el-menu-item index="/userCenter/myCollection" disabled>
+                    <el-menu-item index="/userCenter/myCollection">
                         <i class="el-icon-document"></i>
                         <span slot="title">我的收藏</span>
                     </el-menu-item>
@@ -67,7 +67,7 @@ export default {
             switch(status){
                 case 1: this.defaultActive = '/userCenter/myInfo'; break;
                 case 2: this.defaultActive = '/userCenter/myRecipe'; break;
-                case 3: this.defaultActive = '/userCenter/myRecipe'; break;
+                case 3: this.defaultActive = '/userCenter/myCollection'; break;
                 case 4: this.defaultActive = '/userCenter/myMenu'; break;
                 case 5: this.defaultActive = '/userCenter/myDiary'; break;
                 default: this.defaultActive = '/userCenter/myInfo'; break;

@@ -6,11 +6,13 @@
         <el-col :span="24" class="infomation">
             <div class="list">
                 <div class="item" v-for="item in diaryList" :key="item.id">
-                    <img :src="handleImg(item.photo)">
-                    <div class="info">
-                        <span class="recipe-name">{{item.name}}</span>
-                        <span class="time"><i class="el-icon-date"></i>&nbsp;&nbsp;{{item.createDate}}</span>
-                    </div>
+                    <a @click="jumpDiary(item.id)">
+                        <img :src="handleImg(item.photo)">
+                        <div class="info">
+                            <span class="recipe-name">{{item.title}}</span>
+                            <span class="time"><i class="el-icon-date"></i>&nbsp;&nbsp;{{handleDate(item.createDate)}}</span>
+                        </div>
+                    </a>
                 </div>
             </div>
       </el-col>
@@ -30,9 +32,15 @@ export default {
     },
     methods:{
         handleImg(photo){
-      if(!_.isEmpty(photo)){
-        return require(`../assets/imgs/${photo}`);
-      }
+            if(!_.isEmpty(photo)){
+                return require(`../assets/imgs/${photo}`);
+            }
+        },
+        handleDate(date){
+            return this.moment(date).format('YYYY-MM-DD hh:mm:ss');
+        },
+        jumpDiary(id){
+            this.$router.push({path: '/request/diaryTemplate', query: { id }});
         },
         getDiary(){
             this.userId = _.isEmpty(JSON.parse(sessionStorage.getItem('user')))? null: JSON.parse(sessionStorage.getItem('user')).id;
@@ -42,6 +50,7 @@ export default {
             }).then(res =>{
                 if(res.status == 200){
                     this.diaryList = res.data.data.diarys;
+                    console.log(this.diaryList);
                     if(_.isEmpty(this.diaryList)){
                         this.$message({ message: '暂无日记信息', type: 'error' });
                     }

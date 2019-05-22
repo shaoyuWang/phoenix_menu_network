@@ -5,11 +5,11 @@
         </div>
         <el-col :span="24" class="infomation">
             <div class="list">
-                <div class="item" v-for="item in 4" :key="item">
-                    <img src="http://site.meishij.net/r/147/198/4174647/a4174647_144456278915386.jpg">
+                <div class="item" v-for="item in collectionList" :key="item.id">
+                    <img :src="handleImg(item.recipeFinishPhoto)">
                     <div class="info">
-                        <span class="recipe-name">红烧牛肉</span>
-                        <span class="time"><i class="el-icon-date"></i>&nbsp;&nbsp;2019-1-1</span>
+                        <span class="recipe-name">{{item.recipeName}}</span>
+                        <span class="time"><i class="el-icon-date"></i>&nbsp;&nbsp;{{handleDate(item.createDate)}}</span>
                     </div>
                 </div>
             </div>
@@ -21,13 +21,36 @@
 export default {
     data(){
         return {
-            user:'',
+            userId:'',
+            collectionList: [],
         }
     },
     created(){
-        this.user = this.userInfo;
+        this.getRecipe();
     },
     methods:{
+        handleImg(photo){
+            if(!_.isEmpty(photo)){
+                return require(`../assets/imgs/${photo}`);
+            }
+        },
+        handleDate(date){
+            return this.moment(date).format('YYYY-MM-DD');
+        },
+        getRecipe(){
+            this.userId = _.isEmpty(JSON.parse(sessionStorage.getItem('user')))? null: JSON.parse(sessionStorage.getItem('user')).id;
+            this.$axios({
+                url: `/main/userCenter/getCollection/${this.userId}`,
+                method: 'get',
+            }).then(res =>{
+                if(res.status == 200){
+                    this.collectionList = res.data.data.collections;
+                    if(_.isEmpty(this.recipeList)){
+                        this.$message({ message: '暂无收藏信息', type: 'error' });
+                    }
+                }
+            });
+        }
     }
 }
 </script>

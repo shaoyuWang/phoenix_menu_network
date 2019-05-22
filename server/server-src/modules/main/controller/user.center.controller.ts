@@ -1,4 +1,4 @@
-import { Controller, Get, UseGuards, Param } from "@nestjs/common";
+import { Controller, Get, UseGuards, Param, Post, Body } from "@nestjs/common";
 import { Roles } from "../../../framework/decorators/role.decorator";
 import { LoginGuard } from "../../../framework/guards";
 import _ from "lodash";
@@ -15,10 +15,28 @@ export class UserCenterController {
     return await this.userCenterService.getUser(userId);
   }
 
+  @Get("/findUserById/:id")
+  // @Roles(1, 2)
+  public async findUserById(@Param("id") userId: any) {
+    return this.userCenterService.findUserById(userId);
+  }
+
+  @Post("/updateUser/:id")
+  // @Roles(1)
+  public async updateUser(@Param("id") userId: any, @Body() data: any) {
+    return this.userCenterService.updateUser(userId, data);
+  }
+
   @Get("/getRecipe/:id")
   // @Roles(2)
   public async getRecipe(@Param("id") userId: any) {
     return await this.userCenterService.getRecipe(userId);
+  }
+
+  @Get("/getCollection/:id")
+  // @Roles(2)
+  public async getCollection(@Param("id") userId: any) {
+    return await this.userCenterService.getCollection(userId);
   }
 
   @Get("/getMenu/:id")

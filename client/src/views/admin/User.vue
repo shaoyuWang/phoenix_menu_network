@@ -169,14 +169,14 @@ export default {
         roles,
         photo: this.form.photo,
       };
-      if(_.isEmpty(data.username) && _.isEmpty(data.password) && _.isEmpty(data.name) &&
-         _.isEmpty(data.email) && _.isEmpty(data.phone) && _.isEmpty(data.roles)){ 
+      if(_.isEmpty(data.username) || _.isEmpty(data.password) || _.isEmpty(data.name) ||
+         _.isEmpty(data.email) || _.isEmpty(data.phone) || _.isEmpty(data.roles)){ 
           this.$message({ message: '请输入全部信息', type: 'warning' }); 
           this.dialogFormVisible = true; 
           return false;
         };
         // 验证邮箱格式
-        if(emailValidation.test(data.email)){ 
+        if(!emailValidation.test(data.email)){ 
           this.$message({ message: '邮箱格式错误', type: 'warning' }); 
           this.dialogFormVisible = true; 
           return false;
@@ -218,18 +218,17 @@ export default {
         roles,
         photo: this.form.photo,
       };
-      if(_.isEmpty(data.username) && _.isEmpty(data.password) && _.isEmpty(data.name) &&
-         _.isEmpty(data.email) && _.isEmpty(data.phone) && _.isEmpty(data.roles)){ 
+      if(_.isEmpty(data.name) || _.isEmpty(data.email) || _.isEmpty(data.phone) || _.isEmpty(data.roles)){ 
           this.$message({ message: '请输入全部信息', type: 'warning' }); 
           this.dialogFormVisible = true; 
           return false;
-        };
-        // 验证邮箱格式
-        if(emailValidation.test(data.email)){ 
-          this.$message({ message: '邮箱格式错误', type: 'warning' }); 
-          this.dialogFormVisible = true;
-          return false;
-        }
+      };
+      // 验证邮箱格式
+      if(!emailValidation.test(data.email)){ 
+        this.$message({ message: '邮箱格式错误', type: 'warning' }); 
+        this.dialogFormVisible = true;
+        return false;
+      }
       this.$axios({
         url: `/api/user/updateUser/${this.user_id}`,
         method: 'post',

@@ -136,7 +136,7 @@ export default {
         photo: this.form.photo,
         user_id:  _.isEmpty(JSON.parse(sessionStorage.getItem('user')))? null : JSON.parse(sessionStorage.getItem('user')).id,
       }
-      if(data.title && data.info && data.photo){
+      if(data.title || data.info || data.photo){
         this.$axios({
           url: '/api/diary/saveDiary',
           method: 'post',
@@ -169,7 +169,7 @@ export default {
         info: this.form.info,
         photo: this.form.photo,
       }
-      if(data.title && data.info && data.photo){
+      if(data.title || data.info || data.photo){
         this.$axios({
           url: `/api/diary/updateDiary/${this.diaryId}`,
           method: 'post',

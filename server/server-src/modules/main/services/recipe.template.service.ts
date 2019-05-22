@@ -4,7 +4,12 @@ import { Repository } from "typeorm";
 import _ from "lodash";
 import { RESPONSE_CODE } from "../../../framework/enums";
 import { RecipeEntity, RecipeCommentEntity } from "../entities";
-import { UserEntity, UserCollectionEntity } from "../../admin/entities";
+import {
+  UserEntity,
+  UserCollectionEntity,
+  UserMenuEntity,
+} from "../../admin/entities";
+import { VERIFYCODE } from "../../../framework/enums/verify.code";
 
 @Injectable()
 export class RecipeTemplateService {
@@ -13,6 +18,8 @@ export class RecipeTemplateService {
     private readonly recipeRepository: Repository<RecipeEntity>,
     @InjectRepository(UserEntity)
     private readonly userRepository: Repository<UserEntity>,
+    @InjectRepository(UserMenuEntity)
+    private readonly userMenuRepository: Repository<UserMenuEntity>,
     @InjectRepository(RecipeCommentEntity)
     private readonly recipeCommentEntity: Repository<RecipeCommentEntity>,
     @InjectRepository(UserCollectionEntity)
@@ -85,7 +92,46 @@ export class RecipeTemplateService {
     }
   }
 
+  // 创建菜单
+  public async createMenu(info: any) {
+    let data: any;
+    let menu = await this.userMenuRepository.save(info);
+    data = _.assign({}, { menu });
+    if (!_.isEmpty(data)) {
+      return { data, code: RESPONSE_CODE.SUCCESS };
+    } else {
+      return { code: RESPONSE_CODE.NOTVALUE };
+    }
+  }
+
   // 添加到菜单
+  public async recipeAddMenu(info: any) {
+    const { menuId, recipe } = info;
+    let data: any;
+    let judge = false;
+    let menu = await this.userMenuRepository.findOne(menuId, {
+      relations: ["recipes"],
+    });
+    _.forEach(menu!.recipes, (item) => {
+      if (recipe.id == item.id) {
+        judge = true;
+      }
+    });
+    if (judge) {
+      return VERIFYCODE.haveRecipe;
+    }
+    let recipes = _.isEmpty(menu!.recipes) ? [] : menu!.recipes;
+    recipes!.push(recipe);
+    menu = await this.userMenuRepository.save(
+      this.userMenuRepository.merge(menu as any, { recipes }),
+    );
+    data = _.assign({}, { menu });
+    if (!_.isEmpty(data)) {
+      return { data, code: RESPONSE_CODE.SUCCESS };
+    } else {
+      return { code: RESPONSE_CODE.NOTVALUE };
+    }
+  }
 
   // 点赞
   public async praiseComment(commentId: number) {

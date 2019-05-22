@@ -10,7 +10,7 @@ import {
   FoodMenu, GourmetMaster, AllTemplate, FoodHealth, UserCenter, RecipeTemplate, DiaryTemplate, VideoTemplate,
 } from './views/main';
 
-import { UserModifyTemplate, UserRecipeTemplate, UserMenuTemplate, UserDiaryTemplate } from '../src/components';
+import { UserModifyTemplate, UserRecipeTemplate, UserMenuTemplate, UserDiaryTemplate, UserCollectTemplate } from '../src/components';
 
 
 Vue.use(Router);
@@ -243,6 +243,13 @@ export default new Router({
         {
           path: 'myRecipe',
           component: UserRecipeTemplate,
+          meta: {
+            title: '我的菜谱',
+          },
+        },
+        {
+          path: 'myCollection',
+          component: UserCollectTemplate,
           meta: {
             title: '我的菜谱',
           },

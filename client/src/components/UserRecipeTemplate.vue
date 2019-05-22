@@ -9,7 +9,7 @@
                     <img :src="handleImg(item.finishPhoto)">
                     <div class="info">
                         <span class="recipe-name">{{item.name}}</span>
-                        <span class="time"><i class="el-icon-date"></i>&nbsp;&nbsp;{{item.createDate}}</span>
+                        <span class="time"><i class="el-icon-date"></i>&nbsp;&nbsp;{{handleDate(item.createDate)}}</span>
                     </div>
                 </div>
             </div>
@@ -33,6 +33,9 @@ export default {
             if(!_.isEmpty(photo)){
                 return require(`../assets/imgs/${photo}`);
             }
+        },
+        handleDate(date){
+            return this.moment(date).format('YYYY-MM-DD');
         },
         getRecipe(){
             this.userId = _.isEmpty(JSON.parse(sessionStorage.getItem('user')))? null: JSON.parse(sessionStorage.getItem('user')).id;

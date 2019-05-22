@@ -25,12 +25,6 @@ export class UserController {
     return this.userServices.getAllUsers();
   }
 
-  @Get("/findUserById/:id")
-  // @Roles(1, 2)
-  public async findUserById(@Param("id") userId: any) {
-    return this.userServices.findUserById(userId);
-  }
-
   @Post("/saveUser")
   // @Roles(1, 2)
   public async saveUser(@Body() data: any) {
@@ -42,11 +36,4 @@ export class UserController {
   public async updateUser(@Param("id") userId: any, @Body() data: any) {
     return this.userServices.updateUser(userId, data);
   }
-
-  // @Delete(":id")
-  // @Roles(1)
-  // public async deleteUser(@Param("id") paramId: any) {
-  //   const user = await this.userRepository.delete(paramId);
-  //   return { data: user };
-  // }
 }

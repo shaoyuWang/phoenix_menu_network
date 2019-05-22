@@ -9,7 +9,7 @@
                     <div class="menu-header">{{item.length}}/10</div>
                     <ul class="recipe">
                         <li class="recipe-item" v-for="recipeItem in item.recipes" :key="recipeItem.id">
-                            <img :src="handleImg(item.finishPhoto)">
+                            <img :src="handleImg(recipeItem.finishPhoto)">
                         </li>
                     </ul>
                 </el-collapse-item>
@@ -44,8 +44,12 @@ export default {
             }).then(res =>{
                 if(res.status == 200){
                     this.menuList = res.data.data.menus;
+                    _.forEach(this.menuList, item=>{
+                        item.length = item.recipes.length;
+                    })
+                    console.log(this.menuList);
                     if(_.isEmpty(this.menuList)){
-                        this.$message({ message: '暂无菜谱信息', type: 'error' });
+                        this.$message({ message: '暂无菜单信息', type: 'error' });
                     }
                 }
             });

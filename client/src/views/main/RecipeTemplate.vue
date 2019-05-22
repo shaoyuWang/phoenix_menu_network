@@ -25,7 +25,7 @@
                 </el-col>
                 <el-col :span="24" class="recipe-operation">
                     <el-button @click="collection()" type="success" plain>收藏</el-button>
-                    <el-button @click="addMenu()" type="primary" plain>添加到菜单</el-button>
+                    <el-button @click="openDialog()" type="primary" plain>添加到菜单</el-button>
                 </el-col>
                 <el-col :span="24" class="recipe-info">
                     <span class="description">
@@ -69,23 +69,26 @@
                 <div class="user">
                     <div class="user-header">
                         <div class="user-img"><img src="../../assets/logo.jpg"></div>
-                        <span class="username">{{user.name}}</span>
+                        <span class="username">{{recipeUser.name}}</span>
                     </div>
                     <div class="user-info">
-                        <span>菜谱:&nbsp;{{user.recipeLength}}</span>
-                        <span>菜单:&nbsp;{{user.menuLength}}</span>
-                        <span>日记:&nbsp;{{user.diaryLength}}</span>
-                        <span>收藏:&nbsp;{{user.collectionLength}}</span>
+                        <span>菜谱:&nbsp;{{recipeUser.recipeLength}}</span>
+                        <span>菜单:&nbsp;{{recipeUser.menuLength}}</span>
+                        <span>日记:&nbsp;{{recipeUser.diaryLength}}</span>
+                        <span>收藏:&nbsp;{{recipeUser.collectionLength}}</span>
                     </div>
                 </div>
                 <div class="comment">
                     <ul class="comment-list">
                         <li class="comment-item" v-for="item in recipe.comments" :key="item.id">
                             <div class="comment-operation">
-                                <el-button class="comment-praise" @click="praise(item.id)" type="text">点赞 {{item.praise}}</el-button>
+                                <el-button class="comment-praise" @click="praise(item.id)" type="text" :disabled="disabled">点赞 {{item.praise}}</el-button>
                             </div>
                             <span class="comment-info">{{item.comment}}</span>
-                            <span class="comment-user-info">{{item.createDate}}&nbsp;&nbsp;来自&nbsp;{{item.username}}</span>
+                            <span class="comment-user-info">
+                                {{handleDate(item.createDate)}}&nbsp;&nbsp;来自&nbsp;
+                                <span class="comment-user-name">{{item.username}}</span>
+                                </span>
                         </li>
                     </ul>
                     <div class="comment-publish">
@@ -95,6 +98,32 @@
                     </div>
                 </div>
             </el-col>
+            <el-dialog title="选择菜单" :visible.sync="dialogVisible" width="30%" center>
+                <el-select v-model="searchMenuId" default-first-option filterable placeholder="请选择">
+                    <el-option
+                    v-for="item in user.menus"
+                    :key="item.id"
+                    :label="item.name"
+                    :value="item.id">
+                    </el-option>
+                </el-select>
+                <el-button type="success" @click="dialogFormVisible = true" style="margin-left: 10px;">新建菜单</el-button>
+                <span slot="footer" class="dialog-footer">
+                    <el-button @click="dialogVisible = false">取 消</el-button>
+                    <el-button type="primary" @click="addMenu()">确 定</el-button>
+                </span>
+            </el-dialog>
+            <el-dialog title="新建菜单" :visible.sync="dialogFormVisible" width="30%" center>
+                <el-form :model="form">
+                    <el-form-item label="菜单名" label-width="120px">
+                    <el-input v-model="form.name" placeholder="Please Input Name"></el-input>
+                    </el-form-item>
+                </el-form>
+                <span slot="footer" class="dialog-footer">
+                    <el-button @click="dialogFormVisible = false;form.name = '';">取 消</el-button>
+                    <el-button type="primary" @click="createMenu()">确 定</el-button>
+                </span>
+            </el-dialog>
         </el-col>
         <Footer></Footer>
     </el-row>
@@ -106,21 +135,32 @@ export default {
     components:{Footer},
     data(){
         return {
+            dialogVisible: false,
+            dialogFormVisible: false,
+            disabled: false,
+            searchMenuId: '',
             comment: '',
             recipe: '',
+            recipeUser: '',
             user:'',
             recipeId: '',
+            form:{
+                name:'',
+            },
         }
     },
     mounted(){
+        this.user = _.isEmpty(JSON.parse(sessionStorage.getItem('user')))? null: JSON.parse(sessionStorage.getItem('user'));
         this.getList();
-        this.getUserInfo();
     },
     methods:{
         handleImg(photo){
             if(!_.isEmpty(photo)){
                 return require(`../../assets/imgs/${photo}`);
             }
+        },
+        handleDate(date){
+            return this.moment(date).format('YYYY-MM-DD hh:mm:ss');
         },
         checkLevel(item){
             switch(_.toNumber(item)){
@@ -141,8 +181,8 @@ export default {
                 comment:this.comment,
                 praise: 0,
                 recipe:this.recipe,
-                userId: _.isEmpty(user)? null : user.id,
-                username: _.isEmpty(user)? '' : user.name,
+                userId: _.isEmpty(this.user)? null : this.user.id,
+                username: _.isEmpty(this.user)? '' : this.user.name,
             }
             if(!_.isEmpty(data.comment)){
                 this.$axios({
@@ -169,27 +209,82 @@ export default {
                 if(res.data.code == 200){
                     this.$message({ message: '点赞成功', type: 'success' });
                     this.getList();
+                    this.disabled = true;
                 }
             });
         },
         collection(){
-            let user = _.isEmpty(JSON.parse(sessionStorage.getItem('user')))? null: JSON.parse(sessionStorage.getItem('user'));
             let data = {
                recipeId: this.recipe.id,
                recipeName: this.recipe.name,
-               userId: user.id,
+               user: this.user,
                recipeFinishPhoto: this.recipe.finishPhoto,
-           };
-        //    this.$axios({
-        //         url:`/main/recipeTemplate/collectionRecipe`,
-        //         method: 'post',
-        //         data,
-        //     }).then(res=>{
-        //         if(res.data.code == 200){
-        //             this.$message({ message: '收藏成功', type: 'success' });
-        //             this.getList();
-        //         }
-        //     });
+            };
+            this.$axios({
+                url:`/main/recipeTemplate/collectionRecipe`,
+                method: 'post',
+                data,
+            }).then(res=>{
+                if(res.data.code == 200){
+                    this.$message({ message: '收藏成功', type: 'success' });
+                    this.getList();
+                }
+            });
+        },
+        openDialog(){
+            if(_.isEmpty(this.user)) { this.$message.error({ message: '请登录' }); return false;};
+            this.getCurrentUser();
+        },
+        addMenu(){
+            let data = {
+                menuId: this.searchMenuId,
+                recipe: this.recipe,
+            }
+            let judge = false;
+            _.forEach(this.user.menus, item => {
+                if(item.id == data.menuId){
+                    if(item.recipes.length >= 10) judge = true;
+                }
+            })
+            if(judge) { this.$message({ message: '菜单中菜谱以达到上限', type: 'warning' }); return false;};
+            this.$axios({
+                url:`/main/recipeTemplate/recipeAddMenu`,
+                method: 'post',
+                data,
+            }).then(res=>{
+                console.log(res);
+                if(res.data == -1){
+                    this.$message({ message: '此菜谱已经存在与你的菜单中', type: 'warning' });
+                }else if(res.data.code == 200){
+                    this.dialogVisible = false;
+                    this.$message({ message: '添加到菜谱成功', type: 'success' });
+                    this.searchMenuId = '';
+                }
+            });
+        },
+        createMenu(){
+            let data = {
+                name: this.form.name,
+                collectionNumber: 0,
+                vistor: 0,
+                user: this.user,
+            }
+            let judge = false;
+            _.forEach(this.user.menus, item=>{
+                if(item.name == data.name) judge = true;
+            })
+            if(judge){ this.$message({ message: '菜单名重复', type: 'warning' }); this.dialogFormVisible = true; return false; }
+            this.$axios({
+                url:`/main/recipeTemplate/createMenu`,
+                method: 'post',
+                data,
+            }).then(res=>{
+                if(res.data.code == 200){
+                    this.$message({ message: '创建菜单成功', type: 'success' });
+                    this.dialogFormVisible = false;
+                    this.getCurrentUser();
+                }
+            });
         },
         getList(){
             this.recipeId = _.toNumber(this.$route.query.id);
@@ -199,21 +294,34 @@ export default {
             }).then(res=>{
                 if(res.data.code == 200){
                     this.recipe = res.data.data.recipe;
+                    this.getUserInfo();
                 }
             });
         },
         getUserInfo(){
-            let userId = _.isEmpty(JSON.parse(sessionStorage.getItem('user')))? 1 : JSON.parse(sessionStorage.getItem('user')).id;
+            let userId = this.recipe.user.id;
             this.$axios({
                 url:`/main/recipeTemplate/findUserById/${userId}`,
                 method: 'get',
             }).then(res=>{
                 if(res.data.code == 200){
+                    this.recipeUser = res.data.data.user;
+                    this.recipeUser.menuLength = this.recipeUser.menus.length;
+                    this.recipeUser.diaryLength = this.recipeUser.diarys.length;
+                    this.recipeUser.collectionLength = this.recipeUser.collections.length;
+                    this.recipeUser.recipeLength = this.recipeUser.recipes.length;
+                }
+            });
+        },
+        getCurrentUser(){
+            this.$axios({
+                url:`/main/recipeTemplate/findUserById/${this.user.id}`,
+                method: 'get',
+            }).then(res=>{
+                if(res.data.code == 200){
                     this.user = res.data.data.user;
-                    this.user.menuLength = this.user.menus.length;
-                    this.user.diaryLength = this.user.diarys.length;
-                    this.user.collectionLength = this.user.collections.length;
-                    this.user.recipeLength = this.user.recipes.length;
+                    console.log(this.user);
+                    this.dialogVisible = true;
                 }
             });
         }
@@ -482,6 +590,9 @@ export default {
                             text-align: right; 
                             padding-top: $size10; 
                             font-size: 12px;
+                            .comment-user-name{
+                                color: rgba(0, 0, 0, 0.548);
+                            }
                         }
                     }
                 }
