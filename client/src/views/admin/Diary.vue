@@ -221,7 +221,7 @@ export default {
       background-color: rgba(153, 153, 153, 0.4);
     }
     .el-table{
-      margin: $size20;
+      margin: $size10 $size20 $size0 $size20;
       border-radius: 15px;
       /deep/ .table_column{
         text-align: $position_center;

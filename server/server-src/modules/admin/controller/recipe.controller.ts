@@ -11,7 +11,7 @@ import {
 import { Roles } from "../../../framework/decorators/role.decorator";
 import { LoginGuard } from "../../../framework/guards";
 import _ from "lodash";
-import { RecipeService } from "../services";
+import { RecipeService } from "../services/recipe.service";
 
 @Controller("api/recipe")
 // @UseGuards(LoginGuard)

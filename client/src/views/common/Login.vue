@@ -16,7 +16,7 @@ export default {
   name : 'Login',
   data(){
     return {
-      title : 'Project Performance Review',
+      title : 'Phoenix食谱网',
       username : '',
       password : '',
     }

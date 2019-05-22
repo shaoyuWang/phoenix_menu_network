@@ -14,7 +14,8 @@ export class RecipeService {
 
   //   获取全部菜谱信息
   public async getAllRecipes() {
-    const recipes = await this.recipeRepository.find({
+    let data: any;
+    let recipes = await this.recipeRepository.find({
       relations: [
         "user",
         "sort",
@@ -23,12 +24,13 @@ export class RecipeService {
         "majorMaterials",
         "auxiliaryMaterials",
         "comments",
-        // "steps",
+        "steps",
         "effects",
       ],
     });
-    if (!_.isEmpty(recipes)) {
-      return { data: recipes, code: RESPONSE_CODE.SUCCESS };
+    data = _.assign({}, { recipes });
+    if (!_.isEmpty(data)) {
+      return { data, code: RESPONSE_CODE.SUCCESS };
     } else {
       return { code: RESPONSE_CODE.NOTVALUE };
     }

@@ -1,7 +1,6 @@
 export * from "./user.controller";
 export * from "./role.controller";
 export * from "./authority.controller";
-export * from "./recipe.comment.controller";
 export * from "./user.diary.comment.controller";
 export * from "./user.diary.controller";
 export * from "./technology.controller";
@@ -10,3 +9,5 @@ export * from "./taste.controller";
 export * from "./sort.kind.controller";
 export * from "./material.controller";
 export * from "./material.kind.controller";
+export * from "./recipe.controller";
+export * from "./recipe.comment.controller";

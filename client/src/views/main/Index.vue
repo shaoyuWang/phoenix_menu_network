@@ -19,15 +19,15 @@
       </el-carousel>
       <el-col :span="16" :offset="4" class="main-food">
         <span class="title-style">
-          二月，阳气生发，适当春捂
+          五月，益气养心，清淡饮食
           <span class="many"><a @click="more(2)">更多食材&nbsp;>></a></span>
         </span>
         <div class="recommend-food">
           <el-tabs v-model="activeName">
             <el-tab-pane :label="item.name" :name="item.name" v-for="item in materialKindList" :key="item.id">
               <ul class="kind-list">
-                <li class="material-item" v-for="materialItem in item.materials" :key="materialItem.id">
-                  <img class="material-img" :src="handleImg(materialItem.photo)">
+                <li class="material-item" v-for="materialItem in item.materials" :key="materialItem.id" style="cursor: default;">
+                  <!-- <img class="material-img" :src="handleImg(materialItem.photo)"> -->
                   <span class="material-name">{{materialItem.name}}</span>
                 </li>
               </ul>

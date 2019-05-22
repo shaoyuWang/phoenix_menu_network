@@ -49,6 +49,9 @@ export default {
         handleDate(date){
             return this.moment(date).format('YYYY-MM-DD');
         },
+        jumpRecipe(id){
+            this.$router.push({path: '/request/recipeTemplate', query: { id }});
+        },
         getRecipe(){
             this.userId = _.isEmpty(JSON.parse(sessionStorage.getItem('user')))? null: JSON.parse(sessionStorage.getItem('user')).id;
             this.$axios({

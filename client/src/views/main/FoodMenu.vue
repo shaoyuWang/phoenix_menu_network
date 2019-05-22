@@ -23,7 +23,7 @@
           <div class="info">
             <img src="https://s1.c.meishij.net/images/default/tx2_5.png">
             <span class="username">{{item.user.name}}</span>
-            <span class="menu-date">{{item.createDate}}</span>
+            <span class="menu-date">{{handleDate(item.createDate)}}</span>
           </div>
         </div>
       </div>
@@ -49,6 +49,9 @@ export default {
       if(!_.isEmpty(photo)){
         return require(`../../assets/imgs/${photo}`);
       }
+    },
+    handleDate(date){
+        return this.moment(date).format('YYYY-MM-DD');
     },
     jumpRecipe(id){
       this.$router.push({path: '/request/recipeTemplate', query: { id }});

@@ -76,7 +76,7 @@ export default {
         name: '',
         email: '',
         phone: '',
-        photo: '1659891558276303303.jpg',
+        photo: '8700811558507499433.jpg',
         role_id: '',
       },
       user_id: '',

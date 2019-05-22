@@ -7,7 +7,7 @@
             <video class="recipe-video" controls="controls" src="../../assets/videos/4340221558310640979.mp4"></video>
             <div class="user-info">
                 <div class="header">
-                    <img class="user-header" src="../../assets/imgs/1659891558276303303.jpg" />
+                    <img class="user-header" src="../../assets/imgs/8700811558507499433.jpg" />
                 </div>
                 <div class="info">
                     <span class="username">发表人:&nbsp;&nbsp;user</span>
@@ -27,6 +27,9 @@ export default {
         return {
             video: '',
         }
+    },
+    mounted(){
+        
     },
     methods:{
         handleVideo(video){

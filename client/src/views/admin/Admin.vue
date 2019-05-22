@@ -1,7 +1,7 @@
 <template>
   <el-row class="container">
     <el-col :span="24" class="header">
-      <a href="admin/user"><img src="../../assets/logo.png"></a>
+      <a href="/admin/user"><img src="../../assets/logo.png"></a>
       <el-dropdown class="header-login" trigger='hover' :show-timeout="100" :hide-timeout="200" placement="bottom-start" @command="checkStatus">
         <span class="username">{{_.isEmpty(user)? null : user.name}}</span>
         <el-dropdown-menu slot="dropdown">

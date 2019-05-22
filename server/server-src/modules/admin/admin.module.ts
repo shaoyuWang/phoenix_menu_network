@@ -12,6 +12,7 @@ import {
   SortKindController,
   MaterialKindController,
   MaterialController,
+  RecipeController,
 } from "./controller";
 import {
   LocalStrategyService,
@@ -28,6 +29,7 @@ import {
   MaterialKindService,
   SortService,
   MaterialService,
+  RecipeService,
 } from "./services";
 import { SortController } from "./controller/sort.controller";
 
@@ -35,6 +37,7 @@ const controllers = [
   AuthorityController,
   UserController,
   RoleController,
+  RecipeController,
   RecipeCommentController,
   UserDiaryController,
   UserDiaryCommentController,
@@ -52,6 +55,7 @@ const services = [
   SerializerService,
   UserService,
   RoleService,
+  RecipeService,
   RecipeCommentService,
   UserDiaryService,
   UserDiaryCommentService,

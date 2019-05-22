@@ -3,7 +3,7 @@
     <el-col :span="16" :offset="4">
       <div class="banner">
         <span class="title-style">精选推荐</span>
-        <el-carousel :interval="4000" type="card" height="200px">
+        <el-carousel :interval="4000" type="card" height="300px">
           <el-carousel-item v-for="item in bannerList" :key="item.id">
             <img class="banner-img" :src="handleImg(item.finishPhoto)">
           </el-carousel-item>
@@ -121,6 +121,7 @@ export default {
     overflow: hidden;
     .banner-img{
       width: 100%;
+      height: 300px;
     }
   }
   .main{
