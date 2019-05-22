@@ -4,7 +4,7 @@
       <el-button type="primary" class="add" @click="addUser()">+Add</el-button>
     </el-col>
     <el-col :span="24" class="main">
-      <el-table :data="users" stripe style="width: 97%;">
+      <el-table :data="users.slice((currentPage-1)*pagesize, currentPage*pagesize)" stripe style="width: 97%;">
         <el-table-column prop="id" label="ID" class-name="table_column" width="70"></el-table-column>
         <el-table-column prop="name" label="Name" class-name="table_column"></el-table-column>
         <el-table-column prop="email" label="Email" class-name="table_column"></el-table-column>
@@ -16,6 +16,11 @@
           </template>
         </el-table-column>
       </el-table>
+      <el-col :span="24" style="text-align: center;margin-top: 10px;">
+        <el-pagination layout="prev, pager, next" :page-size="pagesize" @current-change="current_change" 
+          :current-page.sync="currentPage" :pager-count="5" :total="users.length">
+        </el-pagination>
+      </el-col>
     </el-col>
     <!-- 模态框 -->
     <el-dialog :title="title" :visible.sync="dialogFormVisible" center>
@@ -65,6 +70,8 @@
 export default {
   data() {
     return {
+      pagesize: 10,
+      currentPage: 1,
       title: '',
       users: [],
       roles: [],
@@ -87,6 +94,9 @@ export default {
     this.getRoles();
   },
   methods: {
+    current_change(currentPage){  //改变当前页
+      this.currentPage = currentPage
+    },
     // 拼接多个roles
     formatter(row,column){
       let allRole = ''

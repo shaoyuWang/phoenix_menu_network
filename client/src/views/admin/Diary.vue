@@ -8,7 +8,7 @@
       </el-upload>
     </el-row>
     <el-row class="main">
-      <el-table :data="diarys" stripe style="width: 97%;">
+      <el-table :data="diarys.slice((currentPage-1)*pagesize, currentPage*pagesize)" stripe style="width: 97%;">
         <el-table-column type="expand">
           <template slot-scope="props">
             <div class="table-drop-down">
@@ -31,6 +31,11 @@
           </template>
         </el-table-column>
       </el-table>
+      <el-col :span="24" style="text-align: center; margin-top: 10px;">
+        <el-pagination layout="prev, pager, next" :page-size="pagesize" @current-change="current_change" 
+          :current-page.sync="currentPage" :pager-count="5" :total="diarys.length">
+        </el-pagination>
+      </el-col>
     </el-row>
     <!-- 模态框 -->
     <el-dialog :title="title" :visible.sync="dialogFormVisible" center>
@@ -59,6 +64,8 @@
 export default {
   data() {
     return {
+      pagesize: 5,
+      currentPage: 1,
       fileList: [],
       title: '',
       diarys: [],
@@ -76,6 +83,9 @@ export default {
     this.getDiarys();
   },
   methods: {
+    current_change(currentPage){  //改变当前页
+      this.currentPage = currentPage
+    },
     // // 图片上传方法
     //文件上传成功的钩子函数
     handleSuccess(res, file) {

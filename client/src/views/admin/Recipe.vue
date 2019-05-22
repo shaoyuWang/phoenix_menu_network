@@ -4,7 +4,7 @@
       <el-button type="success" class="add" @click="addRecipe()">+Add Recipe</el-button>
     </el-row>
     <el-row class="main">
-      <el-table :data="recipeList" stripe style="width: 97%;">
+      <el-table :data="recipeList.slice((currentPage-1)*pagesize, currentPage*pagesize)" stripe style="width: 97%;">
         <el-table-column type="expand">
       <template slot-scope="items" class="second">
         <el-table :data='items.row.steps' stripe style="width: 97%">
@@ -35,6 +35,11 @@
           </template>
         </el-table-column>
       </el-table>
+      <el-col :span="24" style="text-align: center; margin-top: 10px;">
+        <el-pagination layout="prev, pager, next" :page-size="pagesize" @current-change="current_change" 
+          :current-page.sync="currentPage" :pager-count="5" :total="recipeList.length">
+        </el-pagination>
+      </el-col>
     </el-row>
     <!-- 模态框 -->
     <el-dialog :title="title" :visible.sync="dialogFormVisible" center>
@@ -129,6 +134,8 @@
 export default {
   data() {
     return {
+      pagesize: 5,
+      currentPage: 1,
       dialogFormVisible: false,
       checkSubmit: true,
       addJudge: false,
@@ -193,6 +200,9 @@ export default {
     this.getRecipe();
   },
   methods: {
+    current_change(currentPage){  //改变当前页
+      this.currentPage = currentPage
+    },
     // 拼接多个roles
     formatter(row,column){
       let allRole = ''

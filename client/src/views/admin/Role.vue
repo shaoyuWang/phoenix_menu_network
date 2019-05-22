@@ -4,7 +4,7 @@
       <el-button type="primary" class="add" @click="addRole()">+Add</el-button>
     </el-row>
     <el-row class="main">
-      <el-table :data="roles" stripe style="width: 97%;">
+      <el-table :data="roles.slice((currentPage-1)*pagesize, currentPage*pagesize)" stripe style="width: 97%;">
         <el-table-column prop="id" label="ID" class-name="table_column" width="70"></el-table-column>
         <el-table-column prop="name" label="Name" class-name="table_column"></el-table-column>
         <el-table-column prop="description" label="Description" class-name="table_column"></el-table-column>
@@ -15,6 +15,11 @@
           </template>
         </el-table-column>
       </el-table>
+      <el-col :span="24" style="text-align: center; margin-top: 10px;">
+        <el-pagination layout="prev, pager, next" :page-size="pagesize" @current-change="current_change" 
+          :current-page.sync="currentPage" :pager-count="5" :total="roles.length">
+        </el-pagination>
+      </el-col>
     </el-row>
     <!-- 模态框 -->
     <el-dialog :title="title" :visible.sync="dialogFormVisible" center>
@@ -37,6 +42,8 @@
 export default {
   data() {
     return {
+      pagesize: 10,
+      currentPage: 1,
       title: '',
       roles: [],
       dialogFormVisible: false,
@@ -52,6 +59,9 @@ export default {
     this.getRoles();
   },
   methods: {
+    current_change(currentPage){  //改变当前页
+      this.currentPage = currentPage
+    },
     // 提交点击事件
     submit(){
       this.dialogFormVisible = false;

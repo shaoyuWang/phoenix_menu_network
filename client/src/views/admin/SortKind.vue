@@ -12,7 +12,7 @@
       <el-button type="primary" class="add" @click="addSortKind()">+Add</el-button>
     </el-row>
     <el-row class="main">
-      <el-table :data="sortKinds" stripe style="width: 97%;">
+      <el-table :data="sortKinds.slice((currentPage-1)*pagesize, currentPage*pagesize)" stripe style="width: 97%;">
         <el-table-column prop="id" label="ID" class-name="table_column" width="70"></el-table-column>
         <el-table-column prop="name" label="Name" class-name="table_column"></el-table-column>
         <el-table-column prop="description" label="Description" class-name="table_column"></el-table-column>
@@ -23,6 +23,11 @@
           </template>
         </el-table-column>
       </el-table>
+      <el-col :span="24" style="text-align: center; margin-top: 10px;">
+        <el-pagination layout="prev, pager, next" :page-size="pagesize" @current-change="current_change" 
+          :current-page.sync="currentPage" :pager-count="5" :total="sortKinds.length">
+        </el-pagination>
+      </el-col>
     </el-row>
     <!-- 模态框 -->
     <el-dialog :title="title" :visible.sync="dialogFormVisible" center>
@@ -45,6 +50,8 @@
 export default {
   data() {
     return {
+      pagesize: 10,
+      currentPage: 1,
       title: '',
       sortKinds: [],
       temp: [],
@@ -62,6 +69,9 @@ export default {
     this.getSortKinds();
   },
   methods: {
+    current_change(currentPage){  //改变当前页
+      this.currentPage = currentPage
+    },
     search(){
       this.temp = this.sortKinds;
       this.sortKinds = _.filter(this.sortKinds, { name: this.searchInfo });

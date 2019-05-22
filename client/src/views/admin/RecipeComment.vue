@@ -4,7 +4,7 @@
       <el-button type="primary" class="add" @click="addComment()" disabled>+Add</el-button>
     </el-row>
     <el-row class="main">
-      <el-table :data="comments" stripe style="width: 97%;">
+      <el-table :data="comments.slice((currentPage-1)*pagesize, currentPage*pagesize)" stripe style="width: 97%;">
         <el-table-column type="expand">
           <template slot-scope="props">
             <div class="table-drop-down">
@@ -24,6 +24,11 @@
           </template>
         </el-table-column>
       </el-table>
+      <el-col :span="24" style="text-align: center; margin-top: 10px;">
+        <el-pagination layout="prev, pager, next" :page-size="pagesize" @current-change="current_change" 
+          :current-page.sync="currentPage" :pager-count="5" :total="comments.length">
+        </el-pagination>
+      </el-col>
     </el-row>
   </el-row>
 </template>
@@ -31,6 +36,8 @@
 export default {
   data() {
     return {
+      pagesize: 10,
+      currentPage: 1,
       title: '',
       comments: [],
     };
@@ -39,6 +46,9 @@ export default {
     this.getComments();
   },
   methods: {
+    current_change(currentPage){  //改变当前页
+      this.currentPage = currentPage
+    },
     handleDate(row){
         return this.moment(row.createDate).format('YYYY-MM-DD hh:mm:ss');
     },

@@ -12,7 +12,7 @@
       <el-button type="primary" class="add" @click="addMaterial()">+Add</el-button>
     </el-row>
     <el-row class="main">
-      <el-table :data="materials" stripe style="width: 97%;">
+      <el-table :data="materials.slice((currentPage-1)*pagesize, currentPage*pagesize)" stripe style="width: 97%;">
         <el-table-column prop="id" label="ID" class-name="table_column" width="70"></el-table-column>
         <el-table-column prop="name" label="名字" class-name="table_column"></el-table-column>
         <el-table-column prop="description" label="描述" class-name="table_column"></el-table-column>
@@ -24,6 +24,11 @@
           </template>
         </el-table-column>
       </el-table>
+      <el-col :span="24" style="text-align: center; margin-top: 10px;">
+        <el-pagination layout="prev, pager, next" :page-size="pagesize" @current-change="current_change" 
+          :current-page.sync="currentPage" :pager-count="5" :total="materials.length">
+        </el-pagination>
+      </el-col>
     </el-row>
     <!-- 模态框 -->
     <el-dialog :title="title" :visible.sync="dialogFormVisible" center>
@@ -52,6 +57,8 @@
 export default {
   data() {
     return {
+      pagesize: 10,
+      currentPage: 1,
       title: '',
       materials: [],
       kinds: [],
@@ -72,6 +79,9 @@ export default {
     this.getKinds();
   },
   methods: {
+    current_change(currentPage){  //改变当前页
+      this.currentPage = currentPage
+    },
     search(){
       this.temp = this.materials;
       this.materials = _.filter(this.materials, { name: this.searchInfo });
