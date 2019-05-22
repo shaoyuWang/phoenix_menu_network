@@ -62,7 +62,7 @@ export default {
     @import '../styles/style.scss';
     .container{
         background-color: white;
-        height: 800px;
+        height: 1200px;
         .title{
             width: $width100;
             height: $size60;

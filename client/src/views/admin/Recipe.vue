@@ -15,7 +15,6 @@
           <el-table-column prop="photo" label="Photo" class-name="table_column" v-if="show=false"></el-table-column>
           <el-table-column label="Operation" class-name="table_column">
           <template slot-scope="scope">
-            <el-button size="small" @click="updateMaterail(scope.$index,scope.row)" type="warning" plain>Add</el-button>
             <el-button size="small" @click="updateMaterail(scope.$index,scope.row)" type="primary" plain>Update</el-button>
           </template>
         </el-table-column>

@@ -5,6 +5,9 @@ import {
   RoleController,
   RecipeCommentController,
   UserDiaryCommentController,
+  UserDiaryController,
+  TechnologyController,
+  EffectController,
 } from "./controller";
 import {
   LocalStrategyService,
@@ -13,6 +16,9 @@ import {
   UserService,
   RecipeCommentService,
   UserDiaryCommentService,
+  UserDiaryService,
+  TechnologyService,
+  EffectService,
 } from "./services";
 
 const controllers = [
@@ -20,7 +26,10 @@ const controllers = [
   UserController,
   RoleController,
   RecipeCommentController,
+  UserDiaryController,
   UserDiaryCommentController,
+  TechnologyController,
+  EffectController,
 ];
 
 const services = [
@@ -29,7 +38,10 @@ const services = [
   UserService,
   RoleService,
   RecipeCommentService,
+  UserDiaryService,
   UserDiaryCommentService,
+  TechnologyService,
+  EffectService,
 ];
 
 @Module({

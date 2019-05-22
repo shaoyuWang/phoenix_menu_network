@@ -2,6 +2,10 @@
   <el-row class="container">
     <el-row class="header">
       <el-button type="primary" class="add" @click="addDiary()">+Add</el-button>
+      <el-upload action="/upload/img" name="file" style="float: left;" :on-success="handleSuccess">
+        <el-button size="small" type="primary">点击上传</el-button>
+        <div slot="tip" style="float: right; margin-left: 20px;">只能上传jpg/jepg文件，且不超过2m</div>
+      </el-upload>
     </el-row>
     <el-row class="main">
       <el-table :data="diarys" stripe style="width: 97%;">
@@ -29,7 +33,7 @@
       </el-table>
     </el-row>
     <!-- 模态框 -->
-    <el-dialog :title="title" :close-on-click-modal="false" :visible.sync="dialogFormVisible" center>
+    <el-dialog :title="title" :visible.sync="dialogFormVisible" center>
       <el-form :model="form">
         <el-form-item label="标题" label-width="120px">
           <el-input v-model="form.title" placeholder="Please Input Title"></el-input>
@@ -37,14 +41,12 @@
         <el-form-item label="内容" label-width="120px">
           <el-input v-model="form.info" type="textarea" placeholder="Please Input Information"></el-input>
         </el-form-item>
-        <el-form-item label="图片" label-width="120px">
-          <el-upload class="upload-demo" action="/upload/img" 
-            name="file"
-            list-type="picture" :limit="1" :on-success="handleSuccess" :on-exceed="onExceed" :before-upload="beforeUpload">
-            <el-button size="small" type="primary">点击上传</el-button>
-            <div slot="tip" class="el-upload__tip">只能上传jpg/jepg文件，且不超过2m</div>
+        <!-- <el-form-item label="图片" label-width="120px">
+        <el-upload action="/upload/img" name="file" list-type="picture" :limit="1" :on-success="handleSuccess" :on-exceed="onExceed" :before-upload="beforeUpload">
+          <el-button size="small" type="primary">点击上传</el-button>
+          <div slot="tip" class="el-upload__tip">只能上传jpg/jepg文件，且不超过2m</div>
         </el-upload>
-        </el-form-item>
+        </el-form-item> -->
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button type="primary" @click="submit()">确 定</el-button>
@@ -57,6 +59,7 @@
 export default {
   data() {
     return {
+      fileList: [],
       title: '',
       diarys: [],
       dialogFormVisible: false,
@@ -64,7 +67,7 @@ export default {
       form: {
         name: '',
         info: '',
-        photo: '1659891558276303303.jpg',
+        photo: '',
       },
       diaryId: '',
     };
@@ -73,29 +76,13 @@ export default {
     this.getDiarys();
   },
   methods: {
-    // 图片上传方法
+    // // 图片上传方法
     //文件上传成功的钩子函数
     handleSuccess(res, file) {
-      this.$message({ type: "success", message: "图片上传成功" });
+      // this.$message({ type: "success", message: "图片上传成功" });
       const pathList = _.split(res.writeImage.path, "/");
       this.form.photo = pathList[ pathList.length - 1 ];
-    },
-    //上传的文件个数超出设定时触发的函数
-    onExceed(files, fileList) {
-      this.$message.error({ message: "最多只能上传一个图片" });
-    },
-    //文件上传前的前的钩子函数
-    //参数是上传的文件，若返回false，或返回Primary且被reject，则停止上传
-    beforeUpload(file) {
-      const isJPG = file.type === "image/jpeg";
-      const isLt2M = file.size / 1024 / 1024 < 2;
-      if (!isJPG) {
-        this.$message.error("上传图片必须是JPG 格式!");
-      }
-      if (!isLt2M) {
-        this.$message.error("上传图片大小不能超过 2MB!");
-      }
-      return (isJPG) && isLt2M;
+      console.log(this.form.photo);
     },
     handleImg(photo){
       if(!_.isEmpty(photo)){
@@ -118,11 +105,13 @@ export default {
     },
     // 清空添加框
     resetDialog() {
-      this.form.name = '';
-      this.form.description = '';
+      this.form.title = '';
+      this.form.info = '';
     },
     // 添加方法
     addDiary() {
+      console.log(this.form.photo);
+      // if(_.isEmpty(this.form.photo)){ this.$message({ message: '先上传图片', type: 'warning'}); return false;}
       this.title = 'Add Diary'
       this.dialogFormVisible = true;
       this.checkSubmit = true;
@@ -136,21 +125,23 @@ export default {
         photo: this.form.photo,
         user_id:  _.isEmpty(JSON.parse(sessionStorage.getItem('user')))? null : JSON.parse(sessionStorage.getItem('user')).id,
       }
-      if(data.title || data.info || data.photo){
-        this.$axios({
-          url: '/api/diary/saveDiary',
-          method: 'post',
-          data,
-        }).then(res=>{
-          if(res.data.code == 200){
-            this.$message({ message: '添加成功', type: 'success' });
-            this.getDiarys();
-          }
-        });
-      }else{
-        this.dialogFormVisible = true;
-        this.$message.error({ message: '请填写完整信息' });
-      }
+      console.log(data);
+      // if(!_.isEmpty(data.title) || _.isEmpty(data.info) || _.isEmpty(data.photo)){
+      //   this.$axios({
+      //     url: '/api/diary/saveDiary',
+      //     method: 'post',
+      //     data,
+      //   }).then(res=>{
+      //     if(res.data.code == 200){
+      //       this.$message({ message: '添加成功', type: 'success' });
+      //       this.form.photo = '';
+      //       this.getDiarys();
+      //     }
+      //   });
+      // }else{
+      //   this.dialogFormVisible = true;
+      //   this.$message.error({ message: '请填写完整信息' });
+      // }
     },
     // 复写日记信息
     copyDiary(row) {
@@ -158,7 +149,6 @@ export default {
       this.dialogFormVisible = true;
       this.checkSubmit = false;
       this.diaryId = row.id;
-      this.form.photo = row.photo;
       this.form.name = row.name;
       this.form.description = row.description;
     },
@@ -177,6 +167,7 @@ export default {
         }).then(res=>{
           if(res.data.code == 200){
             this.$message({ message: '修改成功', type: 'success' });
+            this.form.photo = '';
             this.getDiarys();
           }
         });
@@ -226,6 +217,7 @@ export default {
       border-radius: 15px;
       padding: $size20;
       padding-right: $size60;
+      overflow: hidden;
       background-color: rgba(153, 153, 153, 0.4);
     }
     .el-table{

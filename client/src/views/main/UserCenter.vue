@@ -38,7 +38,7 @@
                 <router-view></router-view>
             </el-col>
         </el-col>
-        <Footer class="footer"></Footer>
+        <Footer></Footer>
     </el-row>
 </template>
 
@@ -46,6 +46,7 @@
 import Footer from './Footer.vue';
 
 export default {
+    components: {Footer},
     data(){
         return {
             user: '',
@@ -94,7 +95,7 @@ export default {
         }
         .nav{
             .el-menu-vertical-demo{
-                height: 600px;
+                height: 1000px;
             }
             .user{
                 width: 100%;
@@ -120,12 +121,6 @@ export default {
                     margin-top: 10px;
                 }
             }
-        }
-        .main{
-            height: 800px;
-        }
-        .footer{
-            top: 0;
         }
     }
     

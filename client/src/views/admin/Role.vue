@@ -127,7 +127,7 @@ export default {
       let judge = false ;
       if(data.name && data.description){
         _.forEach(this.roles,item=>{
-          if(item.name == _.trim(data.name)) judge = true;
+          if(item.id != this.role_id && item.name == _.trim(data.name)) judge = true;
         })
         if(!judge){
           this.$axios({
@@ -137,6 +137,7 @@ export default {
           }).then(res=>{
             if(res.data.code == 200){
               this.$message({ message: '修改成功', type: 'success' });
+              this.role_id = '';
               this.getRoles();
             }
           });
@@ -193,7 +194,7 @@ export default {
       background-color: rgba(153, 153, 153, 0.4);
     }
     .el-table{
-      margin: $size20;
+      margin: $size10 $size20 $size0 $size20;
       border-radius: 15px;
       /deep/ .table_column{
         text-align: $position_center;
