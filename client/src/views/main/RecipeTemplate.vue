@@ -23,7 +23,7 @@
                         </div>
                     </el-col>
                 </el-col>
-                <el-col :span="24" class="recipe-operation">
+                <el-col :span="24" class="recipe-operation" v-show="operation">
                     <el-button @click="collection()" type="success" plain>收藏</el-button>
                     <el-button @click="openDialog()" type="primary" plain>添加到菜单</el-button>
                 </el-col>
@@ -100,12 +100,7 @@
             </el-col>
             <el-dialog title="选择菜单" :visible.sync="dialogVisible" width="30%" center>
                 <el-select v-model="searchMenuId" default-first-option filterable placeholder="请选择">
-                    <el-option
-                    v-for="item in user.menus"
-                    :key="item.id"
-                    :label="item.name"
-                    :value="item.id">
-                    </el-option>
+                    <el-option v-for="item in _.isEmpty(user)? [] : user.menus" :key="item.id" :label="item.name" :value="item.id"></el-option>
                 </el-select>
                 <el-button type="success" @click="dialogFormVisible = true" style="margin-left: 10px;">新建菜单</el-button>
                 <span slot="footer" class="dialog-footer">
@@ -139,6 +134,7 @@ export default {
             dialogFormVisible: false,
             disabled: false,
             searchMenuId: '',
+            operation: false,
             comment: '',
             recipe: '',
             recipeUser: '',
@@ -152,6 +148,7 @@ export default {
     mounted(){
         this.user = _.isEmpty(JSON.parse(sessionStorage.getItem('user')))? null: JSON.parse(sessionStorage.getItem('user'));
         this.getList();
+        this.operation = _.isEmpty(this.user)? false : true;
     },
     methods:{
         handleImg(photo){
@@ -167,8 +164,8 @@ export default {
                 case 1: return '轻松'; break;
                 case 2: return '适中'; break;
                 case 3: return '中等'; break;
-                case 3: return '较难'; break;
-                case 4: return '困难'; break;
+                case 4: return '较难'; break;
+                case 5: return '困难'; break;
             }
         },
         checkName(item){
@@ -177,6 +174,7 @@ export default {
             }
         },
         publishComment(){
+            if(_.isEmpty(this.user)) { this.$message.error({ message: '请登录' }); return false;};
             let data = {
                 comment:this.comment,
                 praise: 0,
@@ -214,6 +212,7 @@ export default {
             });
         },
         collection(){
+            if(_.isEmpty(this.user)) { this.$message.error({ message: '请登录' }); return false;};
             let data = {
                recipeId: this.recipe.id,
                recipeName: this.recipe.name,
@@ -252,7 +251,6 @@ export default {
                 method: 'post',
                 data,
             }).then(res=>{
-                console.log(res);
                 if(res.data == -1){
                     this.$message({ message: '此菜谱已经存在与你的菜单中', type: 'warning' });
                 }else if(res.data.code == 200){
@@ -304,6 +302,7 @@ export default {
                 url:`/main/recipeTemplate/findUserById/${userId}`,
                 method: 'get',
             }).then(res=>{
+                console.log(res.data);
                 if(res.data.code == 200){
                     this.recipeUser = res.data.data.user;
                     this.recipeUser.menuLength = this.recipeUser.menus.length;
@@ -320,7 +319,6 @@ export default {
             }).then(res=>{
                 if(res.data.code == 200){
                     this.user = res.data.data.user;
-                    console.log(this.user);
                     this.dialogVisible = true;
                 }
             });

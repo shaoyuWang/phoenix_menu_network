@@ -7,3 +7,8 @@ export * from "./user.diary.service";
 export * from "./user.diary.comment.service";
 export * from "./technology.service";
 export * from "./effect.service";
+export * from "./taste.service";
+export * from "./sort.service";
+export * from "./sort.kind.service";
+export * from "./material.service";
+export * from "./material.kind.service";

@@ -13,8 +13,8 @@ import { UserEntity } from "../../admin/entities";
 import { SortEntity } from "./sort.entities";
 import { TechnologyEntity } from "./technology.entities";
 import { TasteEntity } from "./taste.entities";
-import { MajorRecipeMaterialMappingEntity } from "./major.recipe.material.entities";
-import { AuxiliaryRecipeMaterialMappingEntity } from "./auxiliary.recipe.material.entities";
+import { MajorRecipeMaterialEntity } from "./major.recipe.material.entities";
+import { AuxiliaryRecipeMaterialEntity } from "./auxiliary.recipe.material.entities";
 import { EffectEntity } from "./effect.entities";
 import { StepEntity } from "./step.entities";
 import { RecipeCommentEntity } from "./recipe.comment.entities";
@@ -62,18 +62,16 @@ export class RecipeEntity extends FrameworkEntity {
   public steps: StepEntity[] | null;
 
   @OneToMany(
-    () => MajorRecipeMaterialMappingEntity,
-    (MajorRecipeMaterialMappingEntity) =>
-      MajorRecipeMaterialMappingEntity.recipe,
+    () => MajorRecipeMaterialEntity,
+    (MajorRecipeMaterialEntity) => MajorRecipeMaterialEntity.recipe,
   )
-  public majorMaterials: MajorRecipeMaterialMappingEntity | null;
+  public majorMaterials: MajorRecipeMaterialEntity | null;
 
   @OneToMany(
-    () => AuxiliaryRecipeMaterialMappingEntity,
-    (AuxiliaryRecipeMaterialMappingEntity) =>
-      AuxiliaryRecipeMaterialMappingEntity.recipe,
+    () => AuxiliaryRecipeMaterialEntity,
+    (AuxiliaryRecipeMaterialEntity) => AuxiliaryRecipeMaterialEntity.recipe,
   )
-  public auxiliaryMaterials: AuxiliaryRecipeMaterialMappingEntity | null;
+  public auxiliaryMaterials: AuxiliaryRecipeMaterialEntity | null;
 
   @ManyToMany(() => EffectEntity)
   @JoinTable({

@@ -3,23 +3,23 @@
     <el-row class="header">
       <div class="search">
         <el-select v-model="searchInfo" filterable placeholder="请选择" style="width: 300px;">
-          <el-option v-for="item in tastes" :key="item.id" :label="item.name" :value="item.name">
+          <el-option v-for="item in materialKinds" :key="item.id" :label="item.name" :value="item.name">
           </el-option>
         </el-select>
         <el-button icon="el-icon-search" circle style="margin-left: 10px;" @click="search()"></el-button>
         <el-button icon="el-icon-delete" circle style="margin-left:10px;" @click="cancel()" type="danger" ></el-button>
       </div>
-      <el-button type="primary" class="add" @click="addTaste()">+Add</el-button>
+      <el-button type="primary" class="add" @click="addMaterialKind()">+Add</el-button>
     </el-row>
     <el-row class="main">
-      <el-table :data="tastes" stripe style="width: 97%;">
+      <el-table :data="materialKinds" stripe style="width: 97%;">
         <el-table-column prop="id" label="ID" class-name="table_column" width="70"></el-table-column>
         <el-table-column prop="name" label="Name" class-name="table_column"></el-table-column>
         <el-table-column prop="description" label="Description" class-name="table_column"></el-table-column>
         <el-table-column label="Operation" class-name="table_column">
           <template slot-scope="scope">
-            <el-button size="small" @click="copyTaste(scope.row)" type="warning" plain>Update</el-button>
-            <!-- <el-button size="small" @click="deleteTaste(scope.row)" type="danger" plain>Delete</el-button> -->
+            <el-button size="small" @click="copyMaterialKind(scope.row)" type="warning" plain>Update</el-button>
+            <!-- <el-button size="small" @click="deleteMaterialKind(scope.row)" type="danger" plain>Delete</el-button> -->
           </template>
         </el-table-column>
       </el-table>
@@ -46,7 +46,7 @@ export default {
   data() {
     return {
       title: '',
-      tastes: [],
+      materialKinds: [],
       temp: [],
       searchInfo: '',
       dialogFormVisible: false,
@@ -55,28 +55,28 @@ export default {
         name: '',
         description: '',
       },
-      taste_id: '',
+      materialKind_id: '',
     };
   },
   mounted(){
-    this.getTastes();
+    this.getMaterialKinds();
   },
   methods: {
     search(){
-      this.temp = this.tastes;
-      this.tastes = _.filter(this.tastes, { name: this.searchInfo });
+      this.temp = this.materialKinds;
+      this.materialKinds = _.filter(this.materialKinds, { name: this.searchInfo });
     },
     cancel(){
-      this.tastes = this.temp;
+      this.materialKinds = this.temp;
       this.searchInfo = '';
     },
     // 提交点击事件
     submit(){
       this.dialogFormVisible = false;
       if(this.checkSubmit){
-        this.createTaste();
+        this.createMaterialKind();
       }else{
-        this.updateTaste();
+        this.updateMaterialKind();
       }
     },
     //取消方法
@@ -90,32 +90,32 @@ export default {
       this.form.description = '';
     },
     // 添加方法
-    addTaste() {
-      this.title = 'Add Taste'
+    addMaterialKind() {
+      this.title = 'Add MaterialKind'
       this.dialogFormVisible = true;
       this.checkSubmit = true;
       this.resetDialog();
     },
-    // 创建口味
-    createTaste(){
+    // 创建材料分类
+    createMaterialKind(){
       let data = {
         name: this.form.name,
         description: this.form.description,
       }
       let judge = false ;
       if(data.name && data.description){
-        _.forEach(this.tastes,item=>{
+        _.forEach(this.materialKinds,item=>{
           if(item.name == _.trim(data.name)) judge = true;
         })
         if(!judge){
           this.$axios({
-            url: '/api/taste/saveTaste',
+            url: '/api/materialKind/saveMaterialKind',
             method: 'post',
             data,
           }).then(res=>{
             if(res.data.code == 200){
               this.$message({ message: '添加成功', type: 'success' });
-              this.getTastes();
+              this.getMaterialKinds();
             }
           });
         }else{
@@ -127,36 +127,36 @@ export default {
         this.$message.error({ message: '请填写完整信息' });
       }
     },
-    // 复写口味信息
-    copyTaste(row) {
-      this.title = 'Update Taste'
+    // 复写材料分类信息
+    copyMaterialKind(row) {
+      this.title = 'Update MaterialKind'
       this.dialogFormVisible = true;
       this.checkSubmit = false;
-      this.taste_id = row.id;
+      this.materialKind_id = row.id;
       this.form.name = row.name;
       this.form.description = row.description;
     },
-    // 更新口味
-    updateTaste() {
+    // 更新材料分类
+    updateMaterialKind() {
       let data = {
         name: this.form.name,
         description: this.form.description,
       }
       let judge = false ;
       if(data.name && data.description){
-        _.forEach(this.tastes,item=>{
-          if(item.id != this.taste_id && item.name == _.trim(data.name)) judge = true;
+        _.forEach(this.materialKinds,item=>{
+          if(item.id != this.materialKind_id && item.name == _.trim(data.name)) judge = true;
         })
         if(!judge){
           this.$axios({
-            url: `/api/taste/updateTaste/${this.taste_id}`,
+            url: `/api/materialKind/updateMaterialKind/${this.materialKind_id}`,
             method: 'post',
             data,
           }).then(res=>{
             if(res.data.code == 200){
               this.$message({ message: '修改成功', type: 'success' });
-              this.taste_id = '';
-              this.getTastes();
+              this.materialKind_id = '';
+              this.getMaterialKinds();
             }
           });
         }else{
@@ -168,26 +168,26 @@ export default {
         this.$message.error({ message: '请填写完整信息' });
       }
     },
-    // // 删除口味
-    // deleteTaste(row){
+    // // 删除材料分类
+    // deleteMaterialKind(row){
     //   this.$axios({
-    //     url: `/api/taste/deleteTaste/${row.id}`,
+    //     url: `/api/materialKind/deleteMaterialKind/${row.id}`,
     //     method: 'post'
     //   }).then( res => {
     //     if(res.data.code == 200){
     //       this.$message({ message: '删除成功', type: 'success' });
-    //       this.getTastes();
+    //       this.getMaterialKinds();
     //     }
     //   });
     // },
-    // 获取口味
-    getTastes(){
+    // 获取材料分类
+    getMaterialKinds(){
       this.$axios({
-        url: '/api/taste/getAllTastes',
+        url: '/api/materialKind/getAllMaterialKinds',
         method: 'get',
       }).then(res =>{
         if(res.data.code == 200){
-          this.tastes = res.data.data.tastes;
+          this.materialKinds = res.data.data.materialKinds;
         }
       })
     },

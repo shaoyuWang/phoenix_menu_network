@@ -1,6 +1,14 @@
 <template>
   <el-row class="container">
     <el-row class="header">
+      <div class="search">
+        <el-select v-model="searchInfo" filterable placeholder="请选择" style="width: 300px;">
+          <el-option v-for="item in technologys" :key="item.id" :label="item.name" :value="item.name">
+          </el-option>
+        </el-select>
+        <el-button icon="el-icon-search" circle style="margin-left: 10px;" @click="search()"></el-button>
+        <el-button icon="el-icon-delete" circle style="margin-left:10px;" @click="cancel()" type="danger" ></el-button>
+      </div>
       <el-button type="primary" class="add" @click="addTechnology()">+Add</el-button>
     </el-row>
     <el-row class="main">
@@ -39,6 +47,8 @@ export default {
     return {
       title: '',
       technologys: [],
+      temp: [],
+      searchInfo: '',
       dialogFormVisible: false,
       checkSubmit: true,
       form: {
@@ -52,6 +62,14 @@ export default {
     this.getTechnologys();
   },
   methods: {
+    search(){
+      this.temp = this.technologys;
+      this.technologys = _.filter(this.technologys, { name: this.searchInfo });
+    },
+    cancel(){
+      this.technologys = this.temp;
+      this.searchInfo = '';
+    },
     // 提交点击事件
     submit(){
       this.dialogFormVisible = false;
@@ -192,6 +210,10 @@ export default {
       padding: $size20;
       padding-right: $size60;
       background-color: rgba(153, 153, 153, 0.4);
+      overflow: hidden;
+      .search{
+        float: left;
+      }
     }
     .el-table{
       margin: $size10 $size20 $size0 $size20;

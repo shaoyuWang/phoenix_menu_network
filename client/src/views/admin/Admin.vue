@@ -29,14 +29,24 @@
           </template>
           <el-menu-item-group>
             <el-menu-item index="recipe">菜谱管理</el-menu-item>
-            <el-menu-item index="technology">菜谱工艺管理</el-menu-item>
-            <el-menu-item index="effect">菜谱功效管理</el-menu-item>
-            <el-menu-item index="taste">菜谱口味管理</el-menu-item>
-            <el-menu-item index="sortKind">菜系种类管理</el-menu-item>
-            <el-menu-item index="materailMenu">材料分类管理</el-menu-item>
+            <el-menu-item index="technology">工艺管理</el-menu-item>
+            <el-menu-item index="effect">功效管理</el-menu-item>
+            <el-menu-item index="taste">口味管理</el-menu-item>
+            <el-menu-item index="sort">种类管理</el-menu-item>
+            <el-menu-item index="material">材料管理</el-menu-item>
           </el-menu-item-group>
         </el-submenu>
         <el-submenu index="3">
+          <template slot="title">
+            <i class="el-icon-location"></i>
+            <span>分类管理</span>
+          </template>
+          <el-menu-item-group>
+            <el-menu-item index="sortKind">菜系分类管理</el-menu-item>
+            <el-menu-item index="materialKind">材料分类管理</el-menu-item>
+          </el-menu-item-group>
+        </el-submenu>
+        <el-submenu index="4">
           <template slot="title">
             <i class="el-icon-location"></i>
             <span>评论管理</span>

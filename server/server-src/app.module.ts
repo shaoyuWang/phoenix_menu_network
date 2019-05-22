@@ -26,8 +26,8 @@ import {
   MaterialEntity,
   EffectEntity,
   EffectKindEntity,
-  MajorRecipeMaterialMappingEntity,
-  AuxiliaryRecipeMaterialMappingEntity,
+  MajorRecipeMaterialEntity,
+  AuxiliaryRecipeMaterialEntity,
   MaterialKindEntity,
   RecipeVideoEntity,
 } from "./modules/main/entities";
@@ -64,8 +64,8 @@ const mainEntities = [
   EffectKindEntity,
   MaterialEntity,
   MaterialKindEntity,
-  MajorRecipeMaterialMappingEntity,
-  AuxiliaryRecipeMaterialMappingEntity,
+  MajorRecipeMaterialEntity,
+  AuxiliaryRecipeMaterialEntity,
   RecipeVideoEntity,
 ];
 

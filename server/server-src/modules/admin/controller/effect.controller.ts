@@ -1,12 +1,4 @@
-import {
-  Body,
-  Controller,
-  Delete,
-  Get,
-  Param,
-  Post,
-  UseGuards,
-} from "@nestjs/common";
+import { Body, Controller, Get, Param, Post, UseGuards } from "@nestjs/common";
 import { Roles } from "../../../framework/decorators/role.decorator";
 import { LoginGuard } from "../../../framework/guards";
 import { EffectService } from "../services";

@@ -9,6 +9,18 @@ import { UserCenterService } from "../services";
 export class UserCenterController {
   constructor(private readonly userCenterService: UserCenterService) {}
 
+  @Get("/getRecipeBaseInfo")
+  // @Roles(2)
+  public async getRecipeBaseInfo() {
+    return await this.userCenterService.getRecipeBaseInfo();
+  }
+
+  @Post("/saveRecipe")
+  // @Roles(2)
+  public async saveRecipe(@Body() data: any) {
+    return await this.userCenterService.saveRecipe(data);
+  }
+
   @Get("/getUser/:id")
   // @Roles(2)
   public async getUser(@Param("id") userId: any) {

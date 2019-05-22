@@ -8,6 +8,10 @@ import {
   UserDiaryController,
   TechnologyController,
   EffectController,
+  TasteController,
+  SortKindController,
+  MaterialKindController,
+  MaterialController,
 } from "./controller";
 import {
   LocalStrategyService,
@@ -19,7 +23,13 @@ import {
   UserDiaryService,
   TechnologyService,
   EffectService,
+  TasteService,
+  SortKindService,
+  MaterialKindService,
+  SortService,
+  MaterialService,
 } from "./services";
+import { SortController } from "./controller/sort.controller";
 
 const controllers = [
   AuthorityController,
@@ -30,6 +40,11 @@ const controllers = [
   UserDiaryCommentController,
   TechnologyController,
   EffectController,
+  TasteController,
+  SortController,
+  SortKindController,
+  MaterialController,
+  MaterialKindController,
 ];
 
 const services = [
@@ -42,6 +57,11 @@ const services = [
   UserDiaryCommentService,
   TechnologyService,
   EffectService,
+  TasteService,
+  SortService,
+  SortKindService,
+  MaterialService,
+  MaterialKindService,
 ];
 
 @Module({

@@ -6,3 +6,7 @@ export * from "./user.diary.comment.controller";
 export * from "./user.diary.controller";
 export * from "./technology.controller";
 export * from "./effect.controller";
+export * from "./taste.controller";
+export * from "./sort.kind.controller";
+export * from "./material.controller";
+export * from "./material.kind.controller";

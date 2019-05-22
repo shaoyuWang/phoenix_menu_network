@@ -3,23 +3,24 @@
     <el-row class="header">
       <div class="search">
         <el-select v-model="searchInfo" filterable placeholder="请选择" style="width: 300px;">
-          <el-option v-for="item in tastes" :key="item.id" :label="item.name" :value="item.name">
+          <el-option v-for="item in materials" :key="item.id" :label="item.name" :value="item.name">
           </el-option>
         </el-select>
         <el-button icon="el-icon-search" circle style="margin-left: 10px;" @click="search()"></el-button>
         <el-button icon="el-icon-delete" circle style="margin-left:10px;" @click="cancel()" type="danger" ></el-button>
       </div>
-      <el-button type="primary" class="add" @click="addTaste()">+Add</el-button>
+      <el-button type="primary" class="add" @click="addMaterial()">+Add</el-button>
     </el-row>
     <el-row class="main">
-      <el-table :data="tastes" stripe style="width: 97%;">
+      <el-table :data="materials" stripe style="width: 97%;">
         <el-table-column prop="id" label="ID" class-name="table_column" width="70"></el-table-column>
-        <el-table-column prop="name" label="Name" class-name="table_column"></el-table-column>
-        <el-table-column prop="description" label="Description" class-name="table_column"></el-table-column>
+        <el-table-column prop="name" label="名字" class-name="table_column"></el-table-column>
+        <el-table-column prop="description" label="描述" class-name="table_column"></el-table-column>
+        <el-table-column prop="kind.name" label="分类" class-name="table_column"></el-table-column>
         <el-table-column label="Operation" class-name="table_column">
           <template slot-scope="scope">
-            <el-button size="small" @click="copyTaste(scope.row)" type="warning" plain>Update</el-button>
-            <!-- <el-button size="small" @click="deleteTaste(scope.row)" type="danger" plain>Delete</el-button> -->
+            <el-button size="small" @click="copyMaterial(scope.row)" type="warning" plain>Update</el-button>
+            <!-- <el-button size="small" @click="deleteMaterial(scope.row)" type="danger" plain>Delete</el-button> -->
           </template>
         </el-table-column>
       </el-table>
@@ -27,11 +28,17 @@
     <!-- 模态框 -->
     <el-dialog :title="title" :visible.sync="dialogFormVisible" center>
       <el-form :model="form">
-        <el-form-item label="Name" label-width="120px">
-          <el-input type="name" v-model="form.name" placeholder="Please Input Name"></el-input>
+        <el-form-item label="名字" label-width="120px">
+          <el-input v-model="form.name" placeholder="Please Input Name"></el-input>
         </el-form-item>
-        <el-form-item label="Description" label-width="120px">
-          <el-input v-model="form.description" type="description" placeholder="Please Input Description"></el-input>
+        <el-form-item label="描述" label-width="120px">
+          <el-input v-model="form.description" placeholder="Please Input Description"></el-input>
+        </el-form-item>
+        <el-form-item label="分类" label-width="120px">
+          <el-select v-model="searchMaterialKindId" default-first-option filterable placeholder="请选择">
+            <el-option v-for="item in kinds" :key="item.id" :label="item.name" :value="item.id">
+            </el-option>
+        </el-select>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -46,37 +53,40 @@ export default {
   data() {
     return {
       title: '',
-      tastes: [],
+      materials: [],
+      kinds: [],
       temp: [],
       searchInfo: '',
+      searchMaterialKindId: '',
       dialogFormVisible: false,
       checkSubmit: true,
       form: {
         name: '',
         description: '',
       },
-      taste_id: '',
+      material_id: '',
     };
   },
   mounted(){
-    this.getTastes();
+    this.getMaterials();
+    this.getKinds();
   },
   methods: {
     search(){
-      this.temp = this.tastes;
-      this.tastes = _.filter(this.tastes, { name: this.searchInfo });
+      this.temp = this.materials;
+      this.materials = _.filter(this.materials, { name: this.searchInfo });
     },
     cancel(){
-      this.tastes = this.temp;
+      this.materials = this.temp;
       this.searchInfo = '';
     },
     // 提交点击事件
     submit(){
       this.dialogFormVisible = false;
       if(this.checkSubmit){
-        this.createTaste();
+        this.createMaterial();
       }else{
-        this.updateTaste();
+        this.updateMaterial();
       }
     },
     //取消方法
@@ -90,32 +100,35 @@ export default {
       this.form.description = '';
     },
     // 添加方法
-    addTaste() {
-      this.title = 'Add Taste'
+    addMaterial() {
+      this.title = 'Add Material'
       this.dialogFormVisible = true;
       this.checkSubmit = true;
       this.resetDialog();
     },
-    // 创建口味
-    createTaste(){
+    // 创建材料
+    createMaterial(){
+      let kind = _.filter(this.kinds, { id: this.searchMaterialKindId});
       let data = {
         name: this.form.name,
         description: this.form.description,
+        kind: kind[0],
       }
       let judge = false ;
       if(data.name && data.description){
-        _.forEach(this.tastes,item=>{
+        _.forEach(this.materials,item=>{
           if(item.name == _.trim(data.name)) judge = true;
         })
         if(!judge){
           this.$axios({
-            url: '/api/taste/saveTaste',
+            url: '/api/material/saveMaterial',
             method: 'post',
             data,
           }).then(res=>{
             if(res.data.code == 200){
               this.$message({ message: '添加成功', type: 'success' });
-              this.getTastes();
+              this.searchMaterialKindId = '';
+              this.getMaterials();
             }
           });
         }else{
@@ -127,36 +140,40 @@ export default {
         this.$message.error({ message: '请填写完整信息' });
       }
     },
-    // 复写口味信息
-    copyTaste(row) {
-      this.title = 'Update Taste'
+    // 复写材料信息
+    copyMaterial(row) {
+      this.title = 'Update Material'
       this.dialogFormVisible = true;
       this.checkSubmit = false;
-      this.taste_id = row.id;
+      this.material_id = row.id;
       this.form.name = row.name;
       this.form.description = row.description;
+      this.searchMaterialKindId = row.kind.id;
     },
-    // 更新口味
-    updateTaste() {
+    // 更新材料
+    updateMaterial() {
+      let kind = _.filter(this.kinds, { id: this.searchMaterialKindId});
       let data = {
         name: this.form.name,
         description: this.form.description,
+        kind: kind[0],
       }
       let judge = false ;
       if(data.name && data.description){
-        _.forEach(this.tastes,item=>{
-          if(item.id != this.taste_id && item.name == _.trim(data.name)) judge = true;
+        _.forEach(this.materials,item=>{
+          if(item.id != this.material_id && item.name == _.trim(data.name)) judge = true;
         })
         if(!judge){
           this.$axios({
-            url: `/api/taste/updateTaste/${this.taste_id}`,
+            url: `/api/material/updateMaterial/${this.material_id}`,
             method: 'post',
             data,
           }).then(res=>{
             if(res.data.code == 200){
               this.$message({ message: '修改成功', type: 'success' });
-              this.taste_id = '';
-              this.getTastes();
+              this.material_id = '';
+              this.searchMaterialKindId = '';
+              this.getMaterials();
             }
           });
         }else{
@@ -168,29 +185,40 @@ export default {
         this.$message.error({ message: '请填写完整信息' });
       }
     },
-    // // 删除口味
-    // deleteTaste(row){
+    // // 删除材料
+    // deleteMaterial(row){
     //   this.$axios({
-    //     url: `/api/taste/deleteTaste/${row.id}`,
+    //     url: `/api/material/deleteMaterial/${row.id}`,
     //     method: 'post'
     //   }).then( res => {
     //     if(res.data.code == 200){
     //       this.$message({ message: '删除成功', type: 'success' });
-    //       this.getTastes();
+    //       this.getMaterials();
     //     }
     //   });
     // },
-    // 获取口味
-    getTastes(){
+    // 获取材料
+    getMaterials(){
       this.$axios({
-        url: '/api/taste/getAllTastes',
+        url: '/api/material/getAllMaterials',
         method: 'get',
       }).then(res =>{
         if(res.data.code == 200){
-          this.tastes = res.data.data.tastes;
+          this.materials = res.data.data.materials;
         }
       })
     },
+    // 获得菜系分类
+    getKinds(){
+      this.$axios({
+        url: '/api/material/getAllMaterialKinds',
+        method: 'get',
+      }).then(res =>{
+        if(res.data.code == 200){
+          this.kinds = res.data.data.kinds;
+        }
+      })
+    }
   }
 };
 </script>

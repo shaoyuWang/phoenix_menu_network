@@ -4,6 +4,16 @@ import { Repository } from "typeorm";
 import _ from "lodash";
 import { RESPONSE_CODE } from "../../../framework/enums";
 import { UserEntity, UserMenuEntity } from "../../admin/entities";
+import {
+  TasteEntity,
+  TechnologyEntity,
+  EffectEntity,
+  SortEntity,
+  MaterialEntity,
+  RecipeEntity,
+  MajorRecipeMaterialEntity,
+  AuxiliaryRecipeMaterialEntity,
+} from "../entities";
 
 @Injectable()
 export class UserCenterService {
@@ -12,7 +22,82 @@ export class UserCenterService {
     private readonly userRepository: Repository<UserEntity>,
     @InjectRepository(UserMenuEntity)
     private readonly userMenuRepository: Repository<UserMenuEntity>,
+    @InjectRepository(RecipeEntity)
+    private readonly recipeRepository: Repository<RecipeEntity>,
+    @InjectRepository(MajorRecipeMaterialEntity)
+    private readonly majorMaterialRepository: Repository<
+      MajorRecipeMaterialEntity
+    >,
+    @InjectRepository(AuxiliaryRecipeMaterialEntity)
+    private readonly auxiliaryMaterialRepository: Repository<
+      AuxiliaryRecipeMaterialEntity
+    >,
+    @InjectRepository(TasteEntity)
+    private readonly tasteRepository: Repository<TasteEntity>,
+    @InjectRepository(TechnologyEntity)
+    private readonly technologyRepository: Repository<TechnologyEntity>,
+    @InjectRepository(EffectEntity)
+    private readonly effectRepository: Repository<EffectEntity>,
+    @InjectRepository(SortEntity)
+    private readonly sortRepository: Repository<SortEntity>,
+    @InjectRepository(MaterialEntity)
+    private readonly materialRepository: Repository<MaterialEntity>,
   ) {}
+
+  //   获取菜谱基本信息
+  public async getRecipeBaseInfo() {
+    let data: any;
+    let tastes = await this.tasteRepository.find();
+    let technologys = await this.technologyRepository.find();
+    let effects = await this.effectRepository.find();
+    let sorts = await this.sortRepository.find();
+    let materials = await this.materialRepository.find();
+    data = _.assign(
+      {},
+      { tastes },
+      { technologys },
+      { effects },
+      { sorts },
+      { materials },
+    );
+    if (!_.isEmpty(data)) {
+      return { data, code: RESPONSE_CODE.SUCCESS };
+    } else {
+      return { code: RESPONSE_CODE.NOTVALUE };
+    }
+  }
+
+  // 创建菜谱
+  public async saveRecipe(info: any) {
+    const { majorMaterials, auxiliaryMaterials } = info;
+    let data: any;
+    let recipe = await this.recipeRepository.save(info);
+    _.forEach(majorMaterials, (item) => {
+      item.recipe = recipe;
+    });
+    _.forEach(auxiliaryMaterials, (item) => {
+      item.recipe = recipe;
+    });
+    let major = await this.majorMaterialRepository.save(majorMaterials);
+    let axu = await this.auxiliaryMaterialRepository.save(auxiliaryMaterials);
+    recipe = await this.recipeRepository.findOne(recipe.id, {
+      relations: [
+        "user",
+        "taste",
+        "technology",
+        "majorMaterials",
+        "auxiliaryMaterials",
+        "effects",
+        "sort",
+      ],
+    });
+    data = _.assign({}, { recipe });
+    if (!_.isEmpty(data)) {
+      return { data, code: RESPONSE_CODE.SUCCESS };
+    } else {
+      return { code: RESPONSE_CODE.NOTVALUE };
+    }
+  }
 
   //   获取用户信息
   public async getUser(userId: any) {

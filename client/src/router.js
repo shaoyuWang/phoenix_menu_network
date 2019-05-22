@@ -2,15 +2,47 @@ import Vue from 'vue';
 import Router from 'vue-router';
 import { NotFound, NotPermission, Login } from './views/common';
 import {
-  Admin, User, Diary, Effect, MaterailMenu,
-  UserMenuComment, SortKind, Step, Taste, Technology, Recipe, Role, RecipeComment, DiaryComment,
+  Admin,
+  User,
+  Diary,
+  Effect,
+  Material,
+  UserMenuComment,
+  SortKind,
+  Step,
+  Taste,
+  Technology,
+  Recipe,
+  Role,
+  RecipeComment,
+  DiaryComment,
+  Sort,
+  MaterialKind,
 } from './views/admin';
 import {
-  Index, RecipeVideo, RecipeCooking, Navbar, ThreeMeals,
-  FoodMenu, GourmetMaster, AllTemplate, FoodHealth, UserCenter, RecipeTemplate, DiaryTemplate, VideoTemplate,
+  Index,
+  RecipeVideo,
+  RecipeCooking,
+  Navbar,
+  ThreeMeals,
+  FoodMenu,
+  GourmetMaster,
+  AllTemplate,
+  FoodHealth,
+  UserCenter,
+  RecipeTemplate,
+  DiaryTemplate,
+  VideoTemplate,
 } from './views/main';
 
-import { UserModifyTemplate, UserRecipeTemplate, UserMenuTemplate, UserDiaryTemplate, UserCollectTemplate } from '../src/components';
+import {
+  UserModifyTemplate,
+  UserRecipeTemplate,
+  UserMenuTemplate,
+  UserDiaryTemplate,
+  UserCollectTemplate,
+  UserAddRecipeTemplate,
+} from './components';
 
 
 Vue.use(Router);
@@ -73,24 +105,31 @@ export default new Router({
           },
         },
         {
-          path: 'sortKind',
-          component: SortKind,
+          path: 'sort',
+          component: Sort,
           meta: {
             title: '菜谱种类管理',
           },
         },
         {
-          path: 'effect',
-          component: Effect,
+          path: 'sortKind',
+          component: SortKind,
           meta: {
-            title: '菜谱功效管理',
+            title: '菜系分类管理',
           },
         },
         {
-          path: 'materailMenu',
-          component: MaterailMenu,
+          path: 'material',
+          component: Material,
           meta: {
             title: '菜谱材料管理',
+          },
+        },
+        {
+          path: 'materialKind',
+          component: MaterialKind,
+          meta: {
+            title: '材料分类管理',
           },
         },
         {
@@ -98,6 +137,13 @@ export default new Router({
           component: UserMenuComment,
           meta: {
             title: '菜单评论管理',
+          },
+        },
+        {
+          path: 'effect',
+          component: Effect,
+          meta: {
+            title: '菜谱功效管理',
           },
         },
         {
@@ -224,8 +270,8 @@ export default new Router({
           component: VideoTemplate,
           meta: {
             title: '视频',
-          }
-        }
+          },
+        },
       ],
     },
     {
@@ -237,7 +283,14 @@ export default new Router({
           path: 'myInfo',
           component: UserModifyTemplate,
           meta: {
-            title: '我的信息',
+            title: '用户中心',
+          },
+        },
+        {
+          path: 'addRecipe',
+          component: UserAddRecipeTemplate,
+          meta: {
+            title: '添加菜谱',
           },
         },
         {
@@ -251,7 +304,7 @@ export default new Router({
           path: 'myCollection',
           component: UserCollectTemplate,
           meta: {
-            title: '我的菜谱',
+            title: '我的收藏',
           },
         },
         {
@@ -268,7 +321,7 @@ export default new Router({
             title: '我的日记',
           },
         },
-      ]
+      ],
     },
   ],
 });

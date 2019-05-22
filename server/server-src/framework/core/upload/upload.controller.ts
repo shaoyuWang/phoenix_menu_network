@@ -4,7 +4,6 @@ import {
   Post,
   UseInterceptors,
   FileInterceptor,
-  Body,
   UploadedFile,
 } from "@nestjs/common";
 import { Roles } from "../../../framework/decorators/role.decorator";
@@ -35,7 +34,7 @@ export class UploadController {
       ),
     );
     writeImage.write(file.buffer);
-    return { writeImage, code: RESPONSE_CODE.SUCCESS };
+    return { data: writeImage.path, code: RESPONSE_CODE.SUCCESS };
   }
 
   @Post("/video")

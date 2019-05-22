@@ -9,7 +9,7 @@ import { FrameworkEntity } from "../../../framework/entities/freamework.entities
 import { RecipeEntity } from "./recipe.entities";
 
 @Entity({ name: "m_major_recipe_material" })
-export class MajorRecipeMaterialMappingEntity extends FrameworkEntity {
+export class MajorRecipeMaterialEntity extends FrameworkEntity {
   @PrimaryGeneratedColumn()
   public id: number;
 

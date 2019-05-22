@@ -1,137 +1,196 @@
 <template>
   <el-row class="container">
     <el-row class="header">
-      <el-button type="primary" class="add" @click="addKind()">+Add Kind</el-button>
-      <el-button type="success" class="add" @click="addSort()">+Add Sort</el-button>
+      <div class="search">
+        <el-select v-model="searchInfo" filterable placeholder="请选择" style="width: 300px;">
+          <el-option v-for="item in sortKinds" :key="item.id" :label="item.name" :value="item.name">
+          </el-option>
+        </el-select>
+        <el-button icon="el-icon-search" circle style="margin-left: 10px;" @click="search()"></el-button>
+        <el-button icon="el-icon-delete" circle style="margin-left:10px;" @click="cancel()" type="danger" ></el-button>
+      </div>
+      <el-button type="primary" class="add" @click="addSortKind()">+Add</el-button>
     </el-row>
     <el-row class="main">
-      <el-table :data="kindList" stripe style="width: 97%;">
-        <el-table-column type="expand">
-      <template slot-scope="items" class="second">
-        <el-table :data='items.row.sorts' stripe style="width: 97%">
-          <el-table-column prop="id" label="ID" class-name="table_column"></el-table-column>
-          <el-table-column prop="name" label="Name" class-name="table_column"></el-table-column>
-          <el-table-column prop="description" label="Description" class-name="table_column"></el-table-column>
-          <el-table-column prop="kind_id" label="Kind Id" class-name="table_column" v-if="show=false"></el-table-column>
-          <el-table-column label="Operation" class-name="table_column">
-          <template slot-scope="scope">
-            <el-button size="small" @click="updateSort(scope.$index,scope.row)" type="warning" plain>Update</el-button>
-          </template>
-        </el-table-column>
-        </el-table>
-      </template>
-    </el-table-column>
-        <el-table-column prop="id" label="ID" class-name="table_column"></el-table-column>
+      <el-table :data="sortKinds" stripe style="width: 97%;">
+        <el-table-column prop="id" label="ID" class-name="table_column" width="70"></el-table-column>
         <el-table-column prop="name" label="Name" class-name="table_column"></el-table-column>
         <el-table-column prop="description" label="Description" class-name="table_column"></el-table-column>
         <el-table-column label="Operation" class-name="table_column">
           <template slot-scope="scope">
-            <el-button size="small" @click="updateKind(scope.$index,scope.row)" type="primary" plain>Update</el-button>
+            <el-button size="small" @click="copySortKind(scope.row)" type="warning" plain>Update</el-button>
+            <!-- <el-button size="small" @click="deleteSortKind(scope.row)" type="danger" plain>Delete</el-button> -->
           </template>
         </el-table-column>
       </el-table>
     </el-row>
     <!-- 模态框 -->
     <el-dialog :title="title" :visible.sync="dialogFormVisible" center>
-        <el-form :model="form">
-          <el-form-item label="Name" label-width="120px">
-            <el-input type="name" v-model="form.name" placeholder="Please Input Name" autocomplete="off"></el-input>
-          </el-form-item>
-          <el-form-item label="Description" label-width="120px">
-            <el-input v-model="form.description" type="description" placeholder="Please Input Description" autocomplete="off"></el-input>
-          </el-form-item>
-          <el-form-item label="Kind" label-width="120px" :hidden="checkHidden">
-            <el-radio-group v-model="form.kind_id">
-              <el-radio-button v-for="(kind,index) in kinds" :label="kind.id" :key="index" border>{{kind.name}}</el-radio-button>
-            </el-radio-group>
-          </el-form-item>
-        </el-form>
-        <div slot="footer" class="dialog-footer">
-          <el-button :visible.sync="checkSubmit"  type="primary" @click="Submit()">确 定</el-button>
-          <el-button type="warning" @click="Close()">取 消</el-button>
-        </div>
-      </el-dialog>
+      <el-form :model="form">
+        <el-form-item label="Name" label-width="120px">
+          <el-input type="name" v-model="form.name" placeholder="Please Input Name"></el-input>
+        </el-form-item>
+        <el-form-item label="Description" label-width="120px">
+          <el-input v-model="form.description" type="description" placeholder="Please Input Description"></el-input>
+        </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button type="primary" @click="submit()">确 定</el-button>
+        <el-button type="warning" @click="close()">取 消</el-button>
+      </div>
+    </el-dialog>
   </el-row>
 </template>
 <script>
 export default {
   data() {
     return {
+      title: '',
+      sortKinds: [],
+      temp: [],
+      searchInfo: '',
       dialogFormVisible: false,
       checkSubmit: true,
-      addJudge: false,
-      checkHidden: true,
-      title: '',
-      kindList: [
-        {
-          id: 1,
-          name: '家常菜谱',
-          description: '家常菜谱',
-          sorts:[
-            { id: 1, name: '家常菜', description: '家常菜', kind: { id: 1, name: '家常菜谱'}},
-            { id: 2, name: '私房菜', description: '私房菜', kind: { id: 1, name: '家常菜谱'}},
-          ]
-        },
-        {
-          id: 2,
-          name: '中华菜系',
-          description: '中华菜系',
-          sorts:[
-            { id: 1, name: '东北菜', description: '东北菜', kind: { id: 2, name: '中华菜系'}},
-            { id: 2, name: '川菜', description: '川菜', kind: { id: 2, name: '中华菜系'}},
-          ]
-        },
-      ],
-      kinds: [
-        { id: 1, name: '家常菜谱'},
-        { id: 2, name: '中华菜系'}
-      ],
       form: {
         name: '',
-        kind_id: '',
         description: '',
       },
+      sortKind_id: '',
     };
   },
   mounted(){
-
+    this.getSortKinds();
   },
   methods: {
+    search(){
+      this.temp = this.sortKinds;
+      this.sortKinds = _.filter(this.sortKinds, { name: this.searchInfo });
+    },
+    cancel(){
+      this.sortKinds = this.temp;
+      this.searchInfo = '';
+    },
     // 提交点击事件
-    Submit(){
+    submit(){
       this.dialogFormVisible = false;
+      if(this.checkSubmit){
+        this.createSortKind();
+      }else{
+        this.updateSortKind();
+      }
     },
     //取消方法
-    Close(){
+    close() {
       this.dialogFormVisible = false;
-      // this.resetDialog();
+      this.resetDialog();
     },
-    // 添加菜谱种类
-    addKind(){
-      this.dialogFormVisible = true;
-      this.addJudge = true;
-      this.checkHidden = true;
-      this.title = '添加菜谱种类';
+    // 清空添加框
+    resetDialog() {
+      this.form.name = '';
+      this.form.description = '';
     },
-    // 修改菜谱种类
-    updateKind(index, data){
+    // 添加方法
+    addSortKind() {
+      this.title = 'Add SortKind'
       this.dialogFormVisible = true;
-      this.checkHidden = true;
-      this.title = '修改菜谱种类';
+      this.checkSubmit = true;
+      this.resetDialog();
     },
-    // 添加菜谱分类
-    addSort(){
-      this.dialogFormVisible = true;
-      this.addJudge = false;
-      this.checkHidden = false;
-      this.title = '添加菜谱分类';
+    // 创建菜系分类
+    createSortKind(){
+      let data = {
+        name: this.form.name,
+        description: this.form.description,
+      }
+      let judge = false ;
+      if(data.name && data.description){
+        _.forEach(this.sortKinds,item=>{
+          if(item.name == _.trim(data.name)) judge = true;
+        })
+        if(!judge){
+          this.$axios({
+            url: '/api/sortKind/saveSortKind',
+            method: 'post',
+            data,
+          }).then(res=>{
+            if(res.data.code == 200){
+              this.$message({ message: '添加成功', type: 'success' });
+              this.getSortKinds();
+            }
+          });
+        }else{
+          this.dialogFormVisible = true;
+          this.$message.error({ message: '名字重复' });
+        }
+      }else{
+        this.dialogFormVisible = true;
+        this.$message.error({ message: '请填写完整信息' });
+      }
     },
-    // 修改菜谱分类
-    updateSort(index, data){
+    // 复写菜系分类信息
+    copySortKind(row) {
+      this.title = 'Update SortKind'
       this.dialogFormVisible = true;
-      this.checkHidden = false;
-      this.title = '修改菜谱分类';
-    }
+      this.checkSubmit = false;
+      this.sortKind_id = row.id;
+      this.form.name = row.name;
+      this.form.description = row.description;
+    },
+    // 更新菜系分类
+    updateSortKind() {
+      let data = {
+        name: this.form.name,
+        description: this.form.description,
+      }
+      let judge = false ;
+      if(data.name && data.description){
+        _.forEach(this.sortKinds,item=>{
+          if(item.id != this.sortKind_id && item.name == _.trim(data.name)) judge = true;
+        })
+        if(!judge){
+          this.$axios({
+            url: `/api/sortKind/updateSortKind/${this.sortKind_id}`,
+            method: 'post',
+            data,
+          }).then(res=>{
+            if(res.data.code == 200){
+              this.$message({ message: '修改成功', type: 'success' });
+              this.sortKind_id = '';
+              this.getSortKinds();
+            }
+          });
+        }else{
+          this.dialogFormVisible = true;
+          this.$message.error({ message: '名字重复' });
+        }
+      }else{
+        this.dialogFormVisible = true;
+        this.$message.error({ message: '请填写完整信息' });
+      }
+    },
+    // // 删除菜系分类
+    // deleteSortKind(row){
+    //   this.$axios({
+    //     url: `/api/sortKind/deleteSortKind/${row.id}`,
+    //     method: 'post'
+    //   }).then( res => {
+    //     if(res.data.code == 200){
+    //       this.$message({ message: '删除成功', type: 'success' });
+    //       this.getSortKinds();
+    //     }
+    //   });
+    // },
+    // 获取菜系分类
+    getSortKinds(){
+      this.$axios({
+        url: '/api/sortKind/getAllSortKinds',
+        method: 'get',
+      }).then(res =>{
+        if(res.data.code == 200){
+          this.sortKinds = res.data.data.sortKinds;
+        }
+      })
+    },
   }
 };
 </script>
@@ -151,14 +210,19 @@ export default {
       padding: $size20;
       padding-right: $size60;
       background-color: rgba(153, 153, 153, 0.4);
+      overflow: hidden;
+      .search{
+        float: left;
+      }
     }
-    .main{
-      .el-table{
-        margin: $size20;
-        border-radius: 15px;
-        /deep/ .table_column{
-          text-align: $position_center;
-        }
+    .el-table{
+      margin: $size10 $size20 $size0 $size20;
+      border-radius: 15px;
+      /deep/ .table_column{
+        text-align: $position_center;
+      }
+      .input100{
+        width: 100%;
       }
     }
   }
