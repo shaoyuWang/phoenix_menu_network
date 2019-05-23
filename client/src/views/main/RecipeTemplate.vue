@@ -68,7 +68,7 @@
             <el-col :span="6" class="col-right">
                 <div class="user">
                     <div class="user-header">
-                        <div class="user-img"><img src="../../assets/logo.jpg"></div>
+                        <div class="user-img"><img :src="handleImg(recipeUser.photo)"></div>
                         <span class="username">{{recipeUser.name}}</span>
                     </div>
                     <div class="user-info">
@@ -240,24 +240,31 @@ export default {
                 recipe: this.recipe,
             }
             let judge = false;
-            _.forEach(this.user.menus, item => {
-                if(item.id == data.menuId){
-                    if(item.recipes.length >= 10) judge = true;
-                }
-            })
-            if(judge) { this.$message({ message: '菜单中菜谱以达到上限', type: 'warning' }); return false;};
             this.$axios({
-                url:`/main/recipeTemplate/recipeAddMenu`,
-                method: 'post',
+                url:`/main/recipeTemplate/findMenuById/${data.menuId}`,
+                method: 'get',
                 data,
             }).then(res=>{
-                if(res.data == -1){
-                    this.$message({ message: '此菜谱已经存在与你的菜单中', type: 'warning' });
-                }else if(res.data.code == 200){
-                    this.dialogVisible = false;
-                    this.$message({ message: '添加到菜谱成功', type: 'success' });
-                    this.searchMenuId = '';
+                if(res.data.code == 200){
+                    console.log(res.data.data.menu.recipes.length);
+                    if(res.data.data.menu.recipes.length >= 10){
+                        judge = true;
+                    }
                 }
+                if(judge) { this.$message({ message: '菜单中菜谱以达到上限', type: 'warning' }); return false;};
+                this.$axios({
+                    url:`/main/recipeTemplate/recipeAddMenu`,
+                    method: 'post',
+                    data,
+                }).then(res=>{
+                    if(res.data == -1){
+                        this.$message({ message: '此菜谱已经存在与你的菜单中', type: 'warning' });
+                    }else if(res.data.code == 200){
+                        this.dialogVisible = false;
+                        this.$message({ message: '添加到菜谱成功', type: 'success' });
+                        this.searchMenuId = '';
+                    }
+                });
             });
         },
         createMenu(){
@@ -302,7 +309,6 @@ export default {
                 url:`/main/recipeTemplate/findUserById/${userId}`,
                 method: 'get',
             }).then(res=>{
-                console.log(res.data);
                 if(res.data.code == 200){
                     this.recipeUser = res.data.data.user;
                     this.recipeUser.menuLength = this.recipeUser.menus.length;

@@ -25,7 +25,6 @@ async function bootstrap() {
   //     optionsSuccessStatus: 200,
   //   }),
   // );
-
   app.use(cookie("secret"));
   app.use(session({ secret: "secret" }));
   app.use(passport.initialize());

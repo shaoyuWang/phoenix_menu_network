@@ -45,6 +45,12 @@ export class UserCenterController {
     return await this.userCenterService.getRecipe(userId);
   }
 
+  @Post("/deleteRecipe/:id")
+  // @Roles(2)
+  public async deleteRecipe(@Param("id") recipeId: any) {
+    return await this.userCenterService.deleteRecie(recipeId);
+  }
+
   @Get("/getCollection/:id")
   // @Roles(2)
   public async getCollection(@Param("id") userId: any) {

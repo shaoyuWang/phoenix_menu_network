@@ -197,7 +197,7 @@ export default {
         data,
       }).then(res=>{
         if(res.data.code == 200){
-          this.message({ message: '创建用户成功', type: 'success'});
+          this.$message({ message: '创建用户成功', type: 'success'});
           this.getUsers();
         }
       });

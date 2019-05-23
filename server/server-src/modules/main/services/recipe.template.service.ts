@@ -53,6 +53,19 @@ export class RecipeTemplateService {
     }
   }
 
+  public async findMenuById(menuId: any) {
+    let data: any;
+    let menu = await this.userMenuRepository.findOne(menuId, {
+      relations: ["recipes"],
+    });
+    data = _.assign({}, { menu });
+    if (!_.isEmpty(data)) {
+      return { data, code: RESPONSE_CODE.SUCCESS };
+    } else {
+      return { code: RESPONSE_CODE.NOTVALUE };
+    }
+  }
+
   //  获取用户信息
   public async findUserById(userId: number) {
     let data: any;

@@ -16,6 +16,12 @@ export class RecipeTemplateController {
     return await this.recipeTemplateService.findRecipeById(recipeId);
   }
 
+  @Get("/findMenuById/:id")
+  // @Roles(2)
+  public async findMenuById(@Param("id") menuId: any) {
+    return await this.recipeTemplateService.findMenuById(menuId);
+  }
+
   @Get("/findUserById/:id")
   // @Roles(2)
   public async findUserById(@Param("id") userId: any) {

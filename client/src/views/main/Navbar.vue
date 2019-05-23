@@ -6,12 +6,12 @@
           <a href="/request/index" class="logo"><img src="../../assets/logo.png" alt=""></a>
         </div>
         <div class="header-search">
-          <el-input placeholder="请输入内容" v-model="searchInfo" clearable style="width: 70%;"></el-input>
+          <el-input placeholder="请输入菜谱名字" v-model="searchInfo" clearable style="width: 70%;"></el-input>
           <el-button type="success" @click="search()" icon="el-icon-search" style="margin-left: 10px;">搜索</el-button>
         </div>
         <div class="header-login">
           <div class="header-operation" v-show="login? false : true">
-            <a href="/login">注册</a>
+            <a @click="openDialog()">注册</a>
             <a href="/login">登录</a>
           </div>
           <el-dropdown trigger='hover' v-show="login? true : false" :show-timeout="100" :hide-timeout="200" placement="bottom-start" @command="checkStatus">
@@ -59,6 +59,30 @@
       </div>
     </div>
     <router-view></router-view>
+    <!-- 模态框 -->
+    <el-dialog :title="title" :visible.sync="dialogFormVisible" center>
+      <el-form :model="form">
+        <el-form-item label="登录账号" label-width="120px">
+          <el-input v-model="form.username" placeholder="Please Input Username"></el-input>
+        </el-form-item>
+        <el-form-item label="登录密码" label-width="120px">
+          <el-input v-model="form.password" type="password" placeholder="Please Input Passowrd"></el-input>
+        </el-form-item>
+        <el-form-item label="用户名" label-width="120px">
+          <el-input v-model="form.name" placeholder="Please Input Name"></el-input>
+        </el-form-item>
+        <el-form-item label="电子邮箱" label-width="120px">
+          <el-input v-model="form.email" placeholder="Please Input Email"></el-input>
+        </el-form-item>
+        <el-form-item label="电话号码" label-width="120px">
+          <el-input v-model="form.phone" placeholder="Please Input Telephone"></el-input>
+        </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button type="primary" @click="createUser()">确 定</el-button>
+        <el-button type="warning" @click="close()">取 消</el-button>
+      </div>
+    </el-dialog>
   </div>
 </template>
 
@@ -66,10 +90,21 @@
 export default {
   data() {
     return {
+      title: '',
       activeIndex: '/',
       login: false,
       searchInfo: '',
-      user: ''
+      user: '',
+      form: {
+        username: '',
+        password: '',
+        name: '',
+        email: '',
+        phone: '',
+        photo: '8700811558507499433.jpg',
+        role_id: '',
+      },
+      dialogFormVisible: false,
     };
   },
   created() {
@@ -114,6 +149,19 @@ export default {
     currentPath(){
       this.activeIndex = this.$router.history.current.fullPath;
     },
+    //取消方法
+    close() {
+      this.dialogFormVisible = false;
+      this.resetDialog();
+    },
+    // 清空添加框
+    resetDialog() {
+      this.form.username = '',
+      this.form.password = '',
+      this.form.name = '';
+      this.form.email = '';
+      this.form.phone = '';
+    },
     search(){
       this.$axios({
         url: `/main/index/searchRecipe/${this.searchInfo}`,
@@ -122,7 +170,65 @@ export default {
         console.log(res.data);
         this.$router.push({ path: "/request/allTemplate", query:{recipes: res.data.data.recipes, status: 99}});
       })
-    }
+    },
+    openDialog(){
+      this.title = 'Add User'
+      this.dialogFormVisible = true;
+      this.getRoles();
+    },
+    // 创建用户
+    createUser(){
+      // 邮箱格式正则
+      let emailValidation = /^[A-Za-z0-9\u4e00-\u9fa5]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/;
+      let roles = [];
+      _.forEach(this.roles, item=>{
+        if(item.id == 2) roles.push(item);
+      })
+      let data ={
+        username: this.form.username,
+        password: this.form.password,
+        name: this.form.name,
+        email: this.form.email,
+        phone: this.form.phone,
+        roles,
+        photo: this.form.photo,
+      };
+      if(_.isEmpty(data.username) || _.isEmpty(data.password) || _.isEmpty(data.name) ||
+         _.isEmpty(data.email) || _.isEmpty(data.phone) || _.isEmpty(data.roles)){ 
+        this.$message({ message: '请输入全部信息', type: 'warning' }); 
+        this.dialogFormVisible = true; 
+        return false;
+      };
+      // 验证邮箱格式
+      if(!emailValidation.test(data.email)){ 
+        this.$message({ message: '邮箱格式错误', type: 'warning' }); 
+        this.dialogFormVisible = true; 
+        return false;
+      }
+      this.$axios({
+        url: '/api/user/saveUser',
+        method: 'post',
+        data,
+      }).then(res=>{
+        if(res.data.code == 200){
+          this.$message({ message: '创建用户成功，3秒后跳转到登录页面', type: 'success'});
+          setTimeout(() => {
+            this.$router.push({path: '/login'});
+          }, 3000);
+        }
+      });
+    },
+    // 获取角色
+    getRoles(){
+      this.$axios({
+        url: '/api/role/getAllRoles',
+        method: 'get',
+      }).then(res =>{
+        if(res.data.code == 200){
+          this.roles = res.data.data.roles;
+        }
+      })
+    },
   }
 }
 </script>

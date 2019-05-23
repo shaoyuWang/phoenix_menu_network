@@ -152,6 +152,18 @@ export class UserCenterService {
     }
   }
 
+  // 删除菜谱
+  public async deleteRecie(recipeId: any) {
+    let data: any;
+    let recipe = await this.recipeRepository.delete(recipeId);
+    data = _.assign({}, { recipe });
+    if (!_.isEmpty(data)) {
+      return { data, code: RESPONSE_CODE.SUCCESS };
+    } else {
+      return { code: RESPONSE_CODE.NOTVALUE };
+    }
+  }
+
   //   获取收藏信息
   public async getCollection(userId: any) {
     let data: any;

@@ -4,14 +4,14 @@
             <span class="title-font">我的菜谱</span>
             <div class="title-operation">
                 <el-button @click="operation = true;" type="text" v-show="operation? false : true">管理</el-button>
-                <el-button @click="operation = false;" type="text" v-show="operation">退出管理</el-button>
+                <el-button @click="operation = false;" style="color: #f40;" type="text" v-show="operation">退出管理</el-button>
             </div>
         </div>
         <el-col :span="24" class="infomation">
             <div class="list">
                 <div class="item" v-for="item in recipeList.slice((currentPage-1)*pagesize, currentPage*pagesize)" :key="item.id">
                     <a @click="jumpRecipe(item.id)">
-                        <img :src="handleImg(item.finishPhoto)">
+                        <img :src="handleImg(item.finishPhoto)" style="height: 210px;">
                         <div class="info">
                             <span class="recipe-name">{{item.name}}</span>
                             <span class="time"><i class="el-icon-date"></i>&nbsp;&nbsp;{{handleDate(item.createDate)}}</span>
@@ -19,7 +19,7 @@
                     </a>
                     <div class="operation" v-show="operation">
                         <el-button type="primary" plain>修改</el-button>
-                        <el-button type="danger" plain>删除</el-button>
+                        <!-- <el-button @click="deleteRecipe(item.id)" type="danger" plain>删除</el-button> -->
                     </div>
                 </div>
             </div>
@@ -70,8 +70,19 @@ export default {
                 if(res.status == 200){
                     this.recipeList = res.data.data.recipes;
                     if(_.isEmpty(this.recipeList)){
-                        this.$message({ message: '暂无菜谱信息', type: 'error' });
+                        this.$message.error({ message: '暂无菜谱信息' });
                     }
+                }
+            });
+        },
+        deleteRecipe(recipeId){
+            this.$axios({
+                url: `/main/userCenter/deleteRecipe/${recipeId}`,
+                method: 'post',
+            }).then(res =>{
+                if(res.status == 200){
+                    this.$message({ message: '删除菜谱成功', type: 'success' });
+                    this.getRecipe();
                 }
             });
         }

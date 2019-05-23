@@ -34,8 +34,9 @@ export class IndexService {
   // 搜索
   public async searchRecipe(searchInfo: any) {
     let data: any;
+    searchInfo = _.trim(searchInfo);
     let recipes = await this.recipeRepository.find({
-      where: { name: _.trim(searchInfo) },
+      where: { name: searchInfo },
       relations: ["user"],
     });
     data = _.assign({}, { recipes });
