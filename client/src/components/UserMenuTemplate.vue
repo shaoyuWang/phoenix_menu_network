@@ -5,7 +5,7 @@
         </div>
         <el-col class="menu">
             <el-collapse v-model="activeName" accordion>
-                <el-collapse-item :title="item.name" :name='item.id' v-for="item in menuList" :key="item.id">
+                <el-collapse-item :title="item.name" :name='item.id' v-for="item in menuList.slice((currentPage-1)*pagesize, currentPage*pagesize)" :key="item.id">
                     <div class="menu-header">{{item.length}}/10</div>
                     <ul class="recipe">
                         <li class="recipe-item" v-for="recipeItem in item.recipes" :key="recipeItem.id">
@@ -15,6 +15,11 @@
                 </el-collapse-item>
             </el-collapse>
         </el-col>
+        <el-col :span="24" style="text-align: center; margin-top: 10px;">
+            <el-pagination layout="prev, pager, next" :page-size="pagesize" @current-change="current_change" 
+                :current-page.sync="currentPage" :pager-count="5" :total="menuList.length">
+            </el-pagination>
+        </el-col>
     </el-col>
 </template>
 
@@ -22,6 +27,8 @@
 export default {
     data(){
         return {
+            pagesize: 5,
+            currentPage: 1,
             userId: '',
             activeName:'',
             menuList: [],
@@ -31,6 +38,9 @@ export default {
         this.getMenu();
     },
     methods:{
+        current_change(currentPage){  //改变当前页
+            this.currentPage = currentPage
+        },
         handleImg(photo){
             if(!_.isEmpty(photo)){
                 return require(`../assets/imgs/${photo}`);

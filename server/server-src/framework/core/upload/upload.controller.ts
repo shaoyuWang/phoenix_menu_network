@@ -34,7 +34,7 @@ export class UploadController {
       ),
     );
     writeImage.write(file.buffer);
-    return { data: writeImage.path, code: RESPONSE_CODE.SUCCESS };
+    return { writeImage, code: RESPONSE_CODE.SUCCESS };
   }
 
   @Post("/video")

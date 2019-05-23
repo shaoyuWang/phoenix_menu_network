@@ -8,7 +8,7 @@
         </span>
       </div>
       <div class="main">
-        <div class="menu-item" v-for="item in menuList" :key="item.id">
+        <div class="menu-item" v-for="item in menuList.slice((currentPage-1)*pagesize, currentPage*pagesize)" :key="item.id">
           <div class="menu-title">
             <a class="title"><span>{{item.name}}</span></a>
             <span class="menu-number"><em>{{item.length}}</em>篇菜谱</span>
@@ -27,6 +27,11 @@
           </div>
         </div>
       </div>
+      <el-col :span="24" style="text-align: center; margin-top: 10px;">
+        <el-pagination layout="prev, pager, next" :page-size="pagesize" @current-change="current_change" 
+          :current-page.sync="currentPage" :pager-count="5" :total="menuList.length">
+        </el-pagination>
+      </el-col>
     </el-col>
     <Footer></Footer>
   </el-row>
@@ -38,6 +43,8 @@ export default {
   components: {Footer},
   data() {
     return {
+      pagesize: 3,
+      currentPage: 1,
       menuList:[],
     }
   },
@@ -45,6 +52,9 @@ export default {
     this.getList();
   },
   methods:{
+    current_change(currentPage){  //改变当前页
+      this.currentPage = currentPage
+    },
     handleImg(photo){
       if(!_.isEmpty(photo)){
         return require(`../../assets/imgs/${photo}`);

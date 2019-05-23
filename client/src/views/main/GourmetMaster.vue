@@ -4,9 +4,8 @@
       <div class="banner">
         <el-carousel :interval="4000" height="300px">
           <el-carousel-item v-for="item in bannerList" :key="item.id">
-            <a @click="jumpDiary(item.id)">
-              <img :src="handleImg(item.photo)">
-              <span>{{ item.title }}</span>
+            <a @click="jumpDiary(item.id)" style="height: 300px;">
+              <img :src="handleImg(item.photo)" style="width: 100%;">
             </a>
           </el-carousel-item>
         </el-carousel>
@@ -18,7 +17,7 @@
           <span class="many"><a @click="more(3)">更多日记&nbsp;>></a></span>
         </span>
         </div>
-        <div class="list-item" v-for="item in diaryList" :key="item.id">
+        <div class="list-item" v-for="item in diaryList.slice((currentPage-1)*pagesize, currentPage*pagesize)" :key="item.id">
             <a @click="jumpDiary(item.id)">
               <div class="item-img"><img class="img-responsive" :src="handleImg(item.photo)"></div>
               <div class="item-info">
@@ -28,6 +27,11 @@
             </a>
           </div>
       </div>
+      <el-col :span="24" style="text-align: center; margin-top: 10px;">
+        <el-pagination layout="prev, pager, next" :page-size="pagesize" @current-change="current_change" 
+          :current-page.sync="currentPage" :pager-count="5" :total="diaryList.length">
+        </el-pagination>
+      </el-col>
     </el-col>
   </el-row>
 </template>
@@ -36,6 +40,8 @@
 export default {
   data(){
     return {
+      pagesize: 12,
+      currentPage: 1,
       bannerList: [],
       diaryList: [],
     }
@@ -44,6 +50,9 @@ export default {
     this.getList();
   },
   methods:{
+    current_change(currentPage){  //改变当前页
+      this.currentPage = currentPage
+    },
     handleImg(photo){
       if(!_.isEmpty(photo)){
         return require(`../../assets/imgs/${photo}`);

@@ -85,13 +85,8 @@ export default {
   methods: {
     authority(){
       this.user = _.isEmpty(JSON.parse(sessionStorage.getItem('user')))? null: JSON.parse(sessionStorage.getItem('user'));
-      if(!_.isEmpty(this.user)){
-        _.forEach(this.user.roles, item => {
-          if(_.includes(item,{ id: 1 })){
-            console.log('ok');
-            // this.$router.push({ path: '/login' });
-          }
-        })
+      if(!_.isEmpty(this.user) && this.user.roles[0].id != 1){
+        this.$router.push({ path: '/nopermisson'});
       }
     },
     checkStatus(status){

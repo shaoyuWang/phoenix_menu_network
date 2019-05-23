@@ -6,8 +6,8 @@
                     <span class="title-font">{{recipe.name}}</span>
                 </div>
                 <el-col :span="24" class="recipe-base">
-                    <el-col :span="10">
-                        <img class="recipe-img" :src="handleImg(recipe.finishPhoto)">
+                    <el-col :span="10" style="height:272px; overflow: hidden;">
+                        <img class="recipe-img" :src="handleImg(recipe.finishPhoto)" style="height: 100%;">
                     </el-col>
                     <el-col :span="14" class="info">
                         <ul class="effect">
@@ -58,8 +58,8 @@
                         <li class="step-item" v-for="item in 5" :key="item">
                             <span class="step-number">{{item}}.</span>
                             <div class="step">
-                                <span class="step-description">这个菜谱非常牛逼。这个步骤贼屌</span>
-                                <img class="step-img" src="../../assets/headerbackground.jpg" alt="">
+                                <span class="step-description">拿出一个锅碗瓢盆</span>
+                                <img class="step-img" src="../../assets/imgs/1100281558507698900.jpg" alt="">
                             </div>
                         </li>
                     </ul>
@@ -174,7 +174,7 @@ export default {
             }
         },
         publishComment(){
-            if(_.isEmpty(this.user)) { this.$message.error({ message: '请登录' }); return false;};
+            if(_.isEmpty(this.user)) { this.$message.error({ message: '请登录' }); this.comment = ''; return false;};
             let data = {
                 comment:this.comment,
                 praise: 0,

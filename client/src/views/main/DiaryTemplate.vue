@@ -6,6 +6,7 @@
                     <span class="title-font">{{diary.title}}</span>
                 </div>
                 <el-col :span="24" class="diary-base">
+                    <img :src="handleImg(diary.photo)" alt="" style="padding:10px; display: block; width: 100%;">
                     <div class="diary-info">
                         {{diary.info}}
                     </div>
@@ -63,7 +64,6 @@ export default {
     },
     mounted(){
         this.getList();
-        this.getUserInfo();
     },
     methods:{
         handleImg(photo){
@@ -80,7 +80,8 @@ export default {
             }
         },
         publishComment(){
-            let user = JSON.parse(sessionStorage.getItem('user'));
+            if(_.isEmpty(this.user)) { this.$message.error({ message: '请登录' }); this.comment = ''; return false;};
+            let user = _.isEmpty(JSON.parse(sessionStorage.getItem('user')))? null: JSON.parse(sessionStorage.getItem('user'));
             let data = {
                 comment:this.comment,
                 praise: 0,
@@ -130,11 +131,12 @@ export default {
             }).then(res=>{
                 if(res.data.code == 200){
                     this.diary = res.data.data.diary;
+                    this.getUserInfo();
                 }
             });
         },
         getUserInfo(){
-            let userId = _.isEmpty(JSON.parse(sessionStorage.getItem('user')))? null : JSON.parse(sessionStorage.getItem('user')).id;
+            let userId = this.diary.user.id;
             this.$axios({
                 url:`/main/diaryTemplate/findUserById/${userId}`,
                 method: 'get',

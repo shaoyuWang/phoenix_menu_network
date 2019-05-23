@@ -5,22 +5,29 @@
         </div>
         <el-col :span="24" class="infomation">
             <div class="list">
-                <div class="item" v-for="item in collectionList" :key="item.id">
-                    <img :src="handleImg(item.recipeFinishPhoto)">
+                <div class="item" v-for="item in collectionList.slice((currentPage-1)*pagesize, currentPage*pagesize)" :key="item.id">
+                    <img :src="handleImg(item.recipeFinishPhoto)" style="height:200px;">
                     <div class="info">
                         <span class="recipe-name">{{item.recipeName}}</span>
                         <span class="time"><i class="el-icon-date"></i>&nbsp;&nbsp;{{handleDate(item.createDate)}}</span>
                     </div>
                 </div>
             </div>
-      </el-col>
-    </el-col>
+        </el-col>
+            <el-col :span="24" style="text-align: center; margin-top: 10px;">
+                <el-pagination layout="prev, pager, next" :page-size="pagesize" @current-change="current_change" 
+                    :current-page.sync="currentPage" :pager-count="5" :total="collectionList.length">
+                </el-pagination>
+            </el-col>
+        </el-col>
 </template>
 
 <script>
 export default {
     data(){
         return {
+            pagesize: 9,
+            currentPage: 1,
             userId:'',
             collectionList: [],
         }
@@ -29,6 +36,9 @@ export default {
         this.getRecipe();
     },
     methods:{
+        current_change(currentPage){  //改变当前页
+            this.currentPage = currentPage
+        },
         handleImg(photo){
             if(!_.isEmpty(photo)){
                 return require(`../assets/imgs/${photo}`);
@@ -45,7 +55,7 @@ export default {
             }).then(res =>{
                 if(res.status == 200){
                     this.collectionList = res.data.data.collections;
-                    if(_.isEmpty(this.recipeList)){
+                    if(_.isEmpty(this.collectionList)){
                         this.$message({ message: '暂无收藏信息', type: 'error' });
                     }
                 }

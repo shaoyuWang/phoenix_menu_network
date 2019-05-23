@@ -60,6 +60,7 @@ export default {
     created(){
         this.user = _.isEmpty(JSON.parse(sessionStorage.getItem('user')))? null: JSON.parse(sessionStorage.getItem('user'));
         this.checkPath();
+        this.currentPath();
     },
     methods:{
         handleImg(photo){
@@ -78,7 +79,11 @@ export default {
                 default: this.defaultActive = '/userCenter/myInfo'; break;
             }
             this.$router.push({path: `${this.defaultActive}`});
-        }
+        },
+        // 获取当前页面路径
+        currentPath(){
+        this.defaultActive = this.$router.history.current.fullPath;
+        },
     }
 }
 </script>

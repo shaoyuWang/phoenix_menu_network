@@ -4,13 +4,12 @@
             <span class="title-font">我的菜谱</span>
             <div class="title-operation">
                 <el-button @click="operation = true;" type="text" v-show="operation? false : true">管理</el-button>
-                <el-button type="success" plain v-show="operation">添加菜谱</el-button>
                 <el-button @click="operation = false;" type="text" v-show="operation">退出管理</el-button>
             </div>
         </div>
         <el-col :span="24" class="infomation">
             <div class="list">
-                <div class="item" v-for="item in recipeList" :key="item.id">
+                <div class="item" v-for="item in recipeList.slice((currentPage-1)*pagesize, currentPage*pagesize)" :key="item.id">
                     <a @click="jumpRecipe(item.id)">
                         <img :src="handleImg(item.finishPhoto)">
                         <div class="info">
@@ -24,14 +23,21 @@
                     </div>
                 </div>
             </div>
-      </el-col>
-    </el-col>
+        </el-col>
+            <el-col :span="24" style="text-align: center; margin-top: 10px;">
+                <el-pagination layout="prev, pager, next" :page-size="pagesize" @current-change="current_change" 
+                    :current-page.sync="currentPage" :pager-count="5" :total="recipeList.length">
+                </el-pagination>
+            </el-col>
+        </el-col>
 </template>
 
 <script>
 export default {
     data(){
         return {
+            pagesize: 9,
+            currentPage: 1,
             userId:'',
             recipeList: [],
             operation: false,
@@ -41,6 +47,9 @@ export default {
         this.getRecipe();
     },
     methods:{
+        current_change(currentPage){  //改变当前页
+            this.currentPage = currentPage
+        },
         handleImg(photo){
             if(!_.isEmpty(photo)){
                 return require(`../assets/imgs/${photo}`);

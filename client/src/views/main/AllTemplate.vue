@@ -2,9 +2,9 @@
     <el-row>
         <el-col :span="16" :offset="4">
             <div class="title">
-                <span class="title-font">全部{{checkStatus()}}</span>
+                <span class="title-font">{{checkStatus()}}</span>
             </div>
-            <div class="list-item" v-for="item in infoList" :key="item.id">
+            <div class="list-item" v-for="item in infoList.slice((currentPage-1)*pagesize, currentPage*pagesize)" :key="item.id">
                 <a href="#">
                     <div class="item-img"><img class="img-responsive" :src="handleImg(item)"></div>
                     <div class="item-info">
@@ -13,6 +13,11 @@
                     </div>
                 </a>
             </div>
+            <el-col :span="24" style="text-align: center; margin-top: 10px;">
+                <el-pagination layout="prev, pager, next" :page-size="pagesize" @current-change="current_change" 
+                :current-page.sync="currentPage" :pager-count="5" :total="infoList.length">
+                </el-pagination>
+            </el-col>
         </el-col>
         <Footer></Footer>
     </el-row>
@@ -24,15 +29,25 @@ export default {
     components: {Footer},
     data(){
         return {
-            status: '',
-            img: 'https://s1.ig.meishij.net/p/20190225/5c3cfecbc666b3a256d5fd348ee82323.jpg',
-            infoList:[],
+        pagesize: 15,
+        currentPage: 1,
+        status: '',
+        infoList: [],
         }
     },
     created(){
-        this.getList();
+        this.status = _.toNumber(this.$route.query.status);
+        if(this.status != 99){
+            this.getList();
+        }else{
+            let recipes = this.$route.query.recipes;
+            this.infoList = recipes;
+        }
     },
     methods:{
+        current_change(currentPage){  //改变当前页
+            this.currentPage = currentPage
+        },
         handleImg(item){
             if(_.isEmpty(item.finishPhoto)){
                 return require(`../../assets/imgs/${item.photo}`);
@@ -48,10 +63,11 @@ export default {
         checkStatus(){
             this.status = _.toNumber(this.$route.query.status);
             switch(_.toNumber(this.status)){
-                case 1: return '菜谱'; break;
-                case 2: return '食材'; break;
-                case 3: return '日记'; break;
-                default: return '菜谱'; break;
+                case 1: return '全部菜谱'; break;
+                case 2: return '全部食材'; break;
+                case 3: return '全部日记'; break;
+                case 4: return '搜索结果'; break;
+                default: return '全部菜谱'; break;
             }
         },
         getList(){

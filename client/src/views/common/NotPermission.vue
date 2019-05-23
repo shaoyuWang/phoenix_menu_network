@@ -2,7 +2,7 @@
   <el-container class="container">
     <el-row>
       <h1>sorry you dont have permissions,please login</h1>
-      <el-button @click="Login()">login</el-button>
+      <el-button @click="login()">login</el-button>
     </el-row>
   </el-container>
 </template>
@@ -13,9 +13,13 @@ export default {
 
     }
   },
+  mounted(){
+    sessionStorage.clear();
+    this.$message({ message: '您没有访问权限，请重新登录', type: 'warning'});
+  },
   methods: {
-    Login() {
-      this.$router.push({ path: "/"});
+    login() {
+      this.$router.push({ path: "/login"});
     }
   }
 }

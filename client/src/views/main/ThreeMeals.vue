@@ -5,7 +5,9 @@
         <span class="title-style">精选推荐</span>
         <el-carousel :interval="4000" type="card" height="300px">
           <el-carousel-item v-for="item in bannerList" :key="item.id">
-            <img class="banner-img" :src="handleImg(item.finishPhoto)">
+            <a @click="jumpRecipe(item.id)">
+              <img class="banner-img" :src="handleImg(item.finishPhoto)">
+            </a>
           </el-carousel-item>
         </el-carousel>
       </div>
@@ -20,7 +22,7 @@
             推荐{{title}}菜品
             <span class="many"><a @click="more(1)">更多菜谱&nbsp;>></a></span>
           </span>
-          <div class="list-item" v-for="item in recipeList" :key="item.id">
+          <div class="list-item" v-for="item in recipeList.slice((currentPage-1)*pagesize, currentPage*pagesize)" :key="item.id">
             <a @click="jumpRecipe(item.id)">
               <div class="item-img"><img class="img-responsive" :src="handleImg(item.finishPhoto)"></div>
               <div class="item-info">
@@ -31,6 +33,11 @@
           </div>
         </div>
       </div>
+      <el-col :span="24" style="text-align: center; margin-top: 10px;">
+        <el-pagination layout="prev, pager, next" :page-size="pagesize" @current-change="current_change" 
+          :current-page.sync="currentPage" :pager-count="5" :total="recipeList.length">
+        </el-pagination>
+      </el-col>
     </el-col>
     <Footer></Footer>
   </el-row>
@@ -42,6 +49,8 @@ export default {
   components: {Footer},
   data() {
     return {
+      pagesize: 12,
+      currentPage: 1,
       current: 1,
       title: '早餐',
       itemList: [
@@ -56,6 +65,9 @@ export default {
     this.getList();
   },
   methods:{
+    current_change(currentPage){  //改变当前页
+      this.currentPage = currentPage
+    },
     handleImg(photo){
       if(!_.isEmpty(photo)){
         return require(`../../assets/imgs/${photo}`);

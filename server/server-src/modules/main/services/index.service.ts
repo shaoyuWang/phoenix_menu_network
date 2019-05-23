@@ -30,4 +30,19 @@ export class IndexService {
       return { code: RESPONSE_CODE.NOTVALUE };
     }
   }
+
+  // 搜索
+  public async searchRecipe(searchInfo: any) {
+    let data: any;
+    let recipes = await this.recipeRepository.find({
+      where: { name: _.trim(searchInfo) },
+      relations: ["user"],
+    });
+    data = _.assign({}, { recipes });
+    if (!_.isEmpty(data)) {
+      return { data, code: RESPONSE_CODE.SUCCESS };
+    } else {
+      return { code: RESPONSE_CODE.NOTVALUE };
+    }
+  }
 }

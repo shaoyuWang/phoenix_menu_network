@@ -1,4 +1,4 @@
-import { Controller, Get, UseGuards } from "@nestjs/common";
+import { Controller, Get, UseGuards, Body, Param } from "@nestjs/common";
 import { Roles } from "../../../framework/decorators/role.decorator";
 import { LoginGuard } from "../../../framework/guards";
 import _ from "lodash";
@@ -12,5 +12,10 @@ export class IndexController {
   @Get("/getList")
   public async getList() {
     return await this.indexService.getList();
+  }
+
+  @Get("/searchRecipe/:name")
+  public async searchRecipe(@Param("name") searchInfo: any) {
+    return await this.indexService.searchRecipe(searchInfo);
   }
 }

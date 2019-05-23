@@ -42,8 +42,7 @@ export default {
         }
     },
     created(){
-        this.user = _.isEmpty(JSON.parse(sessionStorage.getItem('user')))? null: JSON.parse(sessionStorage.getItem('user'));
-        this.copyUser();
+        this.getUser();
     },
     methods:{
         // 图片上传方法
@@ -52,6 +51,7 @@ export default {
             this.$message({ type: "success", message: "图片上传成功" });
             const pathList = _.split(res.writeImage.path, "/");
             this.form.photo = pathList[ pathList.length - 1 ];
+            console.log(this.form.photo);
         },
         //上传的文件个数超出设定时触发的函数
         onExceed(files, fileList) {
@@ -95,8 +95,8 @@ export default {
                 data,
             }).then(res=>{
                 if(res.data.code == 200){
-                this.$message({ message: '更新用户成功', type: 'success'});
-                this.getUser();
+                    this.getUser();
+                    this.$message({ message: '更新用户成功', type: 'success'});
                 }
             });
         },
@@ -109,15 +109,21 @@ export default {
             this.form.phone = this.user.phone;
         },
         getUser(){
-            this.$axios({
-                url: `/main/userCenter/findUserById/${this.user.id}`,
-                method: 'get',
-            }).then(res=>{
-                if(res.data.code == 200){
-                    this.user = res.data.data.user;
-                    this.copyUser();
-                }
-            });
+            let userId = _.isEmpty(JSON.parse(sessionStorage.getItem('user')))? null: JSON.parse(sessionStorage.getItem('user')).id;
+            if(userId != ''){
+                this.$axios({
+                    url: `/main/userCenter/findUserById/${userId}`,
+                    method: 'get',
+                }).then(res=>{
+                    if(res.data.code == 200){
+                        this.user = res.data.data.user;
+                        console.log(this.user);
+                        this.copyUser();
+                    }
+                });
+            }else{
+                this.$message.error({ message: '请登录'});
+            }
         }
     }
 }

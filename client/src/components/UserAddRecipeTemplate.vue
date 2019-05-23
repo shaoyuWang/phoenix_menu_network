@@ -59,7 +59,7 @@
                     <template slot="append">分钟</template>
                 </el-input>
             </el-form-item>
-            <el-form-item label="添加步骤" label-width="120px">
+            <!-- <el-form-item label="添加步骤" label-width="120px">
                 <el-select v-model="tempStep.step" default-first-option filterable placeholder="请选择">
                     <el-option v-for="item in step" :key="item.id" :label="item.name" :value="item.id"></el-option>
                 </el-select>
@@ -71,13 +71,13 @@
                 </div>
                 <el-button type="success" @click="addStep()" plain style="margin-left:10px;">添加</el-button>
                 <el-input v-model="tempStep.info" type="textarea" placeholder="请输入内容" style="width:500px; margin-top: 10px;"></el-input>
-            </el-form-item>
-            <el-form-item label="成果图" label-width="120px" style="padding: 10px 0;">
+            </el-form-item> -->
+            <!-- <el-form-item label="成果图" label-width="120px" style="padding: 10px 0;">
                 <el-upload action="/upload/img" :limit="1" :on-success="handleSuccess" :on-exceed="onExceed" :before-upload="beforeUpload">
                     <el-button size="small" type="primary">点击上传</el-button>
                     <div slot="tip" style="display:inline-block; margin-left: 10px;">只能上传jpg/jepg文件，且不超过2m</div>
                 </el-upload>
-            </el-form-item>
+            </el-form-item> -->
             <el-form-item style="text-align:center;">
                 <el-button type="success" @click="submit()">添加</el-button>
                 <el-button type="primary" @click="reset()">取消</el-button>
@@ -110,6 +110,7 @@ export default {
                 evaluate: '',
                 timeType: '',
                 level: '',
+                finishPhoto: '',
                 time: '',
                 technologyId: '',
                 tasteId: '',

@@ -2,7 +2,7 @@
   <el-row class="container">
     <el-col :span="16" :offset="4">
       <div class="main">
-        <div class="list-item" v-for="item in videoList" :key="item.id">
+        <div class="list-item" v-for="item in videoList.slice((currentPage-1)*pagesize, currentPage*pagesize)" :key="item.id">
           <a @click="jumpVideoTemplate(item.id)">
             <div class="item-img">
               <video class="img-responsive" preload="auto" :src="handleVideo(item.video)"></video>
@@ -14,6 +14,11 @@
           </a>
         </div>
       </div>
+      <el-col :span="24" style="text-align: center; margin-top: 10px;">
+        <el-pagination layout="prev, pager, next" :page-size="pagesize" @current-change="current_change" 
+          :current-page.sync="currentPage" :pager-count="5" :total="videoList.length">
+        </el-pagination>
+      </el-col>
     </el-col>
     <Footer></Footer>
   </el-row>
@@ -25,6 +30,8 @@ export default {
   components: {Footer},
   data() {
     return {
+      pagesize: 15,
+      currentPage: 1,
       videoList:[],
     }
   },
@@ -32,6 +39,9 @@ export default {
     this.getList();
   },
   methods:{
+    current_change(currentPage){  //改变当前页
+      this.currentPage = currentPage
+    },
     handleVideo(video){
       return require(`../../assets/videos/${video}`);
     },

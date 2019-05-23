@@ -5,9 +5,9 @@
         </div>
         <el-col :span="24" class="infomation">
             <div class="list">
-                <div class="item" v-for="item in diaryList" :key="item.id">
+                <div class="item" v-for="item in diaryList.slice((currentPage-1)*pagesize, currentPage*pagesize)" :key="item.id">
                     <a @click="jumpDiary(item.id)">
-                        <img :src="handleImg(item.photo)">
+                        <img :src="handleImg(item.photo)" style="height:100px;">
                         <div class="info">
                             <span class="recipe-name">{{item.title}}</span>
                             <span class="time"><i class="el-icon-date"></i>&nbsp;&nbsp;{{handleDate(item.createDate)}}</span>
@@ -15,7 +15,12 @@
                     </a>
                 </div>
             </div>
-      </el-col>
+        </el-col>
+        <el-col :span="24" style="text-align: center; margin-top: 10px;">
+            <el-pagination layout="prev, pager, next" :page-size="pagesize" @current-change="current_change" 
+                :current-page.sync="currentPage" :pager-count="5" :total="diaryList.length">
+            </el-pagination>
+        </el-col>
     </el-col>
 </template>
 
@@ -23,6 +28,8 @@
 export default {
     data(){
         return {
+            pagesize: 5,
+            currentPage: 1,
             diaryList:'',
             userId: '',
         }
@@ -31,6 +38,9 @@ export default {
         this.getDiary();
     },
     methods:{
+        current_change(currentPage){  //改变当前页
+            this.currentPage = currentPage
+        },
         handleImg(photo){
             if(!_.isEmpty(photo)){
                 return require(`../assets/imgs/${photo}`);

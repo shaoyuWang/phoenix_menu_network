@@ -5,6 +5,10 @@
         <div class="header-logo">
           <a href="/request/index" class="logo"><img src="../../assets/logo.png" alt=""></a>
         </div>
+        <div class="header-search">
+          <el-input placeholder="请输入内容" v-model="searchInfo" clearable style="width: 70%;"></el-input>
+          <el-button type="success" @click="search()" icon="el-icon-search" style="margin-left: 10px;">搜索</el-button>
+        </div>
         <div class="header-login">
           <div class="header-operation" v-show="login? false : true">
             <a href="/login">注册</a>
@@ -64,6 +68,7 @@ export default {
     return {
       activeIndex: '/',
       login: false,
+      searchInfo: '',
       user: ''
     };
   },
@@ -80,6 +85,12 @@ export default {
     authority(){
       this.user = _.isEmpty(JSON.parse(sessionStorage.getItem('user')))? null: JSON.parse(sessionStorage.getItem('user'));
       !_.isEmpty(this.user) ? this.login = true : this.login = false;
+      if(!_.isEmpty(this.user) && this.user.roles[0].id != 2){
+        this.$message.error({ message: '您没有访问权限' });
+        setTimeout(() => {
+          this.$router.push({ path: '/login'});
+        }, 2000);
+      }
     },
     checkStatus(status){
       if(status != 6){
@@ -93,10 +104,7 @@ export default {
         url: '/auth/logout',
         method: 'post',
       }).then(res =>{
-        this.$message({
-          message: '注销成功',
-          type: 'success'
-        });
+        this.$message({ message: '注销成功', type: 'success'});
         sessionStorage.clear();
         this.authority();
         this.$router.push({ path: "/"});
@@ -105,6 +113,15 @@ export default {
     // 获取当前页面路径
     currentPath(){
       this.activeIndex = this.$router.history.current.fullPath;
+    },
+    search(){
+      this.$axios({
+        url: `/main/index/searchRecipe/${this.searchInfo}`,
+        method: 'get',
+      }).then(res =>{
+        console.log(res.data);
+        this.$router.push({ path: "/request/allTemplate", query:{recipes: res.data.data.recipes, status: 99}});
+      })
     }
   }
 }
@@ -116,22 +133,28 @@ export default {
     background-color: $color_navbar;
     .header{
       width: $width_screen;
+      height: 100px;
       margin: $size0 auto;
-      overflow: hidden;
       .header-logo{
-        float: $position_left;
+        float: left;
         width: 200px;
+        margin-top: 10px;
         .logo{
           display: block;
-          padding: 10px 0;
           text-align: $position_center;
           img{
             width: $width100;
           }
         }
       }
+      .header-search{
+        width: 650px;
+        float: left;
+        text-align: center;
+        line-height: 100px;
+      }
       .header-login{
-        float: $position_right;
+        float: right;
         &::after{ content: ''; display: block; clear: both; }
         .header-operation{
           padding: 25px 0;
@@ -150,9 +173,9 @@ export default {
             padding-top: 20px;
             width: 100px;
             text-align: center;
-            overflow: hidden;
           .user-photo{
             width: 40px;
+            height: 40px;
             display: inline-block;
           }
           .username{
@@ -160,7 +183,14 @@ export default {
             display: block;
             width: 100%;
             color: black;
-            &:hover{color: black;}
+            white-space:nowrap; 
+            overflow:hidden; 
+            text-overflow:ellipsis;
+            &:hover{
+              color: black;
+              text-align: left;
+              width: 200px
+            }
           }
         }
       }
