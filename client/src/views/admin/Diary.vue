@@ -2,10 +2,6 @@
   <el-row class="container">
     <el-row class="header">
       <el-button type="primary" class="add" @click="addDiary()">+Add</el-button>
-      <el-upload action="/upload/img" name="file" style="float: left;" :on-success="handleSuccess">
-        <el-button size="small" type="primary">点击上传</el-button>
-        <div slot="tip" style="float: right; margin-left: 20px;">只能上传jpg/jepg文件，且不超过2m</div>
-      </el-upload>
     </el-row>
     <el-row class="main">
       <el-table :data="diarys.slice((currentPage-1)*pagesize, currentPage*pagesize)" stripe style="width: 97%;">
@@ -72,9 +68,9 @@ export default {
       dialogFormVisible: false,
       checkSubmit: true,
       form: {
-        name: '',
+        title: '',
         info: '',
-        photo: '',
+        photo: '4003201558543211220.jpg',
       },
       diaryId: '',
     };
@@ -120,7 +116,6 @@ export default {
     },
     // 添加方法
     addDiary() {
-      console.log(this.form.photo);
       // if(_.isEmpty(this.form.photo)){ this.$message({ message: '先上传图片', type: 'warning'}); return false;}
       this.title = 'Add Diary'
       this.dialogFormVisible = true;
@@ -133,25 +128,23 @@ export default {
         title: this.form.title,
         info: this.form.info,
         photo: this.form.photo,
-        user_id:  _.isEmpty(JSON.parse(sessionStorage.getItem('user')))? null : JSON.parse(sessionStorage.getItem('user')).id,
+        user:  _.isEmpty(JSON.parse(sessionStorage.getItem('user')))? null : JSON.parse(sessionStorage.getItem('user')),
       }
-      console.log(data);
-      // if(!_.isEmpty(data.title) || _.isEmpty(data.info) || _.isEmpty(data.photo)){
-      //   this.$axios({
-      //     url: '/api/diary/saveDiary',
-      //     method: 'post',
-      //     data,
-      //   }).then(res=>{
-      //     if(res.data.code == 200){
-      //       this.$message({ message: '添加成功', type: 'success' });
-      //       this.form.photo = '';
-      //       this.getDiarys();
-      //     }
-      //   });
-      // }else{
-      //   this.dialogFormVisible = true;
-      //   this.$message.error({ message: '请填写完整信息' });
-      // }
+      if(!_.isEmpty(data.title) || _.isEmpty(data.info) || _.isEmpty(data.photo)){
+        this.$axios({
+          url: '/api/diary/saveDiary',
+          method: 'post',
+          data,
+        }).then(res=>{
+          if(res.data.code == 200){
+            this.$message({ message: '添加成功', type: 'success' });
+            this.getDiarys();
+          }
+        });
+      }else{
+        this.dialogFormVisible = true;
+        this.$message.error({ message: '请填写完整信息' });
+      }
     },
     // 复写日记信息
     copyDiary(row) {

@@ -19,30 +19,18 @@ export class UserDiaryController {
   @Post("/saveDiary")
   // @Roles(1, 2)
   public async saveDiary(@Body() data: any) {
-    if (!_.isEmpty(data)) {
-      return this.diaryServices.saveDiary(data);
-    } else {
-      return { code: RESPONSE_CODE.NOTPARAMETER };
-    }
+    return this.diaryServices.saveDiary(data);
   }
 
   @Post("/updateDiary/:id")
   // @Roles(1)
   public async updateDiary(@Param("id") diaryId: any, @Body() data: any) {
-    if (!_.isEmpty(diaryId) && !_.isEmpty(data)) {
-      return this.diaryServices.updateDiary(diaryId, data);
-    } else {
-      return { code: RESPONSE_CODE.NOTPARAMETER };
-    }
+    return this.diaryServices.updateDiary(diaryId, data);
   }
 
   @Post("/deleteDiary/:id")
   // @Roles(1)
   public async deleteDiary(@Param("id") diaryId: any) {
-    if (!_.isEmpty(diaryId)) {
-      return this.diaryServices.deleteDiary(diaryId);
-    } else {
-      return { code: RESPONSE_CODE.NOTPARAMETER };
-    }
+    return this.diaryServices.deleteDiary(diaryId);
   }
 }

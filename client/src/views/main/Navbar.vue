@@ -6,7 +6,7 @@
           <a href="/request/index" class="logo"><img src="../../assets/logo.png" alt=""></a>
         </div>
         <div class="header-search">
-          <el-input placeholder="请输入菜谱名字" v-model="searchInfo" clearable style="width: 70%;"></el-input>
+          <el-autocomplete v-model="searchInfo" :fetch-suggestions="querySearch" placeholder="请输入菜谱名" style="width:400px;"></el-autocomplete>
           <el-button type="success" @click="search()" icon="el-icon-search" style="margin-left: 10px;">搜索</el-button>
         </div>
         <div class="header-login">
@@ -92,6 +92,7 @@ export default {
     return {
       title: '',
       activeIndex: '/',
+      recipes:[],
       login: false,
       searchInfo: '',
       user: '',
@@ -110,8 +111,22 @@ export default {
   created() {
     this.currentPath();
     this.authority();
+    this.getRecipes();
   },
   methods: {
+    querySearch(queryString, cb) {
+        let recipeList = this.recipes;
+        let results = queryString ? recipeList.filter(this.createFilter(queryString)) : recipeList;
+        clearTimeout(this.timeout);
+        this.timeout = setTimeout(() => {
+          cb(results);
+        }, 1000 * Math.random());
+    },
+    createFilter(queryString) {
+      return (recipeList) => {
+        return (recipeList.value.indexOf(queryString) !== -1);
+      };
+    },
     handleImg(photo){
       if(!_.isEmpty(photo)){
         return require(`../../assets/imgs/${photo}`);
@@ -226,6 +241,20 @@ export default {
       }).then(res =>{
         if(res.data.code == 200){
           this.roles = res.data.data.roles;
+        }
+      })
+    },
+    // 获取菜谱
+    getRecipes(){
+      this.$axios({
+        url: '/api/recipe/getAllRecipes',
+        method: 'get',
+      }).then(res =>{
+        if(res.data.code == 200){
+          _.forEach(res.data.data.recipes, item=>{
+            item.value = item.name;
+          })
+          this.recipes = res.data.data.recipes;
         }
       })
     },

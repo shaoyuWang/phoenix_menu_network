@@ -101,7 +101,7 @@ export default {
       }).then(res =>{
         this.$message({ message: '注销成功', type: 'success' });
         sessionStorage.clear();
-        this.$router.push({ path: "/"});
+        this.$router.push({ path: "/login"});
       })
     },
     // 获取当前页面路径
