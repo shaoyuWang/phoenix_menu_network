@@ -1,27 +1,27 @@
-const webpack = require("webpack");
+const webpack = require('webpack');
 
 module.exports = {
   lintOnSave: false,
   productionSourceMap: false,
-  devServer:{
-    proxy:{
-      '/auth':{
-        target:'http://localhost:3000',
-        changeOrigin:true,
+  devServer: {
+    proxy: {
+      '/auth': {
+        target: 'http://localhost:3000',
+        changeOrigin: true,
       },
-      '/api':{
-        target:'http://localhost:3000',
-        changeOrigin:true,
+      '/api': {
+        target: 'http://localhost:3000',
+        changeOrigin: true,
       },
-      '/main':{
-        target:'http://localhost:3000',
-        changeOrigin:true,
+      '/main': {
+        target: 'http://localhost:3000',
+        changeOrigin: true,
       },
-      '/upload':{
-        target:'http://localhost:3000',
-        changeOrigin:true,
+      '/upload': {
+        target: 'http://localhost:3000',
+        changeOrigin: true,
       },
-    }
+    },
   },
   configureWebpack: {
     plugins: [
@@ -29,8 +29,8 @@ module.exports = {
         $: 'jquery',
         jQuery: 'jquery',
         'window.jQuery': 'jquery',
-        Popper: ['popper.js', 'default']
-        })
-    ]
-  }
+        Popper: ['popper.js', 'default'],
+      }),
+    ],
+  },
 };

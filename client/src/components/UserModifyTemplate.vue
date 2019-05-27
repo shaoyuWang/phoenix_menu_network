@@ -13,13 +13,13 @@
             <el-form-item label="电话号码" label-width="120px" style="padding: 10px 0;">
                 <el-input v-model="form.phone" placeholder="Please Input Telephone" style="width: 90%;"></el-input>
             </el-form-item>
-            <el-form-item label="头像" label-width="120px" style="padding: 10px 0;">
+            <!-- <el-form-item label="头像" label-width="120px" style="padding: 10px 0;">
                 <el-upload class="upload-demo" action="/upload/img" name="file"
                     list-type="picture" :limit="1" :on-success="handleSuccess" :on-exceed="onExceed" :before-upload="beforeUpload">
                     <el-button size="small" type="primary">点击上传</el-button>
                     <div slot="tip" class="el-upload__tip">只能上传jpg/jepg文件，且不超过2m</div>
                 </el-upload>
-            </el-form-item>
+            </el-form-item> -->
             <el-form-item style="text-align:center;">
                 <el-button type="success" @click="submit()">修改</el-button>
                 <el-button type="primary" @click="reset()">重置</el-button>

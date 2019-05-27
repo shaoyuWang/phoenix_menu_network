@@ -66,7 +66,7 @@ export default {
                 case 1: return '全部菜谱'; break;
                 case 2: return '全部食材'; break;
                 case 3: return '全部日记'; break;
-                case 4: return '搜索结果'; break;
+                case 99: return '搜索结果'; break;
                 default: return '全部菜谱'; break;
             }
         },
